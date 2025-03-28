@@ -1,0 +1,93 @@
+
+export const HEALTH_CHALLENGES = [
+  "YT-neuvottelut",
+  "Burnout",
+  "Korona",
+  "Palkkataso",
+  "Henkilöstöpula",
+  "Ylityöt",
+  "Työvuorolistat",
+  "Sijaisuudet",
+  "Resurssipula",
+  "Leikkaukset",
+  "Työtaakka",
+  "Kiire",
+  "Stressi",
+  "Väsymys",
+  "Sisäilma",
+  "Uupumus",
+  "Jaksamishaaste",
+  "Työnkierto",
+  "Palkkakuilu",
+  "Lomapula",
+  "Vuorotyö",
+  "Tehokkuusvaatimus",
+  "Työuupumus",
+  "Henkilöstövaje",
+  "Kiusaaminen",
+  "Muutosvastarinta",
+  "Perehdytyspula",
+  "Epäselvä johtaminen",
+  "Kahvi loppu!",
+  "Esihenkilö soitti",
+  "Potilasvalitus",
+  "Kämmenet kuivuu",
+  "Tietojärjestelmä kaatui",
+  "Potilastietojärjestelmän päivitys",
+  "Somekohu",
+  "Pahanhajuinen potilas",
+  "Rikkinäinen tulostin",
+  "Yövuoro peräkkäin",
+  "Jatkuva puhelin",
+  "Pakkosiirto",
+  "Hissi rikki 8. kerrokseen",
+  "Täysikuu",
+  "Ruokatauolle ei ehtinyt",
+  "Vessassa ei paperia",
+  "Excel-taulukkomuutos",
+  "Suojavarusteet loppu",
+  "Sijainen ei tullut",
+  "Omainen raivoaa",
+  "Tuplakirjaaminen",
+  "Lomalta soitto töihin",
+  "Potilas karkasi",
+  "Ohjelma vaihtuu",
+  "Puolet töistä sairaana",
+  "Tietokone jumissa"
+];
+
+export const FOOD_COLORS = [
+  "#FF5A79",  // Pink
+  "#7A2E8E",  // Purple
+  "#FF9800",  // Orange
+  "#E67E22",  // Dark Orange
+  "#2ECC71",  // Green
+  "#F39C12"   // Yellow
+];
+
+export const WATER_PLANTS = [
+  { x: 20, y: 400, type: 'seaweed', height: 140, color: '#2ECC71', animationDelay: '0s' },
+  { x: 80, y: 390, type: 'seaweed', height: 120, color: '#3CB371', animationDelay: '0.3s' },
+  { x: 120, y: 410, type: 'coral', height: 90, color: '#F39C12', animationDelay: '0.7s' },
+  { x: 160, y: 430, type: 'seaweed', height: 150, color: '#27AE60', animationDelay: '0.2s' },
+  { x: 200, y: 400, type: 'waterlily', width: 70, color: '#9ACD32', animationDelay: '0.5s' },
+  { x: 250, y: 420, type: 'seaweed', height: 130, color: '#16A085', animationDelay: '0.9s' },
+  { x: 290, y: 390, type: 'seaweed', height: 110, color: '#2ECC71', animationDelay: '0.4s' },
+  { x: 330, y: 410, type: 'coral', height: 80, color: '#E67E22', animationDelay: '0.8s' },
+  { x: 370, y: 430, type: 'waterlily', width: 60, color: '#66CDAA', animationDelay: '0.6s' },
+  { x: 410, y: 400, type: 'seaweed', height: 160, color: '#27AE60', animationDelay: '0.2s' },
+  { x: 450, y: 420, type: 'seaweed', height: 140, color: '#2ECC71', animationDelay: '0.7s' },
+  { x: 490, y: 390, type: 'coral', height: 90, color: '#F39C12', animationDelay: '0.4s' },
+  { x: 530, y: 410, type: 'waterlily', width: 65, color: '#66CDAA', animationDelay: '0.1s' },
+  { x: 570, y: 430, type: 'seaweed', height: 130, color: '#27AE60', animationDelay: '0.5s' },
+  { x: 610, y: 400, type: 'seaweed', height: 120, color: '#2ECC71', animationDelay: '0.3s' },
+  { x: 650, y: 420, type: 'coral', height: 85, color: '#E67E22', animationDelay: '0.8s' },
+  { x: 690, y: 390, type: 'waterlily', width: 70, color: '#9ACD32', animationDelay: '0.6s' },
+  { x: 730, y: 410, type: 'seaweed', height: 150, color: '#16A085', animationDelay: '0.2s' },
+  { x: 770, y: 430, type: 'seaweed', height: 130, color: '#2ECC71', animationDelay: '0.7s' },
+  { x: 810, y: 400, type: 'coral', height: 95, color: '#F39C12', animationDelay: '0.5s' },
+  { x: 850, y: 420, type: 'waterlily', width: 75, color: '#66CDAA', animationDelay: '0.3s' },
+  { x: 890, y: 390, type: 'seaweed', height: 140, color: '#27AE60', animationDelay: '0.1s' },
+  { x: 930, y: 410, type: 'seaweed', height: 120, color: '#2ECC71', animationDelay: '0.4s' },
+  { x: 970, y: 430, type: 'coral', height: 90, color: '#E67E22', animationDelay: '0.6s' }
+];
