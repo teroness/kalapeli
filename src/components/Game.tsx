@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -201,15 +202,20 @@ const Game: React.FC = () => {
   }, [fishPosition, hooks, fishSize]);
 
   const checkFoodCollisions = useCallback(() => {
+    // Get fish dimensions based on current size
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
+    // Define fish hitbox with increased size for better collision detection
     const fishHitbox = {
-      left: fishPosition.x + fishWidth * 0.1,
-      right: fishPosition.x + fishWidth * 0.9,
-      top: fishPosition.y + fishHeight * 0.1,
-      bottom: fishPosition.y + fishHeight * 0.9
+      left: fishPosition.x + 5,
+      right: fishPosition.x + fishWidth - 5,
+      top: fishPosition.y + 5,
+      bottom: fishPosition.y + fishHeight - 5
     };
+    
+    // For debugging
+    console.log(`Fish hitbox: L:${fishHitbox.left.toFixed(0)} R:${fishHitbox.right.toFixed(0)} T:${fishHitbox.top.toFixed(0)} B:${fishHitbox.bottom.toFixed(0)}`);
     
     let foodEaten = false;
     
@@ -217,28 +223,32 @@ const Game: React.FC = () => {
       const updatedFoods = prevFoods.map(food => {
         if (food.isEaten) return food;
         
-        const foodWidth = 15;
-        const foodHeight = 15;
+        // Food dimensions - increased to match the larger food size
+        const foodWidth = 25;
+        const foodHeight = 25;
         
+        // Define food hitbox with a larger area for easier collection
         const foodHitbox = {
-          left: food.position.x - 5,
-          right: food.position.x + foodWidth + 5,
-          top: food.position.y - 5,
-          bottom: food.position.y + foodHeight + 5
+          left: food.position.x - 10,
+          right: food.position.x + foodWidth + 10,
+          top: food.position.y - 10,
+          bottom: food.position.y + foodHeight + 10
         };
         
-        const collision = !(
-          fishHitbox.right < foodHitbox.left || 
-          fishHitbox.left > foodHitbox.right || 
-          fishHitbox.bottom < foodHitbox.top || 
-          fishHitbox.top > foodHitbox.bottom
+        // Debug food positions
+        console.log(`Food ${food.id} - Pos: ${food.position.x.toFixed(0)},${food.position.y.toFixed(0)}`);
+        
+        // Check for simpler collision detection
+        const collision = (
+          fishHitbox.right >= foodHitbox.left && 
+          fishHitbox.left <= foodHitbox.right && 
+          fishHitbox.bottom >= foodHitbox.top && 
+          fishHitbox.top <= foodHitbox.bottom
         );
         
-        console.log(`Food ${food.id} - Pos: ${food.position.x.toFixed(0)},${food.position.y.toFixed(0)}, Collision: ${collision}`);
-        
         if (collision) {
-          foodEaten = true;
           console.log('FOOD EATEN!', food.id);
+          foodEaten = true;
           return { ...food, isEaten: true };
         }
         
@@ -253,6 +263,7 @@ const Game: React.FC = () => {
       setScore(prevScore => prevScore + 10);
       setFoodCollected(prev => prev + 1);
       
+      // Growth logic
       if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
         setFishSize(prevSize => {
           const newSize = Math.min(prevSize + 0.1, 1.5);
@@ -264,7 +275,7 @@ const Game: React.FC = () => {
       
       setTimeout(() => {
         setIsEating(false);
-      }, 300);
+      }, 200); // Shorter animation for better responsiveness
     }
     
     return foodEaten;

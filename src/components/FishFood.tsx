@@ -18,12 +18,12 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false, i
         top: `${position.y}px`,
         pointerEvents: isEaten ? 'none' : 'auto',
         transitionDuration: '300ms',
-        width: '15px',
-        height: '15px',
+        width: '25px',  // Increased from 15px to 25px
+        height: '25px', // Increased from 15px to 25px
         zIndex: 5
       }}
     >
-      <svg width="15" height="15" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <svg width="25" height="25" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
         {/* Food shape */}
         <path 
           d="M5 20C5 10 10 5 20 5C30 5 35 12 35 20C35 28 30 35 20 35C10 35 5 30 5 20Z" 
