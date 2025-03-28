@@ -18,6 +18,9 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false })
         opacity: isEaten ? 0 : 1,
         pointerEvents: isEaten ? 'none' : 'auto',
         transitionDuration: '300ms',
+        width: '20px',
+        height: '20px',
+        zIndex: 5
       }}
     >
       <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
