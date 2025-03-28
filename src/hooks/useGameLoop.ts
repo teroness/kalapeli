@@ -90,16 +90,14 @@ const useGameLoop = ({
       // Start eating animation immediately
       setIsEating(true);
       
-      // Mark the food as eaten - immediately remove it from the foods array
-      setFoods((prevFoods) => 
-        prevFoods.map(food => 
-          food.id === foodEatenId ? { ...food, isEaten: true } : food
-        )
+      // Mark the food as eaten and immediately remove it from the foods array
+      setFoods(prevFoods => 
+        prevFoods.filter(food => food.id !== foodEatenId)
       );
       
       // Increase score and food collected count
-      setScore((prevScore) => prevScore + 10);
-      setFoodCollected((prev) => prev + 1);
+      setScore(prevScore => prevScore + 10);
+      setFoodCollected(prev => prev + 1);
       
       // Stop eating animation after a short time
       setTimeout(() => {
@@ -127,7 +125,7 @@ const useGameLoop = ({
       const shouldProcessFrame = frameCountRef.current % 2 === 0;
       
       if (shouldProcessFrame) {
-        setFishPosition((prevPos) => {
+        setFishPosition(prevPos => {
           let newPos = { ...prevPos };
           const moveStep = 5;
           
@@ -156,14 +154,14 @@ const useGameLoop = ({
       
       if (now - lastHookTimeRef.current > hookSpawnInterval) {
         const newHook = generateHook(gameSize, difficulty, hooks);
-        setHooks((prevHooks) => [...prevHooks, newHook]);
+        setHooks(prevHooks => [...prevHooks, newHook]);
         lastHookTimeRef.current = now;
       }
 
       const foodSpawnInterval = Math.max(1500 - difficulty * 50, 800);
       if (now - lastFoodTimeRef.current > foodSpawnInterval) {
         const newFood = generateFood(gameSize);
-        setFoods((prevFoods) => [...prevFoods, newFood]);
+        setFoods(prevFoods => [...prevFoods, newFood]);
         lastFoodTimeRef.current = now;
       }
 
@@ -175,10 +173,7 @@ const useGameLoop = ({
         const { updatedHooks, updatedFoods } = updateGameObjects(hooks, foods);
         
         setHooks(updatedHooks);
-        
-        // Immediately remove eaten food from the game
-        const validFoods = updatedFoods.filter(food => !food.isEaten);
-        setFoods(validFoods);
+        setFoods(updatedFoods);
         
         if (checkHookCollisions(fishPosition, hooks, fishSize)) {
           setGameOver(true);
@@ -190,7 +185,7 @@ const useGameLoop = ({
         }
         
         if (score > 0 && score % 500 === 0 && difficulty < 10) {
-          setDifficulty((prevDifficulty) => Math.min(prevDifficulty + 1, 10));
+          setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
         }
       }
       
