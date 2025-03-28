@@ -10,7 +10,7 @@ interface FishFoodProps {
 const FishFood: React.FC<FishFoodProps> = ({ position, color }) => {
   return (
     <div 
-      className="absolute transition-all" 
+      className="absolute transition-all animate-pulse" 
       style={{ 
         left: `${position.x}px`, 
         top: `${position.y}px`,

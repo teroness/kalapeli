@@ -27,7 +27,7 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
           <path d="M20 0V15C20 22 10 27 0 22" stroke="#888888" strokeWidth="3" fill="none" />
         </svg>
         
-        {/* Animated worm with challenge text */}
+        {/* Animated worm with challenge text as price tag */}
         <div className="relative -mt-2 flex flex-col items-center">
           <div className="relative animate-[wiggle_2s_ease-in-out_infinite]">
             {/* Worm body - Earthworm appearance */}
@@ -58,11 +58,17 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
               <path d="M10 28C10 28 8 26 7 24" stroke="#BE8578" strokeWidth="1.5" fill="none" />
             </svg>
             
-            {/* Challenge text on the worm */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
-              <p className="text-xs font-extrabold text-white whitespace-nowrap px-1 py-0.5 text-stroke-sm">
-                {challenge}
-              </p>
+            {/* Price tag with challenge text */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+              {/* Price tag top part */}
+              <div className="w-4 h-4 bg-white rounded-full border-2 border-red-500 mb-1"></div>
+              
+              {/* Price tag body */}
+              <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 min-w-16 shadow-md transform rotate-3 animate-[sway_3s_ease-in-out_infinite]">
+                <p className="text-xs font-extrabold text-red-600 whitespace-nowrap">
+                  {challenge}
+                </p>
+              </div>
             </div>
           </div>
         </div>

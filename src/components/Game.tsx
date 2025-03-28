@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -123,6 +122,7 @@ const Game: React.FC = () => {
   const [foodCollected, setFoodCollected] = useState(0);
   const [fishSize, setFishSize] = useState(1);
   const [isEating, setIsEating] = useState(false);
+  const [showGrowthAnimation, setShowGrowthAnimation] = useState(false);
   
   useEffect(() => {
     const updateGameSize = () => {
@@ -198,7 +198,6 @@ const Game: React.FC = () => {
     const foodWidth = 20 * 0.8;
     const foodHeight = 20 * 0.8;
     
-    // Fix: Initialize the foodEaten variable to track if any food was eaten in this check
     let foodEaten = false;
     
     setFoods(prevFoods => {
@@ -225,7 +224,12 @@ const Game: React.FC = () => {
       setFoodCollected(prev => prev + 1);
       
       if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
-        setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
+        setFishSize(prevSize => {
+          const newSize = Math.min(prevSize + 0.1, 1.5);
+          setShowGrowthAnimation(true);
+          setTimeout(() => setShowGrowthAnimation(false), 1000);
+          return newSize;
+        });
       }
       
       setTimeout(() => {
@@ -490,6 +494,8 @@ const Game: React.FC = () => {
         ref={gameAreaRef}
         className="w-full max-w-4xl h-[500px] water-background relative overflow-hidden rounded-b-lg shadow-md"
       >
+        {renderWaterPlants()}
+        
         {!isPlaying && !gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
             <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Piranha-väistelypeli</h2>
@@ -534,12 +540,24 @@ const Game: React.FC = () => {
         )}
         
         {(isPlaying || gameOver) && (
-          <Fish 
-            position={fishPosition} 
-            direction={fishDirection} 
-            size={fishSize}
-            isEating={isEating}
-          />
+          <>
+            <Fish 
+              position={fishPosition} 
+              direction={fishDirection} 
+              size={fishSize}
+              isEating={isEating}
+            />
+            
+            {showGrowthAnimation && (
+              <div className="absolute text-yellow-300 font-bold text-2xl animate-bounce"
+                   style={{ 
+                     left: `${fishPosition.x + 30}px`, 
+                     top: `${fishPosition.y - 20}px`,
+                   }}>
+                +KASVU!
+              </div>
+            )}
+          </>
         )}
         
         {(isPlaying || gameOver) && hooks.map(hook => (
