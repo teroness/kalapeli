@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -205,43 +204,34 @@ const Game: React.FC = () => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
-    // Make fishing easier by using a larger hitbox for the fish
-    const fishHitbox = {
-      left: fishPosition.x,
-      right: fishPosition.x + fishWidth,
-      top: fishPosition.y,
-      bottom: fishPosition.y + fishHeight
-    };
+    const mouthOffsetX = fishDirection === 'right' ? fishWidth * 0.7 : 0;
+    const mouthWidth = fishWidth * 0.3;
     
-    console.log(`Fish hitbox: L:${fishHitbox.left.toFixed(0)} R:${fishHitbox.right.toFixed(0)} T:${fishHitbox.top.toFixed(0)} B:${fishHitbox.bottom.toFixed(0)}`);
+    const fishHitbox = {
+      left: fishPosition.x + (fishDirection === 'right' ? mouthOffsetX : 0),
+      right: fishPosition.x + (fishDirection === 'right' ? fishWidth : mouthWidth),
+      top: fishPosition.y + (fishHeight * 0.3),
+      bottom: fishPosition.y + (fishHeight * 0.7)
+    };
     
     let foodEaten = false;
     
     setFoods(prevFoods => {
-      const updatedFoods = prevFoods.map(food => {
+      return prevFoods.map(food => {
         if (food.isEaten) return food;
         
-        const foodWidth = 25;
-        const foodHeight = 25;
+        const foodWidth = 30;
+        const foodHeight = 30;
         
-        // Create a MUCH larger hitbox for the food to make collection easier
         const foodHitbox = {
-          left: food.position.x - 30,
-          right: food.position.x + foodWidth + 30,
-          top: food.position.y - 30,
-          bottom: food.position.y + foodHeight + 30
+          left: food.position.x - 40,
+          right: food.position.x + foodWidth + 40,
+          top: food.position.y - 40,
+          bottom: food.position.y + foodHeight + 40
         };
         
-        console.log(`Food ${food.id} - Pos: ${food.position.x.toFixed(0)},${food.position.y.toFixed(0)}`);
-        
-        // Using direct collision check - an item is either colliding or not
-        const collision = 
-          fishHitbox.right >= foodHitbox.left && 
-          fishHitbox.left <= foodHitbox.right && 
-          fishHitbox.bottom >= foodHitbox.top && 
-          fishHitbox.top <= foodHitbox.bottom;
-        
-        if (collision) {
+        if (Math.abs((fishPosition.x + fishWidth/2) - (food.position.x + foodWidth/2)) < 100 &&
+            Math.abs((fishPosition.y + fishHeight/2) - (food.position.y + foodHeight/2)) < 100) {
           console.log('FOOD EATEN!', food.id);
           foodEaten = true;
           return { ...food, isEaten: true };
@@ -249,8 +239,6 @@ const Game: React.FC = () => {
         
         return food;
       });
-      
-      return updatedFoods;
     });
     
     if (foodEaten) {
@@ -273,7 +261,7 @@ const Game: React.FC = () => {
     }
     
     return foodEaten;
-  }, [fishPosition, fishSize, foodCollected]);
+  }, [fishPosition, fishSize, foodCollected, fishDirection]);
 
   useEffect(() => {
     if (!isPlaying || gameOver) return;
