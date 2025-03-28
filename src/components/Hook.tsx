@@ -29,11 +29,11 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
           <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
-        {/* Price tag with challenge text - positioned at the bottom of the hook */}
-        <div className="absolute top-16 left-0">
+        {/* Price tag with challenge text - repositioned to the left and slightly up */}
+        <div className="absolute top-12 -left-20">
           {/* The actual price tag */}
           <div className="relative flex flex-col items-center">
-            {/* String connecting to hook - now attached to lowest point */}
+            {/* String connecting to hook - still attached to lowest point */}
             <div className="h-6 w-1 bg-red-500 -mt-3"></div>
             
             {/* Price tag body */}
