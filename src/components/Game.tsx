@@ -209,8 +209,8 @@ const Game: React.FC = () => {
       ? { x: fishPosition.x + fishWidth * 0.85, y: fishPosition.y + fishHeight * 0.5 }
       : { x: fishPosition.x + fishWidth * 0.15, y: fishPosition.y + fishHeight * 0.5 };
     
-    // Increased hitbox size to make eating easier
-    const mouthHitboxSize = 40 * fishSize;
+    // Significantly increase hitbox size to make eating easier
+    const mouthHitboxSize = 50 * fishSize;
     
     let foodEaten = false;
     
@@ -220,8 +220,8 @@ const Game: React.FC = () => {
         
         // Calculate food center position
         const foodCenter = {
-          x: food.position.x + 12.5, // Half of food width (25px)
-          y: food.position.y + 12.5  // Half of food height (25px)
+          x: food.position.x + 7.5, // Half of food width (15px)
+          y: food.position.y + 7.5  // Half of food height (15px)
         };
         
         // Calculate distance between mouth and food center
@@ -266,7 +266,7 @@ const Game: React.FC = () => {
       setTimeout(() => {
         setIsEating(false);
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
-      }, 800);
+      }, 500); // Shorter animation time for better responsiveness
     }
     
     return foodEaten;
