@@ -112,15 +112,18 @@ const useGameLoop = ({
       );
 
       if (shouldProcessFrame) {
-        // First check for food collisions and process them
+        // Process food collisions first
         const foodCollisionOccurred = handleFoodCollisions();
         
-        // Then clean up and update positions
-        // Only include foods that weren't just eaten
+        // Then update the positions of remaining hooks and foods
         const { updatedHooks, updatedFoods } = updateGameObjects(hooks, foods);
         
         setHooks(updatedHooks);
-        setFoods(updatedFoods);
+        
+        // Only update foods if no collision occurred - otherwise the food is already removed
+        if (!foodCollisionOccurred) {
+          setFoods(updatedFoods);
+        }
         
         if (checkHookCollisions(fishPosition, hooks, fishSize)) {
           setGameOver(true);
