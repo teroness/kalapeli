@@ -18,11 +18,8 @@ export const checkFoodCollisions = (
   
   let foodEatenId = -1;
   
-  // Only check for collision on foods that haven't been eaten yet
-  const validFoods = foods.filter(food => !food.isEaten);
-  
-  // Check for food collisions
-  for (const food of validFoods) {
+  // Only check foods that are still on screen - already filtered in the component
+  for (const food of foods) {
     const fishCenterX = fishPosition.x + (fishWidth / 2);
     const fishCenterY = fishPosition.y + (fishHeight / 2);
     const foodCenterX = food.position.x + 15;
@@ -37,9 +34,7 @@ export const checkFoodCollisions = (
     const collisionThreshold = 25 * fishSize; // Scale with fish size
     
     if (distance < collisionThreshold) {
-      console.log('FOOD EATEN!', food.id);
       foodEatenId = food.id;
-      
       // Only detect one collision per frame
       break;
     }
@@ -49,9 +44,9 @@ export const checkFoodCollisions = (
     // Start eating animation immediately
     setIsEating(true);
     
-    // Immediately remove the eaten food from the array completely
-    // Don't just mark it as eaten
-    setFoods(foods.filter(food => food.id !== foodEatenId));
+    // Create a new array WITHOUT the eaten food
+    const updatedFoods = foods.filter(food => food.id !== foodEatenId);
+    setFoods(updatedFoods);
     
     // Increase score and food collected count
     setScore(score + 10);
