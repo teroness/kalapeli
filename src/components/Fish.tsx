@@ -25,6 +25,7 @@ const Fish: React.FC<FishProps> = ({
         left: `${position.x}px`, 
         top: `${position.y}px`,
         transform: `scaleX(${direction === 'right' ? 1 : -1}) scale(${size})`,
+        zIndex: 10
       }}>
       <svg width="60" height="40" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
         {/* Piranha body - using the pink color from the theme */}
@@ -39,11 +40,11 @@ const Fish: React.FC<FishProps> = ({
         {/* Bottom fin */}
         <path d="M25 35C25 35 30 40 35 38C30 34 25 35 25 35Z" fill="#FF9800" />
         
-        {/* Side fin - top */}
-        <path d="M20 12C20 12 15 8 18 5C22 8 20 12 20 12Z" fill="#FF9800" />
+        {/* Side fin - top (violetti) */}
+        <path d="M20 12C20 12 15 8 18 5C22 8 20 12 20 12Z" fill="#7A2E8E" />
         
-        {/* Side fin - bottom */}
-        <path d="M20 28C20 28 15 32 18 35C22 32 20 28 20 28Z" fill="#FF9800" />
+        {/* Side fin - bottom (violetti) */}
+        <path d="M20 28C20 28 15 32 18 35C22 32 20 28 20 28Z" fill="#7A2E8E" />
         
         {/* Improved piranha scales - more defined pattern with cleaner look */}
         <path d="M18 12C20 11 22 10 24 10" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
@@ -68,7 +69,7 @@ const Fish: React.FC<FishProps> = ({
         <path d="M27 26C30 26 33 26 36 25" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
         <path d="M36 25C39 25 42 24 45 23" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
         
-        {/* Piranha eye - updated to remove purple and use black instead */}
+        {/* Piranha eye - using black */}
         <circle cx="45" cy="17" r="6" fill="white" />
         <circle cx="45" cy="17" r="3" fill="black" />
         <circle cx="43" cy="15" r="1.5" fill="white" />
