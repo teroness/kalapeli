@@ -19,30 +19,28 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false, i
         opacity: isEaten ? 0 : 1,
         pointerEvents: isEaten ? 'none' : 'auto',
         transitionDuration: '300ms',
-        width: '40px',  // Increased size from 30px to 40px
-        height: '40px', // Increased size from 30px to 40px
+        width: '40px',
+        height: '40px',
         zIndex: 5
       }}
     >
       <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-        {/* Improved food shape with even better visibility */}
+        {/* Food shape with no shadows */}
         <path 
           d="M5 20C5 10 10 5 20 5C30 5 35 12 35 20C35 28 30 35 20 35C10 35 5 30 5 20Z" 
           fill={color}
-          stroke="white"
-          strokeWidth="2"
           className="animate-pulse" 
         />
         
-        {/* Enhanced highlight for better visibility */}
+        {/* Highlight without shadow */}
         <path 
           d="M12 16C12 19 15 22 19 21C23 20 23 13 19 13C15 13 12 15 12 16Z" 
           fill="white" 
-          fillOpacity="0.7" 
+          fillOpacity="0.5" 
         />
         
-        {/* Additional detail for more visibility */}
-        <circle cx="20" cy="20" r="7" fill={color} fillOpacity="0.8" stroke="white" strokeWidth="1.5" />
+        {/* Central circle without stroke/shadow */}
+        <circle cx="20" cy="20" r="7" fill={color} fillOpacity="0.8" />
       </svg>
     </div>
   );
