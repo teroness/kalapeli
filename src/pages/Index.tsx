@@ -8,7 +8,7 @@ const Index = () => {
         <span className="text-gameColors-pink">Piranha</span> Väistelypeli
       </h1>
       <p className="text-white mb-8 max-w-lg text-center">
-        Ohjaa piraijaa vedessä, kerää ruokaa kasvaaksesi ja väistä koukkuja joissa on terveydenhuollon haasteita!
+        Ohjaa piraijaa vedessä, kerää pisaranmuotoista ruokaa kasvaaksesi ja väistä koukkuja, joissa on terveydenhuollon haasteita!
       </p>
       
       <div className="w-full max-w-4xl">

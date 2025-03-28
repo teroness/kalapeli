@@ -17,17 +17,19 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color }) => {
       }}
     >
       <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        {/* Teardrop/drop shaped fish food using the color from props */}
+        {/* Teardrop shape with pointed end facing right */}
         <path 
-          d="M10 2C10 2 3 8 3 13C3 16.9 6.1 20 10 20C13.9 20 17 16.9 17 13C17 8 10 2 10 2Z" 
+          d="M10 18C10 18 17 12 17 7C17 3.1 13.9 0 10 0C6.1 0 3 3.1 3 7C3 12 10 18 10 18Z" 
           fill={color} 
+          transform="rotate(90 10 10)"
         />
         
         {/* Small highlight to make it look shiny */}
         <path 
-          d="M7 10C7 10 8 8 10 9C12 10 11 13 10 13C9 13 7 12 7 10Z" 
+          d="M13 10C13 10 12 12 10 11C8 10 9 7 10 7C11 7 13 8 13 10Z" 
           fill="white" 
           fillOpacity="0.3" 
+          transform="rotate(90 10 10)"
         />
       </svg>
     </div>
