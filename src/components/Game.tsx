@@ -27,13 +27,11 @@ const Game: React.FC = () => {
   const [isEating, setIsEating] = useState(false);
   const [isGrowing, setIsGrowing] = useState(false);
   
-  const keys = useKeyboardControls();
-  
   useEffect(() => {
-    if (foodCollected > 0 && foodCollected % 5 === 0 && fishSize < 1.5) {
-      setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
+    if (foodCollected > 0) {
+      setFishSize(prevSize => Math.min(prevSize + 0.05, 1.8));
     }
-  }, [foodCollected, fishSize]);
+  }, [foodCollected]);
   
   useEffect(() => {
     const updateGameSize = () => {

@@ -52,18 +52,17 @@ export const checkFoodCollisions = (
     
     // Increase score and food collected count
     setScore(score + 10);
-    setFoodCollected(foodCollected + 1);
+    const newFoodCollected = foodCollected + 1;
+    setFoodCollected(newFoodCollected);
     
     // Stop eating animation after a short time
     setTimeout(() => {
       setIsEating(false);
-    }, 200);
+    }, 300); // Slightly longer animation time
     
-    // Check if fish should grow
-    if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
-      setIsGrowing(true);
-      setTimeout(() => setIsGrowing(false), 800);
-    }
+    // Check if fish should grow - grow on every piece of food
+    setIsGrowing(true);
+    setTimeout(() => setIsGrowing(false), 600);
     
     return true;
   }
