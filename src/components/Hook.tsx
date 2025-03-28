@@ -31,11 +31,11 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
         </svg>
         
         {/* Price tag with challenge text */}
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2"> {/* Moved up from top-14 to top-8 to appear hanging from the hook */}
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2"> {/* Moved up from top-8 to top-4 to appear higher */}
           {/* The actual price tag */}
           <div className="relative flex flex-col items-center">
             {/* String connecting to hook */}
-            <div className="h-6 w-1 bg-red-500"></div> {/* Shortened height from h-10 to h-6 */}
+            <div className="h-6 w-1 bg-red-500"></div> {/* Kept the same height */}
             
             {/* Price tag body */}
             <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 shadow-md w-32 relative mt-1">
