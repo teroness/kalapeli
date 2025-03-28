@@ -176,8 +176,8 @@ const Game: React.FC = () => {
   }, []);
 
   const checkHookCollisions = useCallback(() => {
-    const fishWidth = 60 * fishSize * 0.7;
-    const fishHeight = 40 * fishSize * 0.7;
+    const fishWidth = 60 * fishSize;
+    const fishHeight = 40 * fishSize;
     const hookWidth = 40 * 0.7;
     const hookHeight = 60 * 0.7;
     
@@ -201,10 +201,17 @@ const Game: React.FC = () => {
   }, [fishPosition, hooks, fishSize]);
 
   const checkFoodCollisions = useCallback(() => {
-    const fishWidth = 60 * fishSize * 0.6;
-    const fishHeight = 40 * fishSize * 0.6;
-    const foodWidth = 20 * 0.8;
-    const foodHeight = 20 * 0.8;
+    const fishWidth = 60 * fishSize;
+    const fishHeight = 40 * fishSize;
+    const foodWidth = 20;
+    const foodHeight = 20;
+    
+    const fishHitbox = {
+      x: fishPosition.x + (fishWidth * 0.2),
+      y: fishPosition.y + (fishHeight * 0.2),
+      width: fishWidth * 0.6,
+      height: fishHeight * 0.6
+    };
     
     let foodEatenFlag = false;
     
@@ -212,11 +219,18 @@ const Game: React.FC = () => {
       return prevFoods.map(food => {
         if (food.isEaten) return food;
         
+        const foodHitbox = {
+          x: food.position.x,
+          y: food.position.y,
+          width: foodWidth,
+          height: foodHeight
+        };
+        
         if (
-          fishPosition.x + 15 < food.position.x + foodWidth &&
-          fishPosition.x + fishWidth - 10 > food.position.x &&
-          fishPosition.y + 10 < food.position.y + foodHeight &&
-          fishPosition.y + fishHeight - 10 > food.position.y
+          fishHitbox.x < foodHitbox.x + foodHitbox.width &&
+          fishHitbox.x + fishHitbox.width > foodHitbox.x &&
+          fishHitbox.y < foodHitbox.y + foodHitbox.height &&
+          fishHitbox.y + fishHitbox.height > foodHitbox.y
         ) {
           foodEatenFlag = true;
           return { ...food, isEaten: true };

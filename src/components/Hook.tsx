@@ -28,19 +28,21 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
           <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
-        {/* Price tag with challenge text - now properly attached to hook */}
-        <div className="absolute -bottom-5 -left-16 transform -rotate-12">
-          {/* String connecting to hook */}
-          <div className="absolute top-0 right-1 w-1 h-4 bg-red-500 rotate-12"></div>
-          
-          {/* Price tag body - looks like the hook pierces through it */}
-          <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 shadow-md w-32 relative">
-            {/* The hole where hook goes through */}
-            <div className="absolute -top-1 right-1 w-2 h-2 rounded-full border border-red-300"></div>
+        {/* Price tag with challenge text - now properly hanging from hook */}
+        <div className="absolute top-10 left-0 transform -translate-x-1/2">
+          <div className="relative">
+            {/* String connecting to hook - positioned at top center */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-5 w-1 h-5 bg-red-500"></div>
             
-            <p className="text-xs font-extrabold text-red-600 whitespace-nowrap text-center">
-              {challenge}
-            </p>
+            {/* Price tag body */}
+            <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 shadow-md w-32 relative">
+              {/* The hole where hook goes through */}
+              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full border border-red-300"></div>
+              
+              <p className="text-xs font-extrabold text-red-600 whitespace-nowrap text-center">
+                {challenge}
+              </p>
+            </div>
           </div>
         </div>
       </div>
