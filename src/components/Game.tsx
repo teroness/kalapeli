@@ -204,34 +204,23 @@ const Game: React.FC = () => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
-    const mouthOffsetX = fishDirection === 'right' ? fishWidth * 0.7 : 0;
-    const mouthWidth = fishWidth * 0.3;
-    
-    const fishHitbox = {
-      left: fishPosition.x + (fishDirection === 'right' ? mouthOffsetX : 0),
-      right: fishPosition.x + (fishDirection === 'right' ? fishWidth : mouthWidth),
-      top: fishPosition.y + (fishHeight * 0.3),
-      bottom: fishPosition.y + (fishHeight * 0.7)
-    };
-    
     let foodEaten = false;
     
     setFoods(prevFoods => {
       return prevFoods.map(food => {
         if (food.isEaten) return food;
         
-        const foodWidth = 30;
-        const foodHeight = 30;
+        const fishCenterX = fishPosition.x + (fishWidth / 2);
+        const fishCenterY = fishPosition.y + (fishHeight / 2);
+        const foodCenterX = food.position.x + 15;
+        const foodCenterY = food.position.y + 15;
         
-        const foodHitbox = {
-          left: food.position.x - 40,
-          right: food.position.x + foodWidth + 40,
-          top: food.position.y - 40,
-          bottom: food.position.y + foodHeight + 40
-        };
+        const distance = Math.sqrt(
+          Math.pow(fishCenterX - foodCenterX, 2) + 
+          Math.pow(fishCenterY - foodCenterY, 2)
+        );
         
-        if (Math.abs((fishPosition.x + fishWidth/2) - (food.position.x + foodWidth/2)) < 100 &&
-            Math.abs((fishPosition.y + fishHeight/2) - (food.position.y + foodHeight/2)) < 100) {
+        if (distance < (fishWidth / 2 + 15 + 20)) {
           console.log('FOOD EATEN!', food.id);
           foodEaten = true;
           return { ...food, isEaten: true };
@@ -261,7 +250,7 @@ const Game: React.FC = () => {
     }
     
     return foodEaten;
-  }, [fishPosition, fishSize, foodCollected, fishDirection]);
+  }, [fishPosition, fishSize, foodCollected]);
 
   useEffect(() => {
     if (!isPlaying || gameOver) return;
