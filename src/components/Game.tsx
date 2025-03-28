@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
 import Fish from '@/components/Fish';
 import Hook from '@/components/Hook';
 import FishFood from '@/components/FishFood';
@@ -63,16 +62,12 @@ const HEALTH_CHALLENGES = [
   "Tietokone jumissa"
 ];
 
-// Fish food colors
+// Fish food colors updated to match our theme
 const FOOD_COLORS = [
   "#FF5A79", // Pink
   "#7A2E8E", // Purple
-  "#051C44", // Navy
+  "#0D2B5B", // Navy
   "#FF9800", // Orange
-  "#8B5CF6", // Vivid purple
-  "#D946EF", // Magenta
-  "#F97316", // Bright orange
-  "#0EA5E9", // Ocean blue
 ];
 
 interface HookObject {
@@ -166,7 +161,6 @@ const Game: React.FC = () => {
       ) {
         setIsPlaying(false);
         setGameOver(true);
-        toast(`Peli päättyi! Jäit kiinni: ${hook.challenge}`);
         if (gameLoopRef.current) {
           cancelAnimationFrame(gameLoopRef.current);
           gameLoopRef.current = null;
@@ -199,21 +193,12 @@ const Game: React.FC = () => {
           
           if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
             setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
-            toast('Kalasi kasvoi suuremmaksi!', {
-              duration: 2000,
-            });
           }
           
           foodEaten = true;
         } else {
           remainingFoods.push(food);
         }
-      }
-      
-      if (foodEaten) {
-        toast('Ruokaa kerätty! +10 pistettä', {
-          duration: 1000,
-        });
       }
       
       return remainingFoods;
@@ -346,7 +331,6 @@ const Game: React.FC = () => {
     frameCountRef.current = 0;
     lastHookTimeRef.current = Date.now();
     lastFoodTimeRef.current = Date.now();
-    toast("Peli alkoi! Kerää ruokaa ja väistä terveydenhuollon haasteita!");
   };
 
   return (

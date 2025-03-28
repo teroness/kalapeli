@@ -17,7 +17,7 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color }) => {
       }}
     >
       <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        {/* Asymmetric teardrop shape with point facing right */}
+        {/* Asymmetric teardrop shape with rounded end */}
         <path 
           d="M3 10C3 6 5 3 10 3C15 3 17 7 17 10C17 13 15 17 10 17C5 17 3 14 3 10Z" 
           fill={color} 
