@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Pirhana from '@/components/Fish';
@@ -29,8 +30,10 @@ const Game: React.FC = () => {
   
   const keys = useKeyboardControls();
   
+  // This effect updates fish size when food is collected
   useEffect(() => {
     if (foodCollected > 0) {
+      // Increase fish size based on food collected
       setFishSize(prevSize => Math.min(prevSize + 0.05, 1.8));
     }
   }, [foodCollected]);
