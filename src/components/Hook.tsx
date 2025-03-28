@@ -24,12 +24,12 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
       
       {/* Hook with challenge price tag */}
       <div className="relative">
-        {/* Improved hook shape - repositioned to the right and down */}
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-4 translate-y-2">
+        {/* Hook shape - repositioned to connect with fishing line but still align with price tag */}
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-4">
           <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
-        {/* Price tag with challenge text - repositioned more to the right to align with the hook */}
+        {/* Price tag with challenge text - positioned to align with hook */}
         <div className="absolute top-10 -left-5">
           {/* The actual price tag */}
           <div className="relative flex flex-col items-center">
