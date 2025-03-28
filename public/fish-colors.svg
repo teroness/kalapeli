@@ -1,0 +1,29 @@
+
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pink Circle -->
+  <circle cx="120" cy="40" r="40" fill="#FF5A79"/>
+  <!-- Purple Circle -->
+  <circle cx="220" cy="40" r="40" fill="#7A2E8E"/>
+  <!-- Navy Circle -->
+  <circle cx="120" cy="120" r="40" fill="#0D2B5B"/>
+  <!-- Navy Extra Circle -->
+  <circle cx="220" cy="120" r="60" fill="#0D2B5B"/>
+  <!-- Navy Left Circle -->
+  <circle cx="40" cy="200" r="40" fill="#0D2B5B"/>
+  <!-- Purple Circle -->
+  <circle cx="120" cy="200" r="40" fill="#7A2E8E"/>
+  <!-- Pink Circle -->
+  <circle cx="220" cy="200" r="40" fill="#FF5A79"/>
+  <!-- Pink Extra Circle -->
+  <circle cx="300" cy="200" r="40" fill="#FF5A79"/>
+  <!-- Orange Circle -->
+  <circle cx="40" cy="280" r="40" fill="#FF9800"/>
+  <!-- Navy Circle -->
+  <circle cx="120" cy="280" r="40" fill="#0D2B5B"/>
+  <!-- Navy Circle -->
+  <circle cx="120" cy="360" r="40" fill="#0D2B5B"/>
+  <!-- Pink Circle -->
+  <circle cx="40" cy="360" r="40" fill="#FF5A79"/>
+  <!-- Purple Circle -->
+  <circle cx="220" cy="360" r="40" fill="#7A2E8E"/>
+</svg>

@@ -1,10 +1,11 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 50% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -97,5 +98,22 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .water-background {
+    background: linear-gradient(0deg, rgba(13, 43, 91, 0.3) 0%, rgba(13, 136, 218, 0.1) 100%);
+    background-size: 200% 100%;
+    @apply animate-water-move;
+  }
+
+  .challenge-net {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 10;
   }
 }
