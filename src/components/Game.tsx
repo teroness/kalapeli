@@ -206,12 +206,12 @@ const Game: React.FC = () => {
       ? { x: fishPosition.x + fishWidth * 0.8, y: fishPosition.y + fishHeight * 0.5 }
       : { x: fishPosition.x + fishWidth * 0.2, y: fishPosition.y + fishHeight * 0.5 };
     
-    const mouthHitboxSize = 20 * fishSize;
+    const mouthHitboxSize = 25 * fishSize;
     
     let foodEaten = false;
     
     setFoods(prevFoods => {
-      return prevFoods.map(food => {
+      const updatedFoods = prevFoods.map(food => {
         if (food.isEaten) return food;
         
         const distance = Math.sqrt(
@@ -221,11 +221,14 @@ const Game: React.FC = () => {
         
         if (distance < mouthHitboxSize) {
           foodEaten = true;
+          console.log('Food eaten!', distance, mouthHitboxSize);
           return { ...food, isEaten: true };
         }
         
         return food;
       });
+      
+      return updatedFoods;
     });
     
     if (foodEaten) {
@@ -246,7 +249,7 @@ const Game: React.FC = () => {
       setTimeout(() => {
         setIsEating(false);
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
-      }, 300);
+      }, 500);
     }
     
     return foodEaten;
@@ -340,7 +343,8 @@ const Game: React.FC = () => {
           position: { ...food.position, x: food.position.x - 3 }
         })).filter(food => food.position.x > -20 && !food.isEaten));
         
-        checkFoodCollisions();
+        const ateFoodThisFrame = checkFoodCollisions();
+        
         if (!checkHookCollisions()) {
           setScore(prevScore => prevScore + 1);
           
