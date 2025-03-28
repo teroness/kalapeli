@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -196,6 +197,9 @@ const Game: React.FC = () => {
     const fishHeight = 40 * fishSize * 0.6;
     const foodWidth = 20 * 0.8;
     const foodHeight = 20 * 0.8;
+    
+    // Fix: Initialize the foodEaten variable to track if any food was eaten in this check
+    let foodEaten = false;
     
     setFoods(prevFoods => {
       return prevFoods.map(food => {
