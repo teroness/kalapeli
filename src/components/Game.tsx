@@ -201,12 +201,9 @@ const Game: React.FC = () => {
   }, [fishPosition, hooks, fishSize]);
 
   const checkFoodCollisions = useCallback(() => {
-    // Get fish dimensions based on current size
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
-    // Define the fish hitbox with a slight adjustment to make collision more forgiving
-    // Make the hitbox slightly smaller than the actual fish for better gameplay
     const fishHitbox = {
       left: fishPosition.x + fishWidth * 0.1,
       right: fishPosition.x + fishWidth * 0.9,
@@ -214,28 +211,22 @@ const Game: React.FC = () => {
       bottom: fishPosition.y + fishHeight * 0.9
     };
     
-    // For debugging
-    console.log(`Fish hitbox: L:${fishHitbox.left.toFixed(0)} R:${fishHitbox.right.toFixed(0)} T:${fishHitbox.top.toFixed(0)} B:${fishHitbox.bottom.toFixed(0)}`);
-    
     let foodEaten = false;
     
     setFoods(prevFoods => {
       const updatedFoods = prevFoods.map(food => {
         if (food.isEaten) return food;
         
-        // Food dimensions
         const foodWidth = 15;
         const foodHeight = 15;
         
-        // Define food hitbox - making it slightly larger for easier collection
         const foodHitbox = {
-          left: food.position.x - 5, // Make hitbox larger by extending it
+          left: food.position.x - 5,
           right: food.position.x + foodWidth + 5,
           top: food.position.y - 5,
           bottom: food.position.y + foodHeight + 5
         };
         
-        // Check for hitbox overlap (AABB collision detection)
         const collision = !(
           fishHitbox.right < foodHitbox.left || 
           fishHitbox.left > foodHitbox.right || 
@@ -243,7 +234,6 @@ const Game: React.FC = () => {
           fishHitbox.top > foodHitbox.bottom
         );
         
-        // Debug food positions and collision status
         console.log(`Food ${food.id} - Pos: ${food.position.x.toFixed(0)},${food.position.y.toFixed(0)}, Collision: ${collision}`);
         
         if (collision) {
@@ -258,13 +248,11 @@ const Game: React.FC = () => {
       return updatedFoods;
     });
     
-    // Apply effects if food was eaten
     if (foodEaten) {
       setIsEating(true);
       setScore(prevScore => prevScore + 10);
       setFoodCollected(prev => prev + 1);
       
-      // Growth logic when collecting certain amount of food
       if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
         setFishSize(prevSize => {
           const newSize = Math.min(prevSize + 0.1, 1.5);
@@ -274,10 +262,9 @@ const Game: React.FC = () => {
         });
       }
       
-      // Reset eating animation but do NOT remove eaten food until game over
       setTimeout(() => {
         setIsEating(false);
-      }, 300); // Make the animation even shorter for better responsiveness
+      }, 300);
     }
     
     return foodEaten;
@@ -317,7 +304,6 @@ const Game: React.FC = () => {
 
       const now = Date.now();
       
-      // Hook spawning logic
       const hookSpawnInterval = Math.max(5000 - difficulty * 100, 3000);
       
       if (now - lastHookTimeRef.current > hookSpawnInterval) {
@@ -343,7 +329,6 @@ const Game: React.FC = () => {
         lastHookTimeRef.current = now;
       }
 
-      // Food spawning logic
       const foodSpawnInterval = Math.max(1500 - difficulty * 50, 800);
       if (now - lastFoodTimeRef.current > foodSpawnInterval) {
         const randomColor = FOOD_COLORS[Math.floor(Math.random() * FOOD_COLORS.length)];
@@ -363,26 +348,19 @@ const Game: React.FC = () => {
       }
 
       if (shouldProcessFrame) {
-        // Update hook positions
         setHooks(prevHooks => prevHooks.map(hook => ({
           ...hook,
           position: { ...hook.position, x: hook.position.x - hook.speed }
         })).filter(hook => hook.position.x > -100));
         
-        // Update food positions, but don't filter out eaten food
         setFoods(prevFoods => prevFoods.map(food => ({
           ...food,
           position: { ...food.position, x: food.position.x - 3 }
         })).filter(food => food.position.x > -20));
         
-        // Check collisions and update score
         const ateFoodThisFrame = checkFoodCollisions();
         
-        // Only increase score if the fish eats food and doesn't hit a hook
         if (!checkHookCollisions()) {
-          // Score is already increased in checkFoodCollisions when food is eaten
-          
-          // Check difficulty increase
           if (score > 0 && score % 500 === 0 && difficulty < 10) {
             setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
           }
@@ -666,3 +644,32 @@ const Game: React.FC = () => {
               direction={fishDirection} 
               size={fishSize}
               isEating={isEating}
+              isGrowing={isGrowing}
+            />
+            
+            {hooks.map(hook => (
+              <Hook 
+                key={hook.id}
+                position={hook.position}
+                challenge={hook.challenge}
+                speed={hook.speed}
+              />
+            ))}
+            
+            {foods.map(food => (
+              <FishFood
+                key={food.id}
+                id={food.id}
+                position={food.position}
+                color={food.color}
+                isEaten={food.isEaten}
+              />
+            ))}
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Game;
