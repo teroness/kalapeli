@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -50,6 +49,7 @@ const Game: React.FC = () => {
   const gameLoopRef = useRef<number | null>(null);
   const lastHookTimeRef = useRef<number>(Date.now());
   const lastFoodTimeRef = useRef<number>(Date.now());
+  const frameCountRef = useRef<number>(0);
   
   const [gameSize, setGameSize] = useState({ width: 0, height: 0 });
   const [isPlaying, setIsPlaying] = useState(false);
@@ -62,6 +62,7 @@ const Game: React.FC = () => {
   const [keys, setKeys] = useState<{ [key: string]: boolean }>({});
   const [difficulty, setDifficulty] = useState(1);
   const [foodCollected, setFoodCollected] = useState(0);
+  const [fishSize, setFishSize] = useState(1);
   
   // Initialize game size
   useEffect(() => {
@@ -111,8 +112,8 @@ const Game: React.FC = () => {
 
   // Check collisions between fish and hooks
   const checkHookCollisions = useCallback(() => {
-    const fishWidth = 60;
-    const fishHeight = 40;
+    const fishWidth = 60 * fishSize;
+    const fishHeight = 40 * fishSize;
     const hookWidth = 60;
     const hookHeight = 80;
     
@@ -135,12 +136,12 @@ const Game: React.FC = () => {
       }
     }
     return false;
-  }, [fishPosition, hooks]);
+  }, [fishPosition, hooks, fishSize]);
 
   // Check collisions between fish and food
   const checkFoodCollisions = useCallback(() => {
-    const fishWidth = 60;
-    const fishHeight = 40;
+    const fishWidth = 60 * fishSize;
+    const fishHeight = 40 * fishSize;
     const foodWidth = 20;
     const foodHeight = 20;
     
@@ -156,9 +157,18 @@ const Game: React.FC = () => {
           fishPosition.y < food.position.y + foodHeight &&
           fishPosition.y + fishHeight > food.position.y
         ) {
-          // Food eaten
+          // Food eaten - increase score and fish size
           setScore(prevScore => prevScore + 10);
           setFoodCollected(prev => prev + 1);
+          
+          // Grow the fish slightly for each 5 food items
+          if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
+            setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
+            toast('Kalasi kasvoi suuremmaksi!', {
+              duration: 2000,
+            });
+          }
+          
           foodEaten = true;
         } else {
           // Food not eaten
@@ -174,39 +184,46 @@ const Game: React.FC = () => {
       
       return remainingFoods;
     });
-  }, [fishPosition]);
+  }, [fishPosition, foodCollected, fishSize]);
 
   // Game loop
   useEffect(() => {
     if (!isPlaying || gameOver) return;
 
     const gameLoop = () => {
-      // Move fish based on key presses
-      setFishPosition(prevPos => {
-        let newPos = { ...prevPos };
-        const moveStep = 5;
-        
-        if (keys.ArrowUp) {
-          newPos.y = Math.max(0, newPos.y - moveStep);
-        }
-        if (keys.ArrowDown) {
-          newPos.y = Math.min(gameSize.height - 40, newPos.y + moveStep);
-        }
-        if (keys.ArrowLeft) {
-          newPos.x = Math.max(0, newPos.x - moveStep);
-          setFishDirection('left');
-        }
-        if (keys.ArrowRight) {
-          newPos.x = Math.min(gameSize.width - 60, newPos.x + moveStep);
-          setFishDirection('right');
-        }
-        
-        return newPos;
-      });
+      frameCountRef.current += 1;
+      
+      // Only process movement on every 2nd frame for smoother performance
+      const shouldProcessFrame = frameCountRef.current % 2 === 0;
+      
+      if (shouldProcessFrame) {
+        // Move fish based on key presses
+        setFishPosition(prevPos => {
+          let newPos = { ...prevPos };
+          const moveStep = 5;
+          
+          if (keys.ArrowUp) {
+            newPos.y = Math.max(0, newPos.y - moveStep);
+          }
+          if (keys.ArrowDown) {
+            newPos.y = Math.min(gameSize.height - 40 * fishSize, newPos.y + moveStep);
+          }
+          if (keys.ArrowLeft) {
+            newPos.x = Math.max(0, newPos.x - moveStep);
+            setFishDirection('left');
+          }
+          if (keys.ArrowRight) {
+            newPos.x = Math.min(gameSize.width - 60 * fishSize, newPos.x + moveStep);
+            setFishDirection('right');
+          }
+          
+          return newPos;
+        });
+      }
 
       // Create new hooks
       const now = Date.now();
-      const hookSpawnInterval = Math.max(2000 - difficulty * 200, 800); // Decrease spawn time as difficulty increases
+      const hookSpawnInterval = Math.max(2000 - difficulty * 100, 1000); // Adjust spawn rate
       
       if (now - lastHookTimeRef.current > hookSpawnInterval) {
         const randomChallenge = HEALTH_CHALLENGES[Math.floor(Math.random() * HEALTH_CHALLENGES.length)];
@@ -218,7 +235,7 @@ const Game: React.FC = () => {
             id: now,
             position: { x: gameSize.width, y: randomY },
             challenge: randomChallenge,
-            speed: 1500 - difficulty * 100 // Hooks move faster with higher difficulty
+            speed: 2 + difficulty * 0.5 // Adjust hook speed
           }
         ]);
         
@@ -226,7 +243,7 @@ const Game: React.FC = () => {
       }
 
       // Create new food
-      const foodSpawnInterval = Math.max(1500 - difficulty * 100, 500);
+      const foodSpawnInterval = Math.max(1500 - difficulty * 50, 800);
       if (now - lastFoodTimeRef.current > foodSpawnInterval) {
         const randomColor = FOOD_COLORS[Math.floor(Math.random() * FOOD_COLORS.length)];
         const randomY = Math.random() * (gameSize.height - 20);
@@ -243,32 +260,34 @@ const Game: React.FC = () => {
         lastFoodTimeRef.current = now;
       }
 
-      // Move hooks
-      setHooks(prevHooks => prevHooks.map(hook => ({
-        ...hook,
-        position: { ...hook.position, x: hook.position.x - 5 }
-      })).filter(hook => hook.position.x > -100)); // Remove hooks that are off-screen
+      if (shouldProcessFrame) {
+        // Move hooks
+        setHooks(prevHooks => prevHooks.map(hook => ({
+          ...hook,
+          position: { ...hook.position, x: hook.position.x - hook.speed }
+        })).filter(hook => hook.position.x > -100)); // Remove hooks that are off-screen
 
-      // Move food
-      setFoods(prevFoods => prevFoods.map(food => ({
-        ...food,
-        position: { ...food.position, x: food.position.x - 3 }
-      })).filter(food => food.position.x > -20)); // Remove food that is off-screen
+        // Move food
+        setFoods(prevFoods => prevFoods.map(food => ({
+          ...food,
+          position: { ...food.position, x: food.position.x - 3 }
+        })).filter(food => food.position.x > -20)); // Remove food that is off-screen
 
-      // Check collisions
-      checkFoodCollisions();
-      if (!checkHookCollisions()) {
-        // Increase score if no collision
-        setScore(prevScore => prevScore + 1);
-        
-        // Increase difficulty every 500 points
-        if (score > 0 && score % 500 === 0) {
-          setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
-          toast(`Vaikeustaso nousi tasolle ${Math.min(difficulty + 1, 10)}!`);
+        // Check collisions
+        checkFoodCollisions();
+        if (!checkHookCollisions()) {
+          // Increase score if no collision
+          setScore(prevScore => prevScore + 1);
+          
+          // Increase difficulty every 500 points
+          if (score > 0 && score % 500 === 0) {
+            setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
+            toast(`Vaikeustaso nousi tasolle ${Math.min(difficulty + 1, 10)}!`);
+          }
         }
-        
-        gameLoopRef.current = requestAnimationFrame(gameLoop);
       }
+      
+      gameLoopRef.current = requestAnimationFrame(gameLoop);
     };
 
     gameLoopRef.current = requestAnimationFrame(gameLoop);
@@ -279,7 +298,7 @@ const Game: React.FC = () => {
         gameLoopRef.current = null;
       }
     };
-  }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty]);
+  }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty, fishSize]);
 
   // Start game 
   const startGame = () => {
@@ -290,10 +309,12 @@ const Game: React.FC = () => {
     setHooks([]);
     setFoods([]);
     setDifficulty(1);
+    setFishSize(1);
     setFishPosition({
       x: gameSize.width / 4,
       y: gameSize.height / 2
     });
+    frameCountRef.current = 0;
     lastHookTimeRef.current = Date.now();
     lastFoodTimeRef.current = Date.now();
     toast("Peli alkoi! Kerää ruokaa ja väistä terveydenhuollon haasteita!");
@@ -333,6 +354,7 @@ const Game: React.FC = () => {
         ref={gameAreaRef}
         className="w-full max-w-4xl h-[500px] water-background relative overflow-hidden rounded-b-lg shadow-md"
       >
+        {/* Game Instructions and Start Screen */}
         {!isPlaying && !gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
             <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Piranha-väistelypeli</h2>
@@ -361,6 +383,7 @@ const Game: React.FC = () => {
           </div>
         )}
         
+        {/* Game Over Screen */}
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
             <h2 className="text-3xl font-bold mb-4 text-gameColors-pink">Peli päättyi!</h2>
@@ -377,7 +400,13 @@ const Game: React.FC = () => {
         )}
         
         {/* The fish */}
-        {(isPlaying || gameOver) && <Fish position={fishPosition} direction={fishDirection} />}
+        {(isPlaying || gameOver) && (
+          <Fish 
+            position={fishPosition} 
+            direction={fishDirection} 
+            size={fishSize}
+          />
+        )}
         
         {/* The hooks */}
         {(isPlaying || gameOver) && hooks.map(hook => (
@@ -439,7 +468,7 @@ const Game: React.FC = () => {
       {/* Instructions */}
       <div className="mt-4 text-sm text-center text-gray-600 max-w-2xl">
         <p>Käytä nuolinäppäimiä liikuttaaksesi kalaa. Kerää ruokaa ja väistä koukkuja, joissa on terveydenhuollon haasteita.</p>
-        <p className="mt-1">Peli vaikeutuu pisteiden kertyessä. Onnea matkaan!</p>
+        <p className="mt-1">Kala kasvaa, kun keräät ruokaa! Peli vaikeutuu pisteiden kertyessä. Onnea matkaan!</p>
       </div>
     </div>
   );

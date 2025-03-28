@@ -4,16 +4,17 @@ import React from 'react';
 interface FishProps {
   position: { x: number; y: number };
   direction: 'left' | 'right';
+  size?: number;
 }
 
-const Fish: React.FC<FishProps> = ({ position, direction }) => {
+const Fish: React.FC<FishProps> = ({ position, direction, size = 1 }) => {
   // Create a teardrop-shaped fish with pink and purple colors from the image
   return (
     <div className="absolute transform transition-transform duration-100" 
          style={{ 
            left: `${position.x}px`, 
            top: `${position.y}px`,
-           transform: `scaleX(${direction === 'right' ? 1 : -1})`,
+           transform: `scaleX(${direction === 'right' ? 1 : -1}) scale(${size})`,
          }}>
       <svg width="60" height="40" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
         {/* Fish teardrop body - pink */}
