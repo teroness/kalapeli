@@ -18,8 +18,8 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false, i
         top: `${position.y}px`,
         pointerEvents: isEaten ? 'none' : 'auto',
         transitionDuration: '300ms',
-        width: '25px',  // Increased from 15px to 25px
-        height: '25px', // Increased from 15px to 25px
+        width: '25px',
+        height: '25px',
         zIndex: 5
       }}
     >
