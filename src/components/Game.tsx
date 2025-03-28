@@ -70,6 +70,16 @@ const FOOD_COLORS = [
   "#FF9800", // Orange
 ];
 
+// Water plants configuration
+const WATER_PLANTS = [
+  { x: 50, y: 400, type: 'seaweed', height: 120, color: '#33C3F0' },
+  { x: 150, y: 450, type: 'coral', height: 80, color: '#F97316' },
+  { x: 300, y: 420, type: 'seaweed', height: 100, color: '#0EA5E9' },
+  { x: 500, y: 380, type: 'coral', height: 70, color: '#7A2E8E' },
+  { x: 700, y: 430, type: 'seaweed', height: 110, color: '#1EAEDB' },
+  { x: 900, y: 400, type: 'coral', height: 90, color: '#FF5A79' },
+];
+
 interface HookObject {
   id: number;
   position: { x: number; y: number };
@@ -147,17 +157,17 @@ const Game: React.FC = () => {
   }, []);
 
   const checkHookCollisions = useCallback(() => {
-    const fishWidth = 60 * fishSize;
-    const fishHeight = 40 * fishSize;
-    const hookWidth = 60;
-    const hookHeight = 80;
+    const fishWidth = 60 * fishSize * 0.7;
+    const fishHeight = 40 * fishSize * 0.7;
+    const hookWidth = 40 * 0.7;
+    const hookHeight = 60 * 0.7;
     
     for (const hook of hooks) {
       if (
-        fishPosition.x < hook.position.x + hookWidth &&
-        fishPosition.x + fishWidth > hook.position.x &&
-        fishPosition.y < hook.position.y + hookHeight &&
-        fishPosition.y + fishHeight > hook.position.y
+        fishPosition.x + 10 < hook.position.x + hookWidth &&
+        fishPosition.x + fishWidth - 10 > hook.position.x &&
+        fishPosition.y + 5 < hook.position.y + hookHeight &&
+        fishPosition.y + fishHeight - 5 > hook.position.y
       ) {
         setIsPlaying(false);
         setGameOver(true);
@@ -172,10 +182,10 @@ const Game: React.FC = () => {
   }, [fishPosition, hooks, fishSize]);
 
   const checkFoodCollisions = useCallback(() => {
-    const fishWidth = 60 * fishSize;
-    const fishHeight = 40 * fishSize;
-    const foodWidth = 20;
-    const foodHeight = 20;
+    const fishWidth = 60 * fishSize * 0.6;
+    const fishHeight = 40 * fishSize * 0.6;
+    const foodWidth = 20 * 0.8;
+    const foodHeight = 20 * 0.8;
     
     setFoods(prevFoods => {
       const remainingFoods = [];
@@ -183,10 +193,10 @@ const Game: React.FC = () => {
       
       for (const food of prevFoods) {
         if (
-          fishPosition.x < food.position.x + foodWidth &&
-          fishPosition.x + fishWidth > food.position.x &&
-          fishPosition.y < food.position.y + foodHeight &&
-          fishPosition.y + fishHeight > food.position.y
+          fishPosition.x + 15 < food.position.x + foodWidth &&
+          fishPosition.x + fishWidth - 10 > food.position.x &&
+          fishPosition.y + 10 < food.position.y + foodHeight &&
+          fishPosition.y + fishHeight - 10 > food.position.y
         ) {
           setScore(prevScore => prevScore + 10);
           setFoodCollected(prev => prev + 1);
@@ -331,6 +341,70 @@ const Game: React.FC = () => {
     frameCountRef.current = 0;
     lastHookTimeRef.current = Date.now();
     lastFoodTimeRef.current = Date.now();
+  };
+
+  const renderWaterPlants = () => {
+    const plants = [];
+    
+    for (const plant of WATER_PLANTS) {
+      const adjustedX = (plant.x / 1000) * gameSize.width;
+      
+      if (plant.type === 'seaweed') {
+        plants.push(
+          <div 
+            key={`plant-${plant.x}-${plant.y}`}
+            className="absolute bottom-0 animate-swim"
+            style={{ 
+              left: `${adjustedX}px`,
+              height: `${plant.height}px`,
+              width: '30px',
+              zIndex: 1
+            }}
+          >
+            <svg viewBox="0 0 30 120" width="30" height={plant.height} xmlns="http://www.w3.org/2000/svg">
+              <path 
+                d="M15 0 C20 20, 5 40, 15 60 C25 80, 10 100, 15 120" 
+                stroke={plant.color} 
+                strokeWidth="3" 
+                fill="none" 
+              />
+              <path 
+                d="M15 0 C10 20, 25 40, 15 60 C5 80, 20 100, 15 120" 
+                stroke={plant.color} 
+                strokeWidth="3" 
+                fill="none" 
+                strokeDasharray="3,3"
+              />
+            </svg>
+          </div>
+        );
+      } else if (plant.type === 'coral') {
+        plants.push(
+          <div 
+            key={`plant-${plant.x}-${plant.y}`}
+            className="absolute bottom-0"
+            style={{ 
+              left: `${adjustedX}px`,
+              height: `${plant.height}px`,
+              width: '40px',
+              zIndex: 1
+            }}
+          >
+            <svg viewBox="0 0 40 80" width="40" height={plant.height} xmlns="http://www.w3.org/2000/svg">
+              <path 
+                d="M20 0 C30 10, 40 20, 35 40 C25 60, 15 50, 20 80 M20 0 C10 10, 0 20, 5 40 C15 60, 25 50, 20 80" 
+                stroke={plant.color} 
+                strokeWidth="4" 
+                fill={plant.color} 
+                fillOpacity="0.3" 
+              />
+            </svg>
+          </div>
+        );
+      }
+    }
+    
+    return plants;
   };
 
   return (
