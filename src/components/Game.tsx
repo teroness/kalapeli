@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import Fish from '@/components/Fish';
 import Hook from '@/components/Hook';
+import FishFood from '@/components/FishFood';
 
 // Health challenges in Finnish
 const HEALTH_CHALLENGES = [
@@ -18,6 +20,18 @@ const HEALTH_CHALLENGES = [
   "Leikkaukset"
 ];
 
+// Fish food colors
+const FOOD_COLORS = [
+  "#FF5A79", // Pink
+  "#7A2E8E", // Purple
+  "#051C44", // Navy
+  "#FF9800", // Orange
+  "#8B5CF6", // Vivid purple
+  "#D946EF", // Magenta
+  "#F97316", // Bright orange
+  "#0EA5E9", // Ocean blue
+];
+
 interface HookObject {
   id: number;
   position: { x: number; y: number };
@@ -25,10 +39,17 @@ interface HookObject {
   speed: number;
 }
 
+interface FoodObject {
+  id: number;
+  position: { x: number; y: number };
+  color: string;
+}
+
 const Game: React.FC = () => {
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const gameLoopRef = useRef<number | null>(null);
   const lastHookTimeRef = useRef<number>(Date.now());
+  const lastFoodTimeRef = useRef<number>(Date.now());
   
   const [gameSize, setGameSize] = useState({ width: 0, height: 0 });
   const [isPlaying, setIsPlaying] = useState(false);
@@ -37,8 +58,10 @@ const Game: React.FC = () => {
   const [fishPosition, setFishPosition] = useState({ x: 100, y: 200 });
   const [fishDirection, setFishDirection] = useState<'left' | 'right'>('right');
   const [hooks, setHooks] = useState<HookObject[]>([]);
+  const [foods, setFoods] = useState<FoodObject[]>([]);
   const [keys, setKeys] = useState<{ [key: string]: boolean }>({});
   const [difficulty, setDifficulty] = useState(1);
+  const [foodCollected, setFoodCollected] = useState(0);
   
   // Initialize game size
   useEffect(() => {
@@ -87,7 +110,7 @@ const Game: React.FC = () => {
   }, []);
 
   // Check collisions between fish and hooks
-  const checkCollisions = useCallback(() => {
+  const checkHookCollisions = useCallback(() => {
     const fishWidth = 60;
     const fishHeight = 40;
     const hookWidth = 60;
@@ -113,6 +136,45 @@ const Game: React.FC = () => {
     }
     return false;
   }, [fishPosition, hooks]);
+
+  // Check collisions between fish and food
+  const checkFoodCollisions = useCallback(() => {
+    const fishWidth = 60;
+    const fishHeight = 40;
+    const foodWidth = 20;
+    const foodHeight = 20;
+    
+    setFoods(prevFoods => {
+      const remainingFoods = [];
+      let foodEaten = false;
+      
+      for (const food of prevFoods) {
+        // Simple rectangular collision detection
+        if (
+          fishPosition.x < food.position.x + foodWidth &&
+          fishPosition.x + fishWidth > food.position.x &&
+          fishPosition.y < food.position.y + foodHeight &&
+          fishPosition.y + fishHeight > food.position.y
+        ) {
+          // Food eaten
+          setScore(prevScore => prevScore + 10);
+          setFoodCollected(prev => prev + 1);
+          foodEaten = true;
+        } else {
+          // Food not eaten
+          remainingFoods.push(food);
+        }
+      }
+      
+      if (foodEaten) {
+        toast('Ruokaa kerätty! +10 pistettä', {
+          duration: 1000,
+        });
+      }
+      
+      return remainingFoods;
+    });
+  }, [fishPosition]);
 
   // Game loop
   useEffect(() => {
@@ -163,14 +225,39 @@ const Game: React.FC = () => {
         lastHookTimeRef.current = now;
       }
 
+      // Create new food
+      const foodSpawnInterval = Math.max(1500 - difficulty * 100, 500);
+      if (now - lastFoodTimeRef.current > foodSpawnInterval) {
+        const randomColor = FOOD_COLORS[Math.floor(Math.random() * FOOD_COLORS.length)];
+        const randomY = Math.random() * (gameSize.height - 20);
+        
+        setFoods(prevFoods => [
+          ...prevFoods,
+          {
+            id: now + 1, // ensure unique ID
+            position: { x: gameSize.width, y: randomY },
+            color: randomColor
+          }
+        ]);
+        
+        lastFoodTimeRef.current = now;
+      }
+
       // Move hooks
       setHooks(prevHooks => prevHooks.map(hook => ({
         ...hook,
         position: { ...hook.position, x: hook.position.x - 5 }
       })).filter(hook => hook.position.x > -100)); // Remove hooks that are off-screen
 
+      // Move food
+      setFoods(prevFoods => prevFoods.map(food => ({
+        ...food,
+        position: { ...food.position, x: food.position.x - 3 }
+      })).filter(food => food.position.x > -20)); // Remove food that is off-screen
+
       // Check collisions
-      if (!checkCollisions()) {
+      checkFoodCollisions();
+      if (!checkHookCollisions()) {
         // Increase score if no collision
         setScore(prevScore => prevScore + 1);
         
@@ -192,21 +279,24 @@ const Game: React.FC = () => {
         gameLoopRef.current = null;
       }
     };
-  }, [isPlaying, gameOver, keys, gameSize, checkCollisions, score, difficulty]);
+  }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty]);
 
   // Start game 
   const startGame = () => {
     setIsPlaying(true);
     setGameOver(false);
     setScore(0);
+    setFoodCollected(0);
     setHooks([]);
+    setFoods([]);
     setDifficulty(1);
     setFishPosition({
       x: gameSize.width / 4,
       y: gameSize.height / 2
     });
     lastHookTimeRef.current = Date.now();
-    toast("Peli alkoi! Väistä terveydenhuollon haasteita!");
+    lastFoodTimeRef.current = Date.now();
+    toast("Peli alkoi! Kerää ruokaa ja väistä terveydenhuollon haasteita!");
   };
 
   // Render game
@@ -218,9 +308,15 @@ const Game: React.FC = () => {
           <span className="font-bold text-gameColors-navy text-xl">Pisteet:</span>
           <span className="text-xl text-gameColors-pink">{score}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="font-medium text-gameColors-navy">Taso:</span>
-          <span className="text-gameColors-purple font-bold">{difficulty}</span>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-gameColors-navy">Taso:</span>
+            <span className="text-gameColors-purple font-bold">{difficulty}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-gameColors-navy">Ruokaa kerätty:</span>
+            <span className="text-gameColors-orange font-bold">{foodCollected}</span>
+          </div>
         </div>
         <Button 
           onClick={startGame} 
@@ -241,7 +337,7 @@ const Game: React.FC = () => {
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
             <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Piranha-väistelypeli</h2>
             <p className="text-center mb-4 max-w-md">
-              Ohjaa piraijaa vedessä ja väistä koukkuja, joissa on terveydenhuollon haasteita!
+              Ohjaa piraijaa vedessä, kerää ruokaa ja väistä koukkuja, joissa on terveydenhuollon haasteita!
             </p>
             <div className="bg-white text-black p-4 rounded-lg mb-6">
               <h3 className="font-bold mb-2 text-gameColors-navy">Ohjeet:</h3>
@@ -268,7 +364,8 @@ const Game: React.FC = () => {
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
             <h2 className="text-3xl font-bold mb-4 text-gameColors-pink">Peli päättyi!</h2>
-            <p className="text-2xl mb-6">Pisteesi: <span className="text-gameColors-pink font-bold">{score}</span></p>
+            <p className="text-2xl mb-2">Pisteesi: <span className="text-gameColors-pink font-bold">{score}</span></p>
+            <p className="text-xl mb-6">Ruokaa kerätty: <span className="text-gameColors-orange font-bold">{foodCollected}</span></p>
             <Button 
               onClick={startGame} 
               variant="default" 
@@ -289,6 +386,16 @@ const Game: React.FC = () => {
             position={hook.position}
             challenge={hook.challenge}
             speed={hook.speed}
+          />
+        ))}
+        
+        {/* The food */}
+        {(isPlaying || gameOver) && foods.map(food => (
+          <FishFood 
+            key={food.id}
+            id={food.id}
+            position={food.position}
+            color={food.color}
           />
         ))}
         
@@ -331,7 +438,7 @@ const Game: React.FC = () => {
       
       {/* Instructions */}
       <div className="mt-4 text-sm text-center text-gray-600 max-w-2xl">
-        <p>Käytä nuolinäppäimiä liikuttaaksesi kalaa. Väistä koukkuja, joissa on terveydenhuollon haasteita.</p>
+        <p>Käytä nuolinäppäimiä liikuttaaksesi kalaa. Kerää ruokaa ja väistä koukkuja, joissa on terveydenhuollon haasteita.</p>
         <p className="mt-1">Peli vaikeutuu pisteiden kertyessä. Onnea matkaan!</p>
       </div>
     </div>
