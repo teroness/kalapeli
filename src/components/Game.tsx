@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -204,6 +205,7 @@ const Game: React.FC = () => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
+    // Make fishing easier by using a larger hitbox for the fish
     const fishHitbox = {
       left: fishPosition.x,
       right: fishPosition.x + fishWidth,
@@ -222,21 +224,22 @@ const Game: React.FC = () => {
         const foodWidth = 25;
         const foodHeight = 25;
         
+        // Create a MUCH larger hitbox for the food to make collection easier
         const foodHitbox = {
-          left: food.position.x - 20,
-          right: food.position.x + foodWidth + 20,
-          top: food.position.y - 20,
-          bottom: food.position.y + foodHeight + 20
+          left: food.position.x - 30,
+          right: food.position.x + foodWidth + 30,
+          top: food.position.y - 30,
+          bottom: food.position.y + foodHeight + 30
         };
         
         console.log(`Food ${food.id} - Pos: ${food.position.x.toFixed(0)},${food.position.y.toFixed(0)}`);
         
-        const collision = !(
-          fishHitbox.right < foodHitbox.left || 
-          fishHitbox.left > foodHitbox.right || 
-          fishHitbox.bottom < foodHitbox.top || 
-          fishHitbox.top > foodHitbox.bottom
-        );
+        // Using direct collision check - an item is either colliding or not
+        const collision = 
+          fishHitbox.right >= foodHitbox.left && 
+          fishHitbox.left <= foodHitbox.right && 
+          fishHitbox.bottom >= foodHitbox.top && 
+          fishHitbox.top <= foodHitbox.bottom;
         
         if (collision) {
           console.log('FOOD EATEN!', food.id);
