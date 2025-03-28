@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { GameSize, PlantObject } from '@/types/gameTypes';
 import { WATER_PLANTS } from '@/constants/gameConstants';
 
@@ -8,6 +8,24 @@ interface WaterPlantsProps {
 }
 
 const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
+  const [plants, setPlants] = useState<PlantObject[]>(WATER_PLANTS);
+  
+  // Move plants from right to left
+  useEffect(() => {
+    if (!gameSize.width) return;
+    
+    const movePlants = setInterval(() => {
+      setPlants(prevPlants => 
+        prevPlants.map(plant => ({
+          ...plant,
+          x: plant.x <= -50 ? gameSize.width + 20 : plant.x - 0.5,
+        }))
+      );
+    }, 50);
+    
+    return () => clearInterval(movePlants);
+  }, [gameSize.width]);
+
   const renderPlant = (plant: PlantObject, index: number) => {
     const adjustedX = (plant.x / 1000) * gameSize.width;
     
@@ -167,7 +185,7 @@ const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
 
   return (
     <>
-      {WATER_PLANTS.map((plant, index) => renderPlant(plant, index))}
+      {plants.map((plant, index) => renderPlant(plant, index))}
     </>
   );
 };
