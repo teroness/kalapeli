@@ -28,7 +28,7 @@ const Fish: React.FC<FishProps> = ({
         zIndex: 10
       }}>
       <svg width="60" height="40" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
-        {/* Piranha body - using the pink color from the theme and image */}
+        {/* Piranha body - using the pink color from the theme */}
         <path d="M10 20C10 15 15 5 35 5C50 5 58 12 58 20C58 28 50 35 35 35C15 35 10 25 10 20Z" fill="#FF5A79" />
         
         {/* Piranha tail - using teal instead of navy */}
@@ -49,7 +49,7 @@ const Fish: React.FC<FishProps> = ({
         {/* Additional side fin - middle (violet) */}
         <path d="M22 20C22 20 16 18 16 16C20 18 22 20 22 20Z" fill="#7A2E8E" />
         
-        {/* Improved piranha scales - more defined pattern with teal accents instead of navy */}
+        {/* Improved piranha scales - more defined pattern with teal accents */}
         <path d="M18 12C20 11 22 10 24 10" stroke="#20B2AA" strokeWidth="1" strokeLinecap="round" fill="none" />
         <path d="M18 28C20 29 22 30 24 30" stroke="#20B2AA" strokeWidth="1" strokeLinecap="round" fill="none" />
         <path d="M24 10C27 9 30 8 33 8" stroke="#20B2AA" strokeWidth="1" strokeLinecap="round" fill="none" />
@@ -82,8 +82,10 @@ const Fish: React.FC<FishProps> = ({
         
         {/* Mouth shape - with animation for eating */}
         {isEating ? (
-          <path d="M50 20C50 20 57 23 58 26C52 25 46 22 44 22C44 22 47 18 50 20Z" fill="#FF3C62" strokeWidth="1" stroke="#FF3C62" />
+          // Wide-open mouth when eating
+          <path d="M50 20C50 20 58 15 58 20C58 25 58 20 50 20C47 22 44 22 44 22C44 22 47 18 50 20Z" fill="#FF3C62" strokeWidth="1" stroke="#FF3C62" />
         ) : (
+          // Normal mouth when not eating
           <path d="M50 20C50 20 47 23 44 23C44 23 47 17 50 20Z" fill="#FF3C62" strokeWidth="1" stroke="#FF3C62" />
         )}
       </svg>

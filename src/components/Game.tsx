@@ -203,10 +203,10 @@ const Game: React.FC = () => {
     const fishHeight = 40 * fishSize;
     
     const fishMouthPosition = fishDirection === 'right' 
-      ? { x: fishPosition.x + fishWidth * 0.7, y: fishPosition.y + fishHeight * 0.4 }
-      : { x: fishPosition.x + fishWidth * 0.2, y: fishPosition.y + fishHeight * 0.4 };
+      ? { x: fishPosition.x + fishWidth * 0.8, y: fishPosition.y + fishHeight * 0.5 }
+      : { x: fishPosition.x + fishWidth * 0.2, y: fishPosition.y + fishHeight * 0.5 };
     
-    const mouthHitboxSize = 15 * fishSize;
+    const mouthHitboxSize = 20 * fishSize;
     
     let foodEaten = false;
     
@@ -250,7 +250,7 @@ const Game: React.FC = () => {
     }
     
     return foodEaten;
-  }, [fishPosition, foodCollected, fishSize, fishDirection]);
+  }, [fishPosition, fishDirection, foodCollected, fishSize]);
 
   useEffect(() => {
     if (!isPlaying || gameOver) return;
