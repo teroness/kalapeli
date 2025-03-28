@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import Fish from '@/components/Fish';
+import Pirhana from '@/components/Fish';
 import Hook from '@/components/Hook';
 import FishFood from '@/components/FishFood';
 import WaterPlants from '@/components/WaterPlants';
@@ -30,14 +29,12 @@ const Game: React.FC = () => {
   
   const keys = useKeyboardControls();
   
-  // Update fish size when food is collected
   useEffect(() => {
     if (foodCollected > 0 && foodCollected % 5 === 0 && fishSize < 1.5) {
       setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
     }
   }, [foodCollected, fishSize]);
   
-  // Update game size on mount and window resize
   useEffect(() => {
     const updateGameSize = () => {
       if (gameAreaRef.current) {
@@ -57,7 +54,6 @@ const Game: React.FC = () => {
     return () => window.removeEventListener('resize', updateGameSize);
   }, []);
   
-  // Initialize game loop
   const gameLoopState = useGameLoop({
     isPlaying,
     gameOver,
@@ -133,7 +129,7 @@ const Game: React.FC = () => {
         
         {(isPlaying || gameOver) && (
           <>
-            <Fish 
+            <Pirhana 
               position={fishPosition} 
               direction={fishDirection} 
               size={fishSize}
@@ -150,7 +146,7 @@ const Game: React.FC = () => {
               />
             ))}
             
-            {foods.map(food => (
+            {foods.map(food => !food.isEaten && (
               <FishFood
                 key={food.id}
                 id={food.id}

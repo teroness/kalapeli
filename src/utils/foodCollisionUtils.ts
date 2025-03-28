@@ -47,7 +47,7 @@ export const checkFoodCollisions = (
     // Start eating animation immediately
     setIsEating(true);
     
-    // IMPORTANT FIX: Immediately remove the eaten food from the array completely
+    // CRITICAL FIX: Immediately remove the eaten food from the array completely
     const updatedFoods = foods.filter(food => food.id !== foodEatenId);
     setFoods(updatedFoods);
     
