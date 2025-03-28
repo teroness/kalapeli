@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -206,15 +205,16 @@ const Game: React.FC = () => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
-    // Define the fish hitbox - using the entire fish body for collision
+    // Define the fish hitbox with a slight adjustment to make collision more forgiving
+    // Make the hitbox slightly smaller than the actual fish for better gameplay
     const fishHitbox = {
-      left: fishPosition.x,
-      right: fishPosition.x + fishWidth,
-      top: fishPosition.y,
-      bottom: fishPosition.y + fishHeight
+      left: fishPosition.x + fishWidth * 0.1,
+      right: fishPosition.x + fishWidth * 0.9,
+      top: fishPosition.y + fishHeight * 0.1,
+      bottom: fishPosition.y + fishHeight * 0.9
     };
     
-    // For debugging - log the fish hitbox
+    // For debugging
     console.log(`Fish hitbox: L:${fishHitbox.left.toFixed(0)} R:${fishHitbox.right.toFixed(0)} T:${fishHitbox.top.toFixed(0)} B:${fishHitbox.bottom.toFixed(0)}`);
     
     let foodEaten = false;
@@ -227,12 +227,12 @@ const Game: React.FC = () => {
         const foodWidth = 15;
         const foodHeight = 15;
         
-        // Define food hitbox
+        // Define food hitbox - making it slightly larger for easier collection
         const foodHitbox = {
-          left: food.position.x,
-          right: food.position.x + foodWidth,
-          top: food.position.y,
-          bottom: food.position.y + foodHeight
+          left: food.position.x - 5, // Make hitbox larger by extending it
+          right: food.position.x + foodWidth + 5,
+          top: food.position.y - 5,
+          bottom: food.position.y + foodHeight + 5
         };
         
         // Check for hitbox overlap (AABB collision detection)
@@ -277,7 +277,7 @@ const Game: React.FC = () => {
       // Reset eating animation but do NOT remove eaten food until game over
       setTimeout(() => {
         setIsEating(false);
-      }, 500);
+      }, 300); // Make the animation even shorter for better responsiveness
     }
     
     return foodEaten;
@@ -379,7 +379,6 @@ const Game: React.FC = () => {
         const ateFoodThisFrame = checkFoodCollisions();
         
         // Only increase score if the fish eats food and doesn't hit a hook
-        // Points ONLY come from eating food now
         if (!checkHookCollisions()) {
           // Score is already increased in checkFoodCollisions when food is eaten
           
@@ -667,81 +666,3 @@ const Game: React.FC = () => {
               direction={fishDirection} 
               size={fishSize}
               isEating={isEating}
-              isGrowing={isGrowing}
-            />
-            
-            {isGrowing && (
-              <div className="absolute text-yellow-300 font-bold text-2xl animate-bounce"
-                   style={{ 
-                     left: `${fishPosition.x + 30}px`, 
-                     top: `${fishPosition.y - 20}px`,
-                   }}>
-                +KASVU!
-              </div>
-            )}
-          </>
-        )}
-        
-        {(isPlaying || gameOver) && hooks.map(hook => (
-          <Hook 
-            key={hook.id}
-            position={hook.position}
-            challenge={hook.challenge}
-            speed={hook.speed}
-          />
-        ))}
-        
-        {(isPlaying || gameOver) && foods.map(food => (
-          <FishFood 
-            key={food.id}
-            id={food.id}
-            position={food.position}
-            color={food.color}
-          />
-        ))}
-        
-        <div className="md:hidden absolute bottom-0 left-0 right-0 flex justify-between p-4 z-40">
-          <div className="grid grid-cols-3 gap-2 w-full max-w-sm mx-auto">
-            <button 
-              onTouchStart={() => setKeys(prev => ({ ...prev, ArrowLeft: true }))}
-              onTouchEnd={() => setKeys(prev => ({ ...prev, ArrowLeft: false }))}
-              className="bg-white bg-opacity-50 text-gameColors-navy p-3 rounded-full"
-            >
-              ◄
-            </button>
-            <div className="flex flex-col gap-2">
-              <button 
-                onTouchStart={() => setKeys(prev => ({ ...prev, ArrowUp: true }))}
-                onTouchEnd={() => setKeys(prev => ({ ...prev, ArrowUp: false }))}
-                className="bg-white bg-opacity-50 text-gameColors-navy p-3 rounded-full"
-              >
-                ▲
-              </button>
-              <button 
-                onTouchStart={() => setKeys(prev => ({ ...prev, ArrowDown: true }))}
-                onTouchEnd={() => setKeys(prev => ({ ...prev, ArrowDown: false }))}
-                className="bg-white bg-opacity-50 text-gameColors-navy p-3 rounded-full"
-              >
-                ▼
-              </button>
-            </div>
-            <button 
-              onTouchStart={() => setKeys(prev => ({ ...prev, ArrowRight: true }))}
-              onTouchEnd={() => setKeys(prev => ({ ...prev, ArrowRight: false }))}
-              className="bg-white bg-opacity-50 text-gameColors-navy p-3 rounded-full"
-            >
-              ►
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div className="mt-4 text-sm text-center text-gray-600 max-w-2xl">
-        <p>Käytä nuolinäppäimiä liikuttaaksesi kalaa. Kerää ruokaa ja väistä koukkuja, joissa on terveydenhuollon haasteita.</p>
-        <p className="mt-1">Kala kasvaa, kun keräät ruokaa! Peli vaikeutuu pisteiden kertyessä.</p>
-      </div>
-    </div>
-  );
-};
-
-export default Game;
