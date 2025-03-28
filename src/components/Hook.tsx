@@ -20,22 +20,22 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
         zIndex: 5
       }}
     >
-      {/* Fishing line - now extends from top to hook position */}
+      {/* Fishing line - extends from top to hook position */}
       <div className="w-1 bg-gray-400 h-full"></div>
       
       {/* Hook with challenge price tag - positioned at the bottom of the line */}
-      <div className="relative">
+      <div className="relative -mt-1"> {/* Moved up slightly to connect with the line */}
         {/* Hook shape - positioned to connect with fishing line */}
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-4 -mt-2">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-0"> {/* Centered the hook with the line */}
           <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
         {/* Price tag with challenge text */}
-        <div className="absolute top-10 -left-5">
+        <div className="absolute top-12 left-0"> {/* Adjusted to align with the hook */}
           {/* The actual price tag */}
           <div className="relative flex flex-col items-center">
             {/* String connecting to hook */}
-            <div className="h-6 w-1 bg-red-500 -mt-3"></div>
+            <div className="h-6 w-1 bg-red-500 transform translate-x-4"></div> {/* Adjusted to connect to the hook */}
             
             {/* Price tag body */}
             <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 shadow-md w-32 relative mt-1">
