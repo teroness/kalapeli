@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -201,16 +202,20 @@ const Game: React.FC = () => {
   }, [fishPosition, hooks, fishSize]);
 
   const checkFoodCollisions = useCallback(() => {
+    // Get fish dimensions based on current size
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
-    // Calculate fish mouth position based on direction
-    const fishMouthPosition = fishDirection === 'right' 
-      ? { x: fishPosition.x + fishWidth * 0.85, y: fishPosition.y + fishHeight * 0.5 }
-      : { x: fishPosition.x + fishWidth * 0.15, y: fishPosition.y + fishHeight * 0.5 };
+    // Define the fish hitbox - using the entire fish body for collision
+    const fishHitbox = {
+      left: fishPosition.x,
+      right: fishPosition.x + fishWidth,
+      top: fishPosition.y,
+      bottom: fishPosition.y + fishHeight
+    };
     
-    // Significantly increase hitbox size to make eating easier
-    const mouthHitboxSize = 50 * fishSize;
+    // For debugging - log the fish hitbox
+    console.log(`Fish hitbox: L:${fishHitbox.left.toFixed(0)} R:${fishHitbox.right.toFixed(0)} T:${fishHitbox.top.toFixed(0)} B:${fishHitbox.bottom.toFixed(0)}`);
     
     let foodEaten = false;
     
@@ -218,25 +223,32 @@ const Game: React.FC = () => {
       const updatedFoods = prevFoods.map(food => {
         if (food.isEaten) return food;
         
-        // Calculate food center position
-        const foodCenter = {
-          x: food.position.x + 7.5, // Half of food width (15px)
-          y: food.position.y + 7.5  // Half of food height (15px)
+        // Food dimensions
+        const foodWidth = 15;
+        const foodHeight = 15;
+        
+        // Define food hitbox
+        const foodHitbox = {
+          left: food.position.x,
+          right: food.position.x + foodWidth,
+          top: food.position.y,
+          bottom: food.position.y + foodHeight
         };
         
-        // Calculate distance between mouth and food center
-        const distance = Math.sqrt(
-          Math.pow(fishMouthPosition.x - foodCenter.x, 2) + 
-          Math.pow(fishMouthPosition.y - foodCenter.y, 2)
+        // Check for hitbox overlap (AABB collision detection)
+        const collision = !(
+          fishHitbox.right < foodHitbox.left || 
+          fishHitbox.left > foodHitbox.right || 
+          fishHitbox.bottom < foodHitbox.top || 
+          fishHitbox.top > foodHitbox.bottom
         );
         
-        // For debugging
-        console.log(`Food ${food.id} - Distance: ${distance.toFixed(2)}, Hitbox: ${mouthHitboxSize}, FoodPos: ${foodCenter.x},${foodCenter.y}, Mouth: ${fishMouthPosition.x},${fishMouthPosition.y}`);
+        // Debug food positions and collision status
+        console.log(`Food ${food.id} - Pos: ${food.position.x.toFixed(0)},${food.position.y.toFixed(0)}, Collision: ${collision}`);
         
-        // If distance is less than hitbox size, food is eaten
-        if (distance < mouthHitboxSize) {
+        if (collision) {
           foodEaten = true;
-          console.log('FOOD EATEN!', distance, mouthHitboxSize);
+          console.log('FOOD EATEN!', food.id);
           return { ...food, isEaten: true };
         }
         
@@ -262,15 +274,14 @@ const Game: React.FC = () => {
         });
       }
       
-      // Reset eating animation and remove eaten food after delay
+      // Reset eating animation but do NOT remove eaten food until game over
       setTimeout(() => {
         setIsEating(false);
-        setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
-      }, 500); // Shorter animation time for better responsiveness
+      }, 500);
     }
     
     return foodEaten;
-  }, [fishPosition, fishDirection, foodCollected, fishSize]);
+  }, [fishPosition, fishSize, foodCollected]);
 
   useEffect(() => {
     if (!isPlaying || gameOver) return;
@@ -358,11 +369,11 @@ const Game: React.FC = () => {
           position: { ...hook.position, x: hook.position.x - hook.speed }
         })).filter(hook => hook.position.x > -100));
         
-        // Update food positions
+        // Update food positions, but don't filter out eaten food
         setFoods(prevFoods => prevFoods.map(food => ({
           ...food,
           position: { ...food.position, x: food.position.x - 3 }
-        })).filter(food => food.position.x > -20 && !food.isEaten));
+        })).filter(food => food.position.x > -20));
         
         // Check collisions and update score
         const ateFoodThisFrame = checkFoodCollisions();
