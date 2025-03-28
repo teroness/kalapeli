@@ -21,7 +21,8 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false, i
         top: `${position.y}px`,
         width: '30px',
         height: '30px',
-        zIndex: 5
+        zIndex: 5,
+        pointerEvents: 'none' // Prevent any mouse interaction with food
       }}
     >
       <svg width="30" height="30" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">

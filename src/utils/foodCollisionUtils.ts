@@ -18,10 +18,11 @@ export const checkFoodCollisions = (
   
   let foodEatenId = -1;
   
+  // Only check for collision on foods that haven't been eaten yet
+  const validFoods = foods.filter(food => !food.isEaten);
+  
   // Check for food collisions
-  foods.forEach(food => {
-    if (food.isEaten) return;
-    
+  for (const food of validFoods) {
     const fishCenterX = fishPosition.x + (fishWidth / 2);
     const fishCenterY = fishPosition.y + (fishHeight / 2);
     const foodCenterX = food.position.x + 15;
@@ -33,13 +34,16 @@ export const checkFoodCollisions = (
     );
     
     // Simplified collision threshold
-    const collisionThreshold = 25;
+    const collisionThreshold = 25 * fishSize; // Scale with fish size
     
     if (distance < collisionThreshold) {
       console.log('FOOD EATEN!', food.id);
       foodEatenId = food.id;
+      
+      // Only detect one collision per frame
+      break;
     }
-  });
+  }
   
   if (foodEatenId !== -1) {
     // Start eating animation immediately
