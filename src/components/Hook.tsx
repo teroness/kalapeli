@@ -14,26 +14,27 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
       className="challenge-hook flex flex-col items-center justify-center absolute" 
       style={{ 
         left: `${position.x}px`, 
-        top: `${position.y}px`,
+        top: `0px`, // Start from the top of the screen
+        height: `${position.y}px`, // Extend to the hook position
         transition: `left ${speed}ms linear`,
         zIndex: 5
       }}
     >
-      {/* Fishing line */}
-      <div className="h-16 w-1 bg-gray-400"></div>
+      {/* Fishing line - now extends from top to hook position */}
+      <div className="w-1 bg-gray-400 h-full"></div>
       
-      {/* Hook with challenge price tag */}
+      {/* Hook with challenge price tag - positioned at the bottom of the line */}
       <div className="relative">
-        {/* Hook shape - repositioned to connect with fishing line but still align with price tag */}
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-4">
+        {/* Hook shape - positioned to connect with fishing line */}
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-4 -mt-2">
           <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
-        {/* Price tag with challenge text - positioned to align with hook */}
+        {/* Price tag with challenge text */}
         <div className="absolute top-10 -left-5">
           {/* The actual price tag */}
           <div className="relative flex flex-col items-center">
-            {/* String connecting to hook - still attached to lowest point */}
+            {/* String connecting to hook */}
             <div className="h-6 w-1 bg-red-500 -mt-3"></div>
             
             {/* Price tag body */}
