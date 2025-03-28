@@ -49,9 +49,9 @@ export const checkFoodCollisions = (
     // Start eating animation immediately
     setIsEating(true);
     
-    // Immediately remove the eaten food from the foods array
-    const updatedFoods = foods.filter(food => food.id !== foodEatenId);
-    setFoods(updatedFoods);
+    // Immediately remove the eaten food from the array completely
+    // Don't just mark it as eaten
+    setFoods(foods.filter(food => food.id !== foodEatenId));
     
     // Increase score and food collected count
     setScore(score + 10);
