@@ -69,20 +69,30 @@ const FOOD_COLORS = [
 ];
 
 const WATER_PLANTS = [
-  { x: 50, y: 400, type: 'seaweed', height: 120, color: '#33C3F0' },
-  { x: 150, y: 450, type: 'coral', height: 80, color: '#F97316' },
-  { x: 250, y: 420, type: 'seaweed', height: 90, color: '#0EA5E9' },
-  { x: 300, y: 420, type: 'seaweed', height: 100, color: '#0EA5E9' },
-  { x: 380, y: 390, type: 'coral', height: 70, color: '#7A2E8E' },
-  { x: 450, y: 380, type: 'waterlily', width: 60, color: '#FF5A79' },
-  { x: 500, y: 380, type: 'coral', height: 70, color: '#7A2E8E' },
-  { x: 580, y: 410, type: 'waterlily', width: 50, color: '#7A2E8E' },
-  { x: 650, y: 440, type: 'seaweed', height: 85, color: '#0D2B5B' },
-  { x: 700, y: 430, type: 'seaweed', height: 110, color: '#1EAEDB' },
-  { x: 780, y: 390, type: 'waterlily', width: 70, color: '#FF9800' },
-  { x: 820, y: 410, type: 'seaweed', height: 95, color: '#33C3F0' },
-  { x: 900, y: 400, type: 'coral', height: 90, color: '#FF5A79' },
-  { x: 980, y: 430, type: 'seaweed', height: 115, color: '#0EA5E9' }
+  { x: 20, y: 400, type: 'seaweed', height: 140, color: '#2E8B57' },
+  { x: 80, y: 390, type: 'seaweed', height: 120, color: '#3CB371' },
+  { x: 120, y: 410, type: 'coral', height: 90, color: '#32CD32' },
+  { x: 160, y: 430, type: 'seaweed', height: 150, color: '#6B8E23' },
+  { x: 200, y: 400, type: 'waterlily', width: 70, color: '#9ACD32' },
+  { x: 250, y: 420, type: 'seaweed', height: 130, color: '#556B2F' },
+  { x: 290, y: 390, type: 'seaweed', height: 110, color: '#8FBC8F' },
+  { x: 330, y: 410, type: 'coral', height: 80, color: '#20B2AA' },
+  { x: 370, y: 430, type: 'waterlily', width: 60, color: '#66CDAA' },
+  { x: 410, y: 400, type: 'seaweed', height: 160, color: '#228B22' },
+  { x: 450, y: 420, type: 'seaweed', height: 140, color: '#008000' },
+  { x: 490, y: 390, type: 'coral', height: 90, color: '#006400' },
+  { x: 530, y: 410, type: 'waterlily', width: 65, color: '#7CFC00' },
+  { x: 570, y: 430, type: 'seaweed', height: 130, color: '#00FF00' },
+  { x: 610, y: 400, type: 'seaweed', height: 120, color: '#32CD32' },
+  { x: 650, y: 420, type: 'coral', height: 85, color: '#00FA9A' },
+  { x: 690, y: 390, type: 'waterlily', width: 70, color: '#00FF7F' },
+  { x: 730, y: 410, type: 'seaweed', height: 150, color: '#90EE90' },
+  { x: 770, y: 430, type: 'seaweed', height: 130, color: '#98FB98' },
+  { x: 810, y: 400, type: 'coral', height: 95, color: '#8FBC8F' },
+  { x: 850, y: 420, type: 'waterlily', width: 75, color: '#3CB371' },
+  { x: 890, y: 390, type: 'seaweed', height: 140, color: '#2E8B57' },
+  { x: 930, y: 410, type: 'seaweed', height: 120, color: '#009688' },
+  { x: 970, y: 430, type: 'coral', height: 90, color: '#4CAF50' }
 ];
 
 interface HookObject {
@@ -401,6 +411,30 @@ const Game: React.FC = () => {
                 fill="none" 
                 strokeDasharray="3,3"
               />
+              <path 
+                d="M15 30 C18 35, 22 37, 25 35" 
+                stroke={plant.color} 
+                strokeWidth="2" 
+                fill="none" 
+              />
+              <path 
+                d="M15 50 C12 55, 8 57, 5 55" 
+                stroke={plant.color} 
+                strokeWidth="2" 
+                fill="none" 
+              />
+              <path 
+                d="M15 70 C18 75, 22 77, 25 75" 
+                stroke={plant.color} 
+                strokeWidth="2" 
+                fill="none" 
+              />
+              <path 
+                d="M15 90 C12 95, 8 97, 5 95" 
+                stroke={plant.color} 
+                strokeWidth="2" 
+                fill="none" 
+              />
             </svg>
           </div>
         );
@@ -424,6 +458,21 @@ const Game: React.FC = () => {
                 fill={plant.color} 
                 fillOpacity="0.3" 
               />
+              <path 
+                d="M20 15 C25 20, 30 22, 28 30" 
+                stroke={plant.color} 
+                strokeWidth="3" 
+                fill="none" 
+              />
+              <path 
+                d="M20 15 C15 20, 10 22, 12 30" 
+                stroke={plant.color} 
+                strokeWidth="3" 
+                fill="none" 
+              />
+              <circle cx="20" cy="55" r="3" fill={plant.color} fillOpacity="0.6" />
+              <circle cx="25" cy="45" r="2" fill={plant.color} fillOpacity="0.6" />
+              <circle cx="15" cy="45" r="2" fill={plant.color} fillOpacity="0.6" />
             </svg>
           </div>
         );
@@ -455,6 +504,19 @@ const Game: React.FC = () => {
                 strokeWidth="2" 
                 fill="none" 
               />
+              <path 
+                d="M20 15 C23 13, 26 12, 30 12 C34 12, 37 13, 40 15" 
+                stroke={plant.color} 
+                strokeWidth="1.5" 
+                fill="none" 
+              />
+              <path 
+                d="M20 15 C23 17, 26 18, 30 18 C34 18, 37 17, 40 15" 
+                stroke={plant.color} 
+                strokeWidth="1.5" 
+                fill="none" 
+              />
+              <circle cx="30" cy="15" r="4" fill={plant.color} fillOpacity="0.8" />
             </svg>
           </div>
         );
