@@ -44,10 +44,10 @@ export const checkFoodCollisions = (
     // Start eating animation immediately
     setIsEating(true);
     
-    // FIXED: Directly filter out the eaten food from the array
+    // Important: Create a new array without the eaten food
     const updatedFoods = foods.filter(food => food.id !== foodEatenId);
     
-    // Important: Update the foods state immediately
+    // Update the foods state with the new array
     setFoods(updatedFoods);
     
     // Increase score and food collected count

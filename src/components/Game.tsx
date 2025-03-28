@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Pirhana from '@/components/Fish';
@@ -147,7 +146,6 @@ const Game: React.FC = () => {
               />
             ))}
             
-            {/* Only render foods that exist in the array - foods are now completely removed when eaten */}
             {foods.map(food => (
               <FishFood
                 key={food.id}
