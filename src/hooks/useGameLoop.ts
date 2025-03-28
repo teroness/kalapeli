@@ -90,14 +90,13 @@ const useGameLoop = ({
       // Start eating animation immediately
       setIsEating(true);
       
-      // Mark the food as eaten and immediately remove it from the foods array
-      setFoods(prevFoods => 
-        prevFoods.filter(food => food.id !== foodEatenId)
-      );
+      // Remove the eaten food from the foods array immediately
+      const updatedFoods = foods.filter(food => food.id !== foodEatenId);
+      setFoods(updatedFoods);
       
       // Increase score and food collected count
-      setScore(prevScore => prevScore + 10);
-      setFoodCollected(prev => prev + 1);
+      setScore(score + 10);
+      setFoodCollected(foodCollected + 1);
       
       // Stop eating animation after a short time
       setTimeout(() => {
@@ -114,7 +113,7 @@ const useGameLoop = ({
     }
     
     return false;
-  }, [fishPosition, fishSize, foods, foodCollected, setFoods, setScore, setFoodCollected, setIsEating, setIsGrowing]);
+  }, [fishPosition, fishSize, foods, foodCollected, setFoods, setScore, setFoodCollected, setIsEating, setIsGrowing, score]);
 
   useEffect(() => {
     if (!isPlaying || gameOver) return;
@@ -125,27 +124,25 @@ const useGameLoop = ({
       const shouldProcessFrame = frameCountRef.current % 2 === 0;
       
       if (shouldProcessFrame) {
-        setFishPosition(prevPos => {
-          let newPos = { ...prevPos };
-          const moveStep = 5;
-          
-          if (keys.ArrowUp) {
-            newPos.y = Math.max(0, newPos.y - moveStep);
-          }
-          if (keys.ArrowDown) {
-            newPos.y = Math.min(gameSize.height - 40 * fishSize, newPos.y + moveStep);
-          }
-          if (keys.ArrowLeft) {
-            newPos.x = Math.max(0, newPos.x - moveStep);
-            setFishDirection('left');
-          }
-          if (keys.ArrowRight) {
-            newPos.x = Math.min(gameSize.width - 60 * fishSize, newPos.x + moveStep);
-            setFishDirection('right');
-          }
-          
-          return newPos;
-        });
+        const newPos = { ...fishPosition };
+        const moveStep = 5;
+        
+        if (keys.ArrowUp) {
+          newPos.y = Math.max(0, newPos.y - moveStep);
+        }
+        if (keys.ArrowDown) {
+          newPos.y = Math.min(gameSize.height - 40 * fishSize, newPos.y + moveStep);
+        }
+        if (keys.ArrowLeft) {
+          newPos.x = Math.max(0, newPos.x - moveStep);
+          setFishDirection('left');
+        }
+        if (keys.ArrowRight) {
+          newPos.x = Math.min(gameSize.width - 60 * fishSize, newPos.x + moveStep);
+          setFishDirection('right');
+        }
+        
+        setFishPosition(newPos);
       }
 
       const now = Date.now();
@@ -154,14 +151,16 @@ const useGameLoop = ({
       
       if (now - lastHookTimeRef.current > hookSpawnInterval) {
         const newHook = generateHook(gameSize, difficulty, hooks);
-        setHooks(prevHooks => [...prevHooks, newHook]);
+        const updatedHooks = [...hooks, newHook];
+        setHooks(updatedHooks);
         lastHookTimeRef.current = now;
       }
 
       const foodSpawnInterval = Math.max(1500 - difficulty * 50, 800);
       if (now - lastFoodTimeRef.current > foodSpawnInterval) {
         const newFood = generateFood(gameSize);
-        setFoods(prevFoods => [...prevFoods, newFood]);
+        const updatedFoods = [...foods, newFood];
+        setFoods(updatedFoods);
         lastFoodTimeRef.current = now;
       }
 
@@ -185,7 +184,8 @@ const useGameLoop = ({
         }
         
         if (score > 0 && score % 500 === 0 && difficulty < 10) {
-          setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
+          const newDifficulty = Math.min(difficulty + 1, 10);
+          setDifficulty(newDifficulty);
         }
       }
       
