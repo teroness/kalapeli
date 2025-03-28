@@ -24,8 +24,8 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
       
       {/* Hook with challenge price tag */}
       <div className="relative">
-        {/* Improved hook shape */}
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Improved hook shape - repositioned to the right and down */}
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-4 translate-y-2">
           <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
