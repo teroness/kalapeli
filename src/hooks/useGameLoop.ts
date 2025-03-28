@@ -87,19 +87,21 @@ const useGameLoop = ({
     });
     
     if (foodEatenId !== -1) {
+      // Start eating animation immediately
+      setIsEating(true);
+      
       // Mark the food as eaten - immediately remove it from the foods array
-      setFoods((prevFoods: FoodObject[]) => 
+      setFoods((prevFoods) => 
         prevFoods.map(food => 
           food.id === foodEatenId ? { ...food, isEaten: true } : food
         )
       );
       
       // Increase score and food collected count
-      setScore((prevScore: number) => prevScore + 10);
-      setFoodCollected((prev: number) => prev + 1);
+      setScore((prevScore) => prevScore + 10);
+      setFoodCollected((prev) => prev + 1);
       
-      // Trigger eating animation
-      setIsEating(true);
+      // Stop eating animation after a short time
       setTimeout(() => {
         setIsEating(false);
       }, 200);
@@ -125,7 +127,7 @@ const useGameLoop = ({
       const shouldProcessFrame = frameCountRef.current % 2 === 0;
       
       if (shouldProcessFrame) {
-        setFishPosition((prevPos: Position) => {
+        setFishPosition((prevPos) => {
           let newPos = { ...prevPos };
           const moveStep = 5;
           
@@ -154,14 +156,14 @@ const useGameLoop = ({
       
       if (now - lastHookTimeRef.current > hookSpawnInterval) {
         const newHook = generateHook(gameSize, difficulty, hooks);
-        setHooks((prevHooks: HookObject[]) => [...prevHooks, newHook]);
+        setHooks((prevHooks) => [...prevHooks, newHook]);
         lastHookTimeRef.current = now;
       }
 
       const foodSpawnInterval = Math.max(1500 - difficulty * 50, 800);
       if (now - lastFoodTimeRef.current > foodSpawnInterval) {
         const newFood = generateFood(gameSize);
-        setFoods((prevFoods: FoodObject[]) => [...prevFoods, newFood]);
+        setFoods((prevFoods) => [...prevFoods, newFood]);
         lastFoodTimeRef.current = now;
       }
 
@@ -188,7 +190,7 @@ const useGameLoop = ({
         }
         
         if (score > 0 && score % 500 === 0 && difficulty < 10) {
-          setDifficulty((prevDifficulty: number) => Math.min(prevDifficulty + 1, 10));
+          setDifficulty((prevDifficulty) => Math.min(prevDifficulty + 1, 10));
         }
       }
       
