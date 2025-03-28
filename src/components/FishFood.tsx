@@ -9,7 +9,8 @@ interface FishFoodProps {
 }
 
 const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false, id }) => {
-  if (isEaten) return null; // Don't render at all if eaten
+  // Don't render the food at all if it's been eaten
+  if (isEaten) return null;
   
   return (
     <div 
