@@ -8,9 +8,10 @@ interface FishFoodProps {
   isEaten?: boolean;
 }
 
-const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false }) => {
+const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false, id }) => {
   return (
     <div 
+      data-id={id}
       className={`absolute transition-all ${isEaten ? 'animate-fade-out scale-0' : 'animate-pulse'}`} 
       style={{ 
         left: `${position.x}px`, 
@@ -18,24 +19,28 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false })
         opacity: isEaten ? 0 : 1,
         pointerEvents: isEaten ? 'none' : 'auto',
         transitionDuration: '300ms',
-        width: '20px',
-        height: '20px',
+        width: '24px',  // Slightly larger
+        height: '24px', // Slightly larger
         zIndex: 5
       }}
     >
-      <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        {/* Improved food shape - more detailed and with shine */}
+      <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        {/* Improved food shape - more visible and with animation */}
         <path 
-          d="M3 10C3 6 5 3 10 3C15 3 17 7 17 10C17 13 15 17 10 17C5 17 3 14 3 10Z" 
-          fill={color} 
+          d="M3 12C3 7 6 3 12 3C18 3 21 8 21 12C21 16 18 21 12 21C6 21 3 17 3 12Z" 
+          fill={color}
+          className="animate-pulse" 
         />
         
-        {/* Small highlight to make it look shiny */}
+        {/* Enhanced highlight to make it more visible */}
         <path 
-          d="M6 9C6 10 7 12 9 11C10 10 10 7 9 7C8 7 6 8 6 9Z" 
+          d="M7 10C7 12 9 14 11 13C13 12 13 8 11 8C9 8 7 9 7 10Z" 
           fill="white" 
-          fillOpacity="0.4" 
+          fillOpacity="0.5" 
         />
+        
+        {/* Additional detail for more visibility */}
+        <circle cx="12" cy="12" r="3" fill={color} fillOpacity="0.7" />
       </svg>
     </div>
   );

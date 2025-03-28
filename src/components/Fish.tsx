@@ -82,8 +82,13 @@ const Fish: React.FC<FishProps> = ({
         
         {/* Mouth shape - with animation for eating */}
         {isEating ? (
-          // Wide-open mouth when eating - improved with better animation
-          <path d="M50 20C50 20 58 15 58 20C58 25 50 25 47 22C45 20 44 22 44 22C44 22 47 18 50 20Z" fill="#FF3C62" strokeWidth="1" stroke="#FF3C62" />
+          // Very wide-open mouth when eating - dramatically enhanced
+          <path 
+            d="M50 20C50 20 60 12 60 20C60 28 50 28 46 23C44 20 42 23 42 23C42 23 46 16 50 20Z" 
+            fill="#FF3C62" 
+            strokeWidth="1.5" 
+            stroke="#FF3C62"
+          />
         ) : (
           // Normal mouth when not eating
           <path d="M50 20C50 20 47 23 44 23C44 23 47 17 50 20Z" fill="#FF3C62" strokeWidth="1" stroke="#FF3C62" />

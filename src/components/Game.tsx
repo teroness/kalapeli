@@ -203,10 +203,10 @@ const Game: React.FC = () => {
     const fishHeight = 40 * fishSize;
     
     const fishMouthPosition = fishDirection === 'right' 
-      ? { x: fishPosition.x + fishWidth * 0.8, y: fishPosition.y + fishHeight * 0.5 }
-      : { x: fishPosition.x + fishWidth * 0.2, y: fishPosition.y + fishHeight * 0.5 };
+      ? { x: fishPosition.x + fishWidth * 0.83, y: fishPosition.y + fishHeight * 0.5 }
+      : { x: fishPosition.x + fishWidth * 0.17, y: fishPosition.y + fishHeight * 0.5 };
     
-    const mouthHitboxSize = 25 * fishSize;
+    const mouthHitboxSize = 30 * fishSize;
     
     let foodEaten = false;
     
@@ -219,9 +219,11 @@ const Game: React.FC = () => {
           Math.pow(fishMouthPosition.y - food.position.y, 2)
         );
         
+        console.log(`Food ${food.id} - Distance: ${distance.toFixed(2)}, Hitbox: ${mouthHitboxSize}, Position: ${food.position.x},${food.position.y}, Mouth: ${fishMouthPosition.x},${fishMouthPosition.y}`);
+        
         if (distance < mouthHitboxSize) {
           foodEaten = true;
-          console.log('Food eaten!', distance, mouthHitboxSize);
+          console.log('FOOD EATEN!', distance, mouthHitboxSize);
           return { ...food, isEaten: true };
         }
         
@@ -249,7 +251,7 @@ const Game: React.FC = () => {
       setTimeout(() => {
         setIsEating(false);
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
-      }, 500);
+      }, 700);
     }
     
     return foodEaten;
@@ -365,7 +367,7 @@ const Game: React.FC = () => {
         gameLoopRef.current = null;
       }
     };
-  }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty, fishSize, hooks.length]);
+  }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty, fishSize, hooks.length, fishDirection, fishPosition]);
 
   const startGame = () => {
     setIsPlaying(true);
