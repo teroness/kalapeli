@@ -47,7 +47,7 @@ export const checkFoodCollisions = (
     // Important: Create a new array without the eaten food
     const updatedFoods = foods.filter(food => food.id !== foodEatenId);
     
-    // Update the foods state with the new array
+    // Update the foods state with the new array - immediately remove the eaten food
     setFoods(updatedFoods);
     
     // Increase score and food collected count
@@ -60,7 +60,7 @@ export const checkFoodCollisions = (
       setIsEating(false);
     }, 300); // Slightly longer animation time
     
-    // Check if fish should grow - grow on every piece of food
+    // Trigger growth animation
     setIsGrowing(true);
     setTimeout(() => setIsGrowing(false), 600);
     

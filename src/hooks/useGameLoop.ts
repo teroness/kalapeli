@@ -112,10 +112,11 @@ const useGameLoop = ({
       );
 
       if (shouldProcessFrame) {
-        // First check for food collisions
-        handleFoodCollisions();
+        // First check for food collisions and process them
+        const foodCollisionOccurred = handleFoodCollisions();
         
         // Then clean up and update positions
+        // Only include foods that weren't just eaten
         const { updatedHooks, updatedFoods } = updateGameObjects(hooks, foods);
         
         setHooks(updatedHooks);
