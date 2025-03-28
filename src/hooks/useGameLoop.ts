@@ -61,51 +61,58 @@ const useGameLoop = ({
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
-    let foodEaten = false;
+    let foodEatenId = -1;
     
-    setFoods(prevFoods => {
-      return prevFoods.map(food => {
-        if (food.isEaten) return food;
-        
-        const fishCenterX = fishPosition.x + (fishWidth / 2);
-        const fishCenterY = fishPosition.y + (fishHeight / 2);
-        const foodCenterX = food.position.x + 15;
-        const foodCenterY = food.position.y + 15;
-        
-        const distance = Math.sqrt(
-          Math.pow(fishCenterX - foodCenterX, 2) + 
-          Math.pow(fishCenterY - foodCenterY, 2)
-        );
-        
-        const collisionThreshold = (fishWidth / 2 + 15);
-        
-        if (distance < collisionThreshold) {
-          console.log('FOOD EATEN!', food.id);
-          foodEaten = true;
-          return { ...food, isEaten: true };
-        }
-        
-        return food;
-      });
+    // Check for food collisions
+    foods.forEach(food => {
+      if (food.isEaten) return;
+      
+      const fishCenterX = fishPosition.x + (fishWidth / 2);
+      const fishCenterY = fishPosition.y + (fishHeight / 2);
+      const foodCenterX = food.position.x + 15;
+      const foodCenterY = food.position.y + 15;
+      
+      const distance = Math.sqrt(
+        Math.pow(fishCenterX - foodCenterX, 2) + 
+        Math.pow(fishCenterY - foodCenterY, 2)
+      );
+      
+      // Simplified collision threshold
+      const collisionThreshold = 25;
+      
+      if (distance < collisionThreshold) {
+        console.log('FOOD EATEN!', food.id);
+        foodEatenId = food.id;
+      }
     });
     
-    if (foodEaten) {
-      setIsEating(true);
+    if (foodEatenId !== -1) {
+      // Mark the food as eaten
+      setFoods(prevFoods => prevFoods.map(food => 
+        food.id === foodEatenId ? { ...food, isEaten: true } : food
+      ));
+      
+      // Increase score and food collected count
       setScore(prevScore => prevScore + 10);
       setFoodCollected(prev => prev + 1);
       
+      // Trigger eating animation
+      setIsEating(true);
+      setTimeout(() => {
+        setIsEating(false);
+      }, 200);
+      
+      // Check if fish should grow
       if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
         setIsGrowing(true);
         setTimeout(() => setIsGrowing(false), 800);
       }
       
-      setTimeout(() => {
-        setIsEating(false);
-      }, 200);
+      return true;
     }
     
-    return foodEaten;
-  }, [fishPosition, fishSize, foodCollected, setFoodCollected, setFoods, setIsEating, setIsGrowing, setScore]);
+    return false;
+  }, [fishPosition, fishSize, foods, foodCollected, setFoods, setScore, setFoodCollected, setIsEating, setIsGrowing]);
 
   useEffect(() => {
     if (!isPlaying || gameOver) return;
@@ -157,14 +164,19 @@ const useGameLoop = ({
       }
 
       if (shouldProcessFrame) {
-        const { updatedHooks, updatedFoods } = updateGameObjects(hooks, foods);
-        setHooks(updatedHooks);
-        setFoods(updatedFoods);
+        // First check for food collisions
+        checkFoodCollisions();
         
-        const ateFoodThisFrame = checkFoodCollisions();
+        // Then clean up and update positions
+        const { updatedHooks, updatedFoods } = updateGameObjects(hooks, foods);
+        
+        setHooks(updatedHooks);
+        
+        // Remove eaten food from the game
+        const validFoods = updatedFoods.filter(food => !food.isEaten);
+        setFoods(validFoods);
         
         if (checkHookCollisions(fishPosition, hooks, fishSize)) {
-          setIsPlaying(false);
           setGameOver(true);
           if (gameLoopRef.current) {
             cancelAnimationFrame(gameLoopRef.current);
@@ -198,10 +210,8 @@ const useGameLoop = ({
     score, 
     difficulty, 
     fishSize, 
-    hooks.length, 
-    fishDirection,
+    hooks, 
     foods,
-    hooks,
     fishPosition,
     setDifficulty,
     setFishDirection,
