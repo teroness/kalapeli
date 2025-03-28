@@ -28,16 +28,16 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
           <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
-        {/* Price tag with challenge text - now properly hanging from hook */}
-        <div className="absolute top-10 left-0 transform -translate-x-1/2">
+        {/* Price tag with challenge text - now hanging more from the right */}
+        <div className="absolute top-10 left-4 transform">
           <div className="relative">
-            {/* String connecting to hook - positioned at top center */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-5 w-1 h-5 bg-red-500"></div>
+            {/* String connecting to hook - positioned at top right */}
+            <div className="absolute top-0 right-1/4 transform -translate-y-5 w-1 h-5 bg-red-500"></div>
             
             {/* Price tag body */}
             <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 shadow-md w-32 relative">
               {/* The hole where hook goes through */}
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full border border-red-300"></div>
+              <div className="absolute -top-1 right-1/4 transform w-2 h-2 rounded-full border border-red-300"></div>
               
               <p className="text-xs font-extrabold text-red-600 whitespace-nowrap text-center">
                 {challenge}

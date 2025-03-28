@@ -33,6 +33,18 @@ const Fish: React.FC<FishProps> = ({
         {/* Piranha tail - using bright orange instead of navy */}
         <path d="M10 20C10 20 0 10 0 5C0 10 0 30 0 35C5 30 10 20 10 20Z" fill="#FF9800" />
         
+        {/* Top fin */}
+        <path d="M25 5C25 5 30 0 35 2C30 6 25 5 25 5Z" fill="#FF9800" />
+        
+        {/* Bottom fin */}
+        <path d="M25 35C25 35 30 40 35 38C30 34 25 35 25 35Z" fill="#FF9800" />
+        
+        {/* Side fin - top */}
+        <path d="M20 12C20 12 15 8 18 5C22 8 20 12 20 12Z" fill="#FF9800" />
+        
+        {/* Side fin - bottom */}
+        <path d="M20 28C20 28 15 32 18 35C22 32 20 28 20 28Z" fill="#FF9800" />
+        
         {/* Improved piranha scales - more defined pattern with cleaner look */}
         <path d="M18 12C20 11 22 10 24 10" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
         <path d="M18 28C20 29 22 30 24 30" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
@@ -56,23 +68,19 @@ const Fish: React.FC<FishProps> = ({
         <path d="M27 26C30 26 33 26 36 25" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
         <path d="M36 25C39 25 42 24 45 23" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
         
-        {/* Piranha eye - using the light color from the theme */}
+        {/* Piranha eye - updated to remove purple and use black instead */}
         <circle cx="45" cy="17" r="6" fill="white" />
-        <circle cx="45" cy="17" r="3" fill="#051C44" />
+        <circle cx="45" cy="17" r="3" fill="black" />
         <circle cx="43" cy="15" r="1.5" fill="white" />
-        
-        {/* Piranha fins - using the purple color from the theme */}
-        <path d="M30 5C30 5 35 0 40 3C35 5 30 5 30 5Z" fill="#7A2E8E" />
-        <path d="M30 35C30 35 35 40 40 37C35 35 30 35 30 35Z" fill="#7A2E8E" />
         
         {/* Cheek blush using orange from theme */}
         <circle cx="35" cy="20" r="4" fill="#FF9800" opacity="0.7" />
         
         {/* Improved mouth shape - with animation for eating */}
         {isEating ? (
-          <path d="M50 20C50 20 57 23 58 26C52 25 46 22 44 22C44 22 47 18 50 20Z" fill="#7A2E8E" strokeWidth="1" stroke="#7A2E8E" />
+          <path d="M50 20C50 20 57 23 58 26C52 25 46 22 44 22C44 22 47 18 50 20Z" fill="#FF3C62" strokeWidth="1" stroke="#FF3C62" />
         ) : (
-          <path d="M50 20C50 20 47 23 44 23C44 23 47 17 50 20Z" fill="#7A2E8E" strokeWidth="1" stroke="#7A2E8E" />
+          <path d="M50 20C50 20 47 23 44 23C44 23 47 17 50 20Z" fill="#FF3C62" strokeWidth="1" stroke="#FF3C62" />
         )}
       </svg>
     </div>
