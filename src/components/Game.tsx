@@ -5,7 +5,7 @@ import Fish from '@/components/Fish';
 import Hook from '@/components/Hook';
 import FishFood from '@/components/FishFood';
 
-// Expanded health challenges in Finnish
+// Expanded and more outrageous health challenges in Finnish
 const HEALTH_CHALLENGES = [
   "YT-neuvottelut",
   "Burnout",
@@ -34,7 +34,33 @@ const HEALTH_CHALLENGES = [
   "Kiusaaminen",
   "Muutosvastarinta",
   "Perehdytyspula",
-  "Epäselvä johtaminen"
+  "Epäselvä johtaminen",
+  "Kahvi loppu!",
+  "Esihenkilö soitti",
+  "Potilasvalitus",
+  "Kämmenet kuivuu",
+  "Tietojärjestelmä kaatui",
+  "Potilastietojärjestelmän päivitys",
+  "Somekohu",
+  "Pahanhajuinen potilas",
+  "Rikkinäinen tulostin",
+  "Yövuoro peräkkäin",
+  "Jatkuva puhelin",
+  "Pakkosiirto",
+  "Hissi rikki 8. kerrokseen",
+  "Täysikuu",
+  "Ruokatauolle ei ehtinyt",
+  "Vessassa ei paperia",
+  "Excel-taulukkomuutos",
+  "Suojavarusteet loppu",
+  "Sijainen ei tullut",
+  "Omainen raivoaa",
+  "Tuplakirjaaminen",
+  "Lomalta soitto töihin",
+  "Potilas karkasi",
+  "Ohjelma vaihtuu",
+  "Puolet töistä sairaana",
+  "Tietokone jumissa"
 ];
 
 // Fish food colors
@@ -82,7 +108,6 @@ const Game: React.FC = () => {
   const [foodCollected, setFoodCollected] = useState(0);
   const [fishSize, setFishSize] = useState(1);
   
-  // Initialize game size
   useEffect(() => {
     const updateGameSize = () => {
       if (gameAreaRef.current) {
@@ -102,7 +127,6 @@ const Game: React.FC = () => {
     return () => window.removeEventListener('resize', updateGameSize);
   }, []);
 
-  // Handle keyboard input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
@@ -127,7 +151,6 @@ const Game: React.FC = () => {
     };
   }, []);
 
-  // Check collisions between fish and hooks
   const checkHookCollisions = useCallback(() => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
@@ -154,7 +177,6 @@ const Game: React.FC = () => {
     return false;
   }, [fishPosition, hooks, fishSize]);
 
-  // Check collisions between fish and food
   const checkFoodCollisions = useCallback(() => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
@@ -198,7 +220,6 @@ const Game: React.FC = () => {
     });
   }, [fishPosition, foodCollected, fishSize]);
 
-  // Game loop
   useEffect(() => {
     if (!isPlaying || gameOver) return;
 
@@ -232,7 +253,8 @@ const Game: React.FC = () => {
       }
 
       const now = Date.now();
-      const hookSpawnInterval = Math.max(3000 - difficulty * 100, 1500);
+      
+      const hookSpawnInterval = Math.max(5000 - difficulty * 100, 3000);
       
       if (now - lastHookTimeRef.current > hookSpawnInterval) {
         let usedChallenges = hooks.map(h => h.challenge);
@@ -308,7 +330,6 @@ const Game: React.FC = () => {
     };
   }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty, fishSize, hooks.length]);
 
-  // Start game 
   const startGame = () => {
     setIsPlaying(true);
     setGameOver(false);
@@ -328,7 +349,6 @@ const Game: React.FC = () => {
     toast("Peli alkoi! Kerää ruokaa ja väistä terveydenhuollon haasteita!");
   };
 
-  // Render game
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <div className="w-full max-w-4xl bg-white rounded-t-lg shadow-md p-4 flex justify-between items-center">

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Worm } from 'lucide-react';
+import { Angry } from 'lucide-react';
 
 interface HookProps {
   position: { x: number, y: number };
@@ -21,20 +21,38 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
       {/* Fishing line */}
       <div className="h-16 w-1 bg-gray-300 opacity-70"></div>
       
-      {/* Hook with worm visual */}
+      {/* Hook with mean worm visual */}
       <div className="relative flex flex-col items-center">
         <svg width="40" height="30" viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Hook */}
           <path d="M20 0V15C20 22 10 27 0 22" stroke="#888888" strokeWidth="3" fill="none" />
         </svg>
         
-        {/* Worm with challenge - made bolder */}
+        {/* Mean worm with challenge text directly on it */}
         <div className="relative -mt-2 flex flex-col items-center">
-          <Worm className="text-pink-400 h-12 w-12 stroke-[2.5]" /> {/* Increased size and stroke width */}
-          
-          {/* Challenge text - wider to fit all text */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-2 py-1 rounded text-xs text-center font-bold text-gameColors-navy max-w-[80px] min-w-[60px] shadow-sm whitespace-nowrap overflow-visible">
-            {challenge}
+          <div className="relative">
+            {/* Mean worm */}
+            <div className="relative">
+              <Angry className="text-pink-500 h-14 w-14 stroke-[3]" />
+              
+              {/* Eyes for mean look */}
+              <div className="absolute top-[15%] left-[30%] w-2 h-2 bg-red-600 rounded-full"></div>
+              <div className="absolute top-[15%] right-[30%] w-2 h-2 bg-red-600 rounded-full"></div>
+              
+              {/* Sharp teeth */}
+              <div className="absolute top-[30%] left-[40%] right-[40%] flex justify-between">
+                <div className="w-1 h-2 bg-white transform rotate-[-15deg]"></div>
+                <div className="w-1 h-2 bg-white"></div>
+                <div className="w-1 h-2 bg-white transform rotate-[15deg]"></div>
+              </div>
+            </div>
+            
+            {/* Challenge text directly on the worm */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
+              <p className="text-xs font-extrabold text-white whitespace-nowrap px-1 py-0.5 text-stroke-sm">
+                {challenge}
+              </p>
+            </div>
           </div>
         </div>
       </div>

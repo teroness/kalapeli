@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,7 +62,6 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom game colors from the image
 				gameColors: {
 					pink: '#FF5A79',
 					darkPink: '#FF3C62',
@@ -110,8 +108,40 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'swim': 'swim 2s ease-in-out infinite',
 				'water-move': 'water-move 20s linear infinite'
-			}
+			},
+			textStrokeWidth: {
+				'sm': '1px',
+				'md': '2px',
+				'lg': '3px',
+			},
+			textStrokeColor: {
+				'black': '#000',
+				'red': '#FF0000',
+				'purple': '#7A2E8E',
+			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }) {
+			const newUtilities = {
+				'.text-stroke-sm': {
+					'-webkit-text-stroke': '1px #7A2E8E',
+					'text-stroke': '1px #7A2E8E',
+					'paint-order': 'stroke fill',
+				},
+				'.text-stroke-md': {
+					'-webkit-text-stroke': '2px #7A2E8E',
+					'text-stroke': '2px #7A2E8E',
+					'paint-order': 'stroke fill',
+				},
+				'.text-stroke-lg': {
+					'-webkit-text-stroke': '3px #7A2E8E',
+					'text-stroke': '3px #7A2E8E',
+					'paint-order': 'stroke fill',
+				},
+			};
+			addUtilities(newUtilities);
+		},
+	],
 } satisfies Config;

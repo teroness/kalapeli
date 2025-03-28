@@ -22,9 +22,9 @@ const Fish: React.FC<FishProps> = ({ position, direction, size = 1 }) => {
         {/* Piranha tail - slightly rounded */}
         <path d="M10 20C10 20 0 10 0 5C0 10 0 30 0 35C5 30 10 20 10 20Z" fill="#FDE1D3" />
         
-        {/* Piranha teeth - smaller and cuter */}
-        <path d="M40 8C40 8 43 10 45 10C47 10 50 8 50 8" stroke="white" strokeWidth="1" fill="none" />
-        <path d="M40 32C40 32 43 30 45 30C47 30 50 32 50 32" stroke="white" strokeWidth="1" fill="none" />
+        {/* Piranha teeth - sharper but still cute */}
+        <path d="M50 15L53 10L56 15" stroke="white" strokeWidth="2" fill="white" />
+        <path d="M50 25L53 30L56 25" stroke="white" strokeWidth="2" fill="white" />
         
         {/* Piranha eye - bigger and cuter */}
         <circle cx="45" cy="17" r="6" fill="#D3E4FD" />
@@ -38,8 +38,8 @@ const Fish: React.FC<FishProps> = ({ position, direction, size = 1 }) => {
         {/* Cheek blush */}
         <circle cx="35" cy="20" r="4" fill="#FFDEE2" stroke="#FFB6C1" strokeWidth="1.5" />
         
-        {/* Smile */}
-        <path d="M50 22C50 22 47 26 43 25" stroke="#7A2E8E" strokeWidth="1.5" fill="none" />
+        {/* Cute smile */}
+        <path d="M48 22C48 22 45 26 42 25" stroke="#7A2E8E" strokeWidth="1.5" fill="none" />
       </svg>
     </div>
   );
