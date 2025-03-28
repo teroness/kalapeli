@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import Fish from '@/components/Fish';
@@ -207,11 +206,11 @@ const Game: React.FC = () => {
     
     // Calculate fish mouth position based on direction
     const fishMouthPosition = fishDirection === 'right' 
-      ? { x: fishPosition.x + fishWidth * 0.75, y: fishPosition.y + fishHeight * 0.5 }
-      : { x: fishPosition.x + fishWidth * 0.25, y: fishPosition.y + fishHeight * 0.5 };
+      ? { x: fishPosition.x + fishWidth * 0.85, y: fishPosition.y + fishHeight * 0.5 }
+      : { x: fishPosition.x + fishWidth * 0.15, y: fishPosition.y + fishHeight * 0.5 };
     
-    // Adjusted mouth hitbox size - more generous to make eating easier
-    const mouthHitboxSize = 30 * fishSize;
+    // Increased hitbox size to make eating easier
+    const mouthHitboxSize = 40 * fishSize;
     
     let foodEaten = false;
     
@@ -267,7 +266,7 @@ const Game: React.FC = () => {
       setTimeout(() => {
         setIsEating(false);
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
-      }, 1000);
+      }, 800);
     }
     
     return foodEaten;
@@ -368,11 +367,12 @@ const Game: React.FC = () => {
         // Check collisions and update score
         const ateFoodThisFrame = checkFoodCollisions();
         
-        // Only increase score if the fish doesn't hit a hook
-        // And we don't auto-increase score anymore
-        if (!checkHookCollisions() && ateFoodThisFrame) {
-          // Score is already increased in checkFoodCollisions
-          // So we only need to check difficulty increase here
+        // Only increase score if the fish eats food and doesn't hit a hook
+        // Points ONLY come from eating food now
+        if (!checkHookCollisions()) {
+          // Score is already increased in checkFoodCollisions when food is eaten
+          
+          // Check difficulty increase
           if (score > 0 && score % 500 === 0 && difficulty < 10) {
             setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
           }
