@@ -29,23 +29,6 @@ const FishFood: React.FC<FishFoodProps> = ({ position, color }) => {
           fill="white" 
           fillOpacity="0.4" 
         />
-        
-        {/* Small texture details */}
-        <path 
-          d="M7 13C8 14 12 14 13 13" 
-          stroke={color} 
-          strokeWidth="0.5" 
-          strokeOpacity="0.7" 
-          fill="none" 
-        />
-        
-        <path 
-          d="M7 7C8 6 12 6 13 7" 
-          stroke={color} 
-          strokeWidth="0.5" 
-          strokeOpacity="0.7" 
-          fill="none" 
-        />
       </svg>
     </div>
   );

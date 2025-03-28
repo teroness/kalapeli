@@ -123,6 +123,7 @@ const Game: React.FC = () => {
   const [fishSize, setFishSize] = useState(1);
   const [isEating, setIsEating] = useState(false);
   const [showGrowthAnimation, setShowGrowthAnimation] = useState(false);
+  const [isGrowing, setIsGrowing] = useState(false);
   
   useEffect(() => {
     const updateGameSize = () => {
@@ -226,8 +227,8 @@ const Game: React.FC = () => {
       if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
         setFishSize(prevSize => {
           const newSize = Math.min(prevSize + 0.1, 1.5);
-          setShowGrowthAnimation(true);
-          setTimeout(() => setShowGrowthAnimation(false), 1000);
+          setIsGrowing(true);
+          setTimeout(() => setIsGrowing(false), 800);
           return newSize;
         });
       }
@@ -237,6 +238,7 @@ const Game: React.FC = () => {
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
       }, 300);
     }
+    return foodEaten;
   }, [fishPosition, foodCollected, fishSize]);
 
   useEffect(() => {
@@ -366,6 +368,7 @@ const Game: React.FC = () => {
     frameCountRef.current = 0;
     lastHookTimeRef.current = Date.now();
     lastFoodTimeRef.current = Date.now();
+    setIsGrowing(false);
   };
 
   const renderWaterPlants = () => {
@@ -546,9 +549,10 @@ const Game: React.FC = () => {
               direction={fishDirection} 
               size={fishSize}
               isEating={isEating}
+              isGrowing={isGrowing}
             />
             
-            {showGrowthAnimation && (
+            {isGrowing && (
               <div className="absolute text-yellow-300 font-bold text-2xl animate-bounce"
                    style={{ 
                      left: `${fishPosition.x + 30}px`, 
