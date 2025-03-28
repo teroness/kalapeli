@@ -5,7 +5,7 @@ import Fish from '@/components/Fish';
 import Hook from '@/components/Hook';
 import FishFood from '@/components/FishFood';
 
-// Health challenges in Finnish
+// Expanded health challenges in Finnish
 const HEALTH_CHALLENGES = [
   "YT-neuvottelut",
   "Burnout",
@@ -16,7 +16,25 @@ const HEALTH_CHALLENGES = [
   "Työvuorolistat",
   "Sijaisuudet",
   "Resurssipula",
-  "Leikkaukset"
+  "Leikkaukset",
+  "Työtaakka",
+  "Kiire",
+  "Stressi",
+  "Väsymys",
+  "Sisäilma",
+  "Uupumus",
+  "Jaksamishaaste",
+  "Työnkierto",
+  "Palkkakuilu",
+  "Lomapula",
+  "Vuorotyö",
+  "Tehokkuusvaatimus",
+  "Työuupumus",
+  "Henkilöstövaje",
+  "Kiusaaminen",
+  "Muutosvastarinta",
+  "Perehdytyspula",
+  "Epäselvä johtaminen"
 ];
 
 // Fish food colors
@@ -72,7 +90,6 @@ const Game: React.FC = () => {
           width: gameAreaRef.current.clientWidth,
           height: gameAreaRef.current.clientHeight
         });
-        // Reset fish position when game area resizes
         setFishPosition({
           x: gameAreaRef.current.clientWidth / 4,
           y: gameAreaRef.current.clientHeight / 2
@@ -118,7 +135,6 @@ const Game: React.FC = () => {
     const hookHeight = 80;
     
     for (const hook of hooks) {
-      // Simple rectangular collision detection
       if (
         fishPosition.x < hook.position.x + hookWidth &&
         fishPosition.x + fishWidth > hook.position.x &&
@@ -150,18 +166,15 @@ const Game: React.FC = () => {
       let foodEaten = false;
       
       for (const food of prevFoods) {
-        // Simple rectangular collision detection
         if (
           fishPosition.x < food.position.x + foodWidth &&
           fishPosition.x + fishWidth > food.position.x &&
           fishPosition.y < food.position.y + foodHeight &&
           fishPosition.y + fishHeight > food.position.y
         ) {
-          // Food eaten - increase score and fish size
           setScore(prevScore => prevScore + 10);
           setFoodCollected(prev => prev + 1);
           
-          // Grow the fish slightly for each 5 food items
           if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
             setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
             toast('Kalasi kasvoi suuremmaksi!', {
@@ -171,7 +184,6 @@ const Game: React.FC = () => {
           
           foodEaten = true;
         } else {
-          // Food not eaten
           remainingFoods.push(food);
         }
       }
@@ -193,11 +205,9 @@ const Game: React.FC = () => {
     const gameLoop = () => {
       frameCountRef.current += 1;
       
-      // Only process movement on every 2nd frame for smoother performance
       const shouldProcessFrame = frameCountRef.current % 2 === 0;
       
       if (shouldProcessFrame) {
-        // Move fish based on key presses
         setFishPosition(prevPos => {
           let newPos = { ...prevPos };
           const moveStep = 5;
@@ -221,12 +231,17 @@ const Game: React.FC = () => {
         });
       }
 
-      // Create new hooks
       const now = Date.now();
-      const hookSpawnInterval = Math.max(2000 - difficulty * 100, 1000); // Adjust spawn rate
+      const hookSpawnInterval = Math.max(3000 - difficulty * 100, 1500);
       
       if (now - lastHookTimeRef.current > hookSpawnInterval) {
-        const randomChallenge = HEALTH_CHALLENGES[Math.floor(Math.random() * HEALTH_CHALLENGES.length)];
+        let usedChallenges = hooks.map(h => h.challenge);
+        let availableChallenges = HEALTH_CHALLENGES.filter(c => !usedChallenges.includes(c));
+        
+        const randomChallenge = availableChallenges.length > 0 
+          ? availableChallenges[Math.floor(Math.random() * availableChallenges.length)]
+          : HEALTH_CHALLENGES[Math.floor(Math.random() * HEALTH_CHALLENGES.length)];
+          
         const randomY = Math.random() * (gameSize.height - 100);
         
         setHooks(prevHooks => [
@@ -235,14 +250,13 @@ const Game: React.FC = () => {
             id: now,
             position: { x: gameSize.width, y: randomY },
             challenge: randomChallenge,
-            speed: 2 + difficulty * 0.5 // Adjust hook speed
+            speed: 2 + difficulty * 0.5
           }
         ]);
         
         lastHookTimeRef.current = now;
       }
 
-      // Create new food
       const foodSpawnInterval = Math.max(1500 - difficulty * 50, 800);
       if (now - lastFoodTimeRef.current > foodSpawnInterval) {
         const randomColor = FOOD_COLORS[Math.floor(Math.random() * FOOD_COLORS.length)];
@@ -251,7 +265,7 @@ const Game: React.FC = () => {
         setFoods(prevFoods => [
           ...prevFoods,
           {
-            id: now + 1, // ensure unique ID
+            id: now + 1,
             position: { x: gameSize.width, y: randomY },
             color: randomColor
           }
@@ -261,28 +275,22 @@ const Game: React.FC = () => {
       }
 
       if (shouldProcessFrame) {
-        // Move hooks
         setHooks(prevHooks => prevHooks.map(hook => ({
           ...hook,
           position: { ...hook.position, x: hook.position.x - hook.speed }
-        })).filter(hook => hook.position.x > -100)); // Remove hooks that are off-screen
-
-        // Move food
+        })).filter(hook => hook.position.x > -100));
+        
         setFoods(prevFoods => prevFoods.map(food => ({
           ...food,
           position: { ...food.position, x: food.position.x - 3 }
-        })).filter(food => food.position.x > -20)); // Remove food that is off-screen
-
-        // Check collisions
+        })).filter(food => food.position.x > -20));
+        
         checkFoodCollisions();
         if (!checkHookCollisions()) {
-          // Increase score if no collision
           setScore(prevScore => prevScore + 1);
           
-          // Increase difficulty every 500 points
-          if (score > 0 && score % 500 === 0) {
+          if (score > 0 && score % 500 === 0 && difficulty < 10) {
             setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
-            toast(`Vaikeustaso nousi tasolle ${Math.min(difficulty + 1, 10)}!`);
           }
         }
       }
@@ -298,7 +306,7 @@ const Game: React.FC = () => {
         gameLoopRef.current = null;
       }
     };
-  }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty, fishSize]);
+  }, [isPlaying, gameOver, keys, gameSize, checkHookCollisions, checkFoodCollisions, score, difficulty, fishSize, hooks.length]);
 
   // Start game 
   const startGame = () => {
@@ -323,7 +331,6 @@ const Game: React.FC = () => {
   // Render game
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
-      {/* Game UI - Score and Controls */}
       <div className="w-full max-w-4xl bg-white rounded-t-lg shadow-md p-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <span className="font-bold text-gameColors-navy text-xl">Pisteet:</span>
@@ -349,17 +356,15 @@ const Game: React.FC = () => {
         </Button>
       </div>
       
-      {/* Game Area */}
       <div 
         ref={gameAreaRef}
         className="w-full max-w-4xl h-[500px] water-background relative overflow-hidden rounded-b-lg shadow-md"
       >
-        {/* Game Instructions and Start Screen */}
         {!isPlaying && !gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
             <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Piranha-väistelypeli</h2>
             <p className="text-center mb-4 max-w-md">
-              Ohjaa piraijaa vedessä, kerää ruokaa ja väistä koukkuja, joissa on terveydenhuollon haasteita!
+              Ohjaa piraijaa vedessä, kerää pisaranmuotoista ruokaa kasvaaksesi ja väistä koukkuja, joissa on terveydenhuollon haasteita!
             </p>
             <div className="bg-white text-black p-4 rounded-lg mb-6">
               <h3 className="font-bold mb-2 text-gameColors-navy">Ohjeet:</h3>
@@ -383,7 +388,6 @@ const Game: React.FC = () => {
           </div>
         )}
         
-        {/* Game Over Screen */}
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
             <h2 className="text-3xl font-bold mb-4 text-gameColors-pink">Peli päättyi!</h2>
@@ -399,7 +403,6 @@ const Game: React.FC = () => {
           </div>
         )}
         
-        {/* The fish */}
         {(isPlaying || gameOver) && (
           <Fish 
             position={fishPosition} 
@@ -408,7 +411,6 @@ const Game: React.FC = () => {
           />
         )}
         
-        {/* The hooks */}
         {(isPlaying || gameOver) && hooks.map(hook => (
           <Hook 
             key={hook.id}
@@ -418,7 +420,6 @@ const Game: React.FC = () => {
           />
         ))}
         
-        {/* The food */}
         {(isPlaying || gameOver) && foods.map(food => (
           <FishFood 
             key={food.id}
@@ -428,7 +429,6 @@ const Game: React.FC = () => {
           />
         ))}
         
-        {/* Mobile controls overlay - only shown on touch devices */}
         <div className="md:hidden absolute bottom-0 left-0 right-0 flex justify-between p-4 z-40">
           <div className="grid grid-cols-3 gap-2 w-full max-w-sm mx-auto">
             <button 
@@ -465,10 +465,9 @@ const Game: React.FC = () => {
         </div>
       </div>
       
-      {/* Instructions */}
       <div className="mt-4 text-sm text-center text-gray-600 max-w-2xl">
         <p>Käytä nuolinäppäimiä liikuttaaksesi kalaa. Kerää ruokaa ja väistä koukkuja, joissa on terveydenhuollon haasteita.</p>
-        <p className="mt-1">Kala kasvaa, kun keräät ruokaa! Peli vaikeutuu pisteiden kertyessä. Onnea matkaan!</p>
+        <p className="mt-1">Kala kasvaa, kun keräät ruokaa! Peli vaikeutuu pisteiden kertyessä.</p>
       </div>
     </div>
   );
