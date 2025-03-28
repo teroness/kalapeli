@@ -64,7 +64,6 @@ const HEALTH_CHALLENGES = [
 const FOOD_COLORS = [
   "#FF5A79",
   "#7A2E8E",
-  "#0D2B5B",
   "#FF9800"
 ];
 
@@ -203,10 +202,10 @@ const Game: React.FC = () => {
     const fishHeight = 40 * fishSize;
     
     const fishMouthPosition = fishDirection === 'right' 
-      ? { x: fishPosition.x + fishWidth * 0.83, y: fishPosition.y + fishHeight * 0.5 }
-      : { x: fishPosition.x + fishWidth * 0.17, y: fishPosition.y + fishHeight * 0.5 };
+      ? { x: fishPosition.x + fishWidth * 0.85, y: fishPosition.y + fishHeight * 0.5 }
+      : { x: fishPosition.x + fishWidth * 0.15, y: fishPosition.y + fishHeight * 0.5 };
     
-    const mouthHitboxSize = 30 * fishSize;
+    const mouthHitboxSize = 40 * fishSize;
     
     let foodEaten = false;
     
@@ -215,8 +214,8 @@ const Game: React.FC = () => {
         if (food.isEaten) return food;
         
         const distance = Math.sqrt(
-          Math.pow(fishMouthPosition.x - food.position.x, 2) + 
-          Math.pow(fishMouthPosition.y - food.position.y, 2)
+          Math.pow(fishMouthPosition.x - food.position.x - 12, 2) + 
+          Math.pow(fishMouthPosition.y - food.position.y - 12, 2)
         );
         
         console.log(`Food ${food.id} - Distance: ${distance.toFixed(2)}, Hitbox: ${mouthHitboxSize}, Position: ${food.position.x},${food.position.y}, Mouth: ${fishMouthPosition.x},${fishMouthPosition.y}`);
@@ -251,7 +250,7 @@ const Game: React.FC = () => {
       setTimeout(() => {
         setIsEating(false);
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
-      }, 700);
+      }, 800);
     }
     
     return foodEaten;
