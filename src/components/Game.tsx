@@ -99,6 +99,7 @@ interface FoodObject {
   id: number;
   position: { x: number; y: number };
   color: string;
+  isEaten: boolean;
 }
 
 const Game: React.FC = () => {
@@ -120,6 +121,7 @@ const Game: React.FC = () => {
   const [difficulty, setDifficulty] = useState(1);
   const [foodCollected, setFoodCollected] = useState(0);
   const [fishSize, setFishSize] = useState(1);
+  const [isEating, setIsEating] = useState(false);
   
   useEffect(() => {
     const updateGameSize = () => {
@@ -196,31 +198,37 @@ const Game: React.FC = () => {
     const foodHeight = 20 * 0.8;
     
     setFoods(prevFoods => {
-      const remainingFoods = [];
-      let foodEaten = false;
-      
-      for (const food of prevFoods) {
+      return prevFoods.map(food => {
+        if (food.isEaten) return food;
+        
         if (
           fishPosition.x + 15 < food.position.x + foodWidth &&
           fishPosition.x + fishWidth - 10 > food.position.x &&
           fishPosition.y + 10 < food.position.y + foodHeight &&
           fishPosition.y + fishHeight - 10 > food.position.y
         ) {
-          setScore(prevScore => prevScore + 10);
-          setFoodCollected(prev => prev + 1);
-          
-          if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
-            setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
-          }
-          
           foodEaten = true;
-        } else {
-          remainingFoods.push(food);
+          return { ...food, isEaten: true };
         }
+        return food;
+      });
+    });
+    
+    if (foodEaten) {
+      setIsEating(true);
+      
+      setScore(prevScore => prevScore + 10);
+      setFoodCollected(prev => prev + 1);
+      
+      if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
+        setFishSize(prevSize => Math.min(prevSize + 0.1, 1.5));
       }
       
-      return remainingFoods;
-    });
+      setTimeout(() => {
+        setIsEating(false);
+        setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
+      }, 300);
+    }
   }, [fishPosition, foodCollected, fishSize]);
 
   useEffect(() => {
@@ -292,7 +300,8 @@ const Game: React.FC = () => {
           {
             id: now + 1,
             position: { x: gameSize.width, y: randomY },
-            color: randomColor
+            color: randomColor,
+            isEaten: false
           }
         ]);
         
@@ -308,7 +317,7 @@ const Game: React.FC = () => {
         setFoods(prevFoods => prevFoods.map(food => ({
           ...food,
           position: { ...food.position, x: food.position.x - 3 }
-        })).filter(food => food.position.x > -20));
+        })).filter(food => food.position.x > -20 && !food.isEaten));
         
         checkFoodCollisions();
         if (!checkHookCollisions()) {
@@ -525,6 +534,7 @@ const Game: React.FC = () => {
             position={fishPosition} 
             direction={fishDirection} 
             size={fishSize}
+            isEating={isEating}
           />
         )}
         

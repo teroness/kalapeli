@@ -30,34 +30,32 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
         {/* Animated worm with challenge text */}
         <div className="relative -mt-2 flex flex-col items-center">
           <div className="relative animate-[wiggle_2s_ease-in-out_infinite]">
-            {/* Worm body */}
+            {/* Worm body - Earthworm appearance */}
             <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" className="animate-wiggle">
-              {/* Main worm body - segmented appearance */}
-              <path d="M10 28C10 20 15 14 28 14C41 14 46 20 46 28C46 36 41 42 28 42C15 42 10 36 10 28Z" fill="#F97316" />
+              {/* Main worm body - earthworm appearance */}
+              <path d="M10 28C10 20 15 14 28 14C41 14 46 20 46 28C46 36 41 42 28 42C15 42 10 36 10 28Z" fill="#a57164" />
               
               {/* Worm segments - inner section */}
-              <path d="M14 28C14 24 17 20 28 20C39 20 42 24 42 28C42 32 39 36 28 36C17 36 14 32 14 28Z" fill="#FF5A79" />
+              <path d="M14 28C14 24 17 20 28 20C39 20 42 24 42 28C42 32 39 36 28 36C17 36 14 32 14 28Z" fill="#c58778" />
               
               {/* Segment lines to show worm texture */}
-              <path d="M14 24C16 26 20 27 28 27C36 27 40 26 42 24" stroke="#F97316" strokeWidth="1.5" fill="none" />
-              <path d="M14 32C16 30 20 29 28 29C36 29 40 30 42 32" stroke="#F97316" strokeWidth="1.5" fill="none" />
+              <path d="M14 24C16 26 20 27 28 27C36 27 40 26 42 24" stroke="#986757" strokeWidth="1.5" fill="none" />
+              <path d="M14 32C16 30 20 29 28 29C36 29 40 30 42 32" stroke="#986757" strokeWidth="1.5" fill="none" />
+              <path d="M18 28C20 28 24 28 28 28C32 28 36 28 38 28" stroke="#986757" strokeWidth="1.5" fill="none" />
               
-              {/* Worm face */}
-              <circle cx="38" cy="24" r="4" fill="white" /> {/* Left eye */}
-              <circle cx="38" cy="24" r="2" fill="black" /> {/* Left pupil */}
-              <circle cx="38" cy="32" r="4" fill="white" /> {/* Right eye */}
-              <circle cx="38" cy="32" r="2" fill="black" /> {/* Right pupil */}
+              {/* Worm rings - classic earthworm segments */}
+              <path d="M13 22C15 23 18 24 28 24C38 24 41 23 43 22" stroke="#986757" strokeWidth="1" fill="none" />
+              <path d="M13 26C15 27 18 28 28 28C38 28 41 27 43 26" stroke="#986757" strokeWidth="1" fill="none" />
+              <path d="M13 30C15 31 18 32 28 32C38 32 41 31 43 30" stroke="#986757" strokeWidth="1" fill="none" />
+              <path d="M13 34C15 35 18 36 28 36C38 36 41 35 43 34" stroke="#986757" strokeWidth="1" fill="none" />
               
-              {/* Angry eyebrows */}
-              <path d="M34 22L40 20" stroke="black" strokeWidth="2" />
-              <path d="M34 34L40 36" stroke="black" strokeWidth="2" />
+              {/* Worm head details */}
+              <circle cx="38" cy="24" r="2" fill="#5E4A41" /> {/* Left eye spot */}
+              <circle cx="38" cy="32" r="2" fill="#5E4A41" /> {/* Right eye spot */}
               
-              {/* Mean mouth with sharp teeth */}
-              <path d="M42 28C42 28 44 26 44 28C44 30 42 28 42 28Z" fill="white" /> {/* Top tooth */}
-              <path d="M42 28C42 28 44 30 44 28C44 26 42 28 42 28Z" fill="white" /> {/* Bottom tooth */}
-              
-              {/* Small slime drip */}
-              <path d="M10 28C10 28 9 32 8 34" stroke="#F97316" strokeWidth="1.5" fill="none" />
+              {/* Slime effect */}
+              <path d="M10 28C10 28 9 32 8 34" stroke="#BE8578" strokeWidth="1.5" fill="none" />
+              <path d="M10 28C10 28 8 26 7 24" stroke="#BE8578" strokeWidth="1.5" fill="none" />
             </svg>
             
             {/* Challenge text on the worm */}

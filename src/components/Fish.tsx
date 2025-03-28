@@ -5,9 +5,10 @@ interface FishProps {
   position: { x: number; y: number };
   direction: 'left' | 'right';
   size?: number;
+  isEating?: boolean;
 }
 
-const Fish: React.FC<FishProps> = ({ position, direction, size = 1 }) => {
+const Fish: React.FC<FishProps> = ({ position, direction, size = 1, isEating = false }) => {
   return (
     <div className="absolute transform transition-transform duration-100" 
          style={{ 
@@ -22,25 +23,38 @@ const Fish: React.FC<FishProps> = ({ position, direction, size = 1 }) => {
         {/* Piranha tail - using bright orange instead of navy */}
         <path d="M10 20C10 20 0 10 0 5C0 10 0 30 0 35C5 30 10 20 10 20Z" fill="#FF9800" />
         
-        {/* Piranha scales - adding more detailed scale pattern */}
-        <path d="M15 15C17 13 20 12 20 12" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M15 25C17 27 20 28 20 28" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M20 10C22 9 25 8 25 8" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M20 30C22 31 25 32 25 32" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M25 8C28 7 30 7 30 7" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M25 32C28 33 30 33 30 33" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M30 7C33 7 35 8 35 8" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M30 33C33 33 35 32 35 32" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M35 8C38 9 40 10 40 10" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M35 32C38 31 40 30 40 30" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M40 10C42 12 45 15 45 15" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M40 30C42 28 45 25 45 25" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        {/* Piranha scales - more defined scale pattern */}
+        <path d="M15 12C17 12 17 8 20 8" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M15 28C17 28 17 32 20 32" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M20 8C23 8 23 5 26 5" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M20 32C23 32 23 35 26 35" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M26 5C29 5 29 3 32 3" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M26 35C29 35 29 37 32 37" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M32 3C35 3 35 5 38 5" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M32 37C35 37 35 35 38 35" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M38 5C41 5 41 8 44 8" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M38 35C41 35 41 32 44 32" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
         
-        {/* Additional diagonal scales for more detail */}
-        <path d="M18 17C20 15 22 14 22 14" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M18 23C20 25 22 26 22 26" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M28 10C30 9 32 8 32 8" stroke="#FF3C62" strokeWidth="1" fill="none" />
-        <path d="M28 30C30 31 32 32 32 32" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        {/* Additional diagonal scales for detailed pattern - row 1 */}
+        <path d="M20 12C22 11 24 10 26 10" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M20 28C22 29 24 30 26 30" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M26 10C28 9 30 8 32 8" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M26 30C28 31 30 32 32 32" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M32 8C34 8 36 9 38 10" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M32 32C34 32 36 31 38 30" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        
+        {/* Additional diagonal scales for detailed pattern - row 2 */}
+        <path d="M20 16C22 15 24 14 26 14" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M20 24C22 25 24 26 26 26" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M26 14C28 13 30 12 32 12" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M26 26C28 27 30 28 32 28" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M32 12C34 12 36 13 38 14" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M32 28C34 28 36 27 38 26" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        
+        {/* Scale highlighting - row 3 (middle) */}
+        <path d="M20 20C22 20 24 20 26 20" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M26 20C28 20 30 20 32 20" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
+        <path d="M32 20C34 20 36 20 38 20" stroke="#FF3C62" strokeWidth="1" strokeLinecap="round" fill="none" />
         
         {/* Piranha eye - using the light color from the theme */}
         <circle cx="45" cy="17" r="6" fill="white" />
@@ -54,8 +68,12 @@ const Fish: React.FC<FishProps> = ({ position, direction, size = 1 }) => {
         {/* Cheek blush using orange from theme */}
         <circle cx="35" cy="20" r="4" fill="#FF9800" opacity="0.7" />
         
-        {/* Improved mouth shape - slightly open with a curve */}
-        <path d="M50 20C50 20 47 23 44 23C44 23 47 17 50 20Z" fill="#7A2E8E" strokeWidth="1" stroke="#7A2E8E" />
+        {/* Improved mouth shape - with animation for eating */}
+        {isEating ? (
+          <path d="M50 20C50 20 55 25 53 27C48 24 44 23 44 23C44 23 48 21 50 20Z" fill="#7A2E8E" strokeWidth="1" stroke="#7A2E8E" />
+        ) : (
+          <path d="M50 20C50 20 47 23 44 23C44 23 47 17 50 20Z" fill="#7A2E8E" strokeWidth="1" stroke="#7A2E8E" />
+        )}
       </svg>
     </div>
   );
