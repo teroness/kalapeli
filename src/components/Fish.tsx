@@ -22,9 +22,19 @@ const Fish: React.FC<FishProps> = ({ position, direction, size = 1 }) => {
         {/* Piranha tail - using bright orange instead of navy */}
         <path d="M10 20C10 20 0 10 0 5C0 10 0 30 0 35C5 30 10 20 10 20Z" fill="#FF9800" />
         
-        {/* Piranha teeth - sharper but still cute */}
-        <path d="M50 15L53 10L56 15" stroke="white" strokeWidth="2" fill="white" />
-        <path d="M50 25L53 30L56 25" stroke="white" strokeWidth="2" fill="white" />
+        {/* Piranha scales - adding a scale pattern */}
+        <path d="M15 15C17 13 20 12 20 12" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M15 25C17 27 20 28 20 28" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M20 10C22 9 25 8 25 8" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M20 30C22 31 25 32 25 32" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M25 8C28 7 30 7 30 7" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M25 32C28 33 30 33 30 33" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M30 7C33 7 35 8 35 8" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M30 33C33 33 35 32 35 32" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M35 8C38 9 40 10 40 10" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M35 32C38 31 40 30 40 30" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M40 10C42 12 45 15 45 15" stroke="#FF3C62" strokeWidth="1" fill="none" />
+        <path d="M40 30C42 28 45 25 45 25" stroke="#FF3C62" strokeWidth="1" fill="none" />
         
         {/* Piranha eye - using the light color from the theme */}
         <circle cx="45" cy="17" r="6" fill="white" />

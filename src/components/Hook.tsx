@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Angry } from 'lucide-react';
+import { Worm } from 'lucide-react';
 
 interface HookProps {
   position: { x: number, y: number };
@@ -31,20 +31,30 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
         {/* Mean worm with challenge text directly on it */}
         <div className="relative -mt-2 flex flex-col items-center">
           <div className="relative">
-            {/* Mean worm */}
-            <div className="relative">
-              <Angry className="text-pink-500 h-14 w-14 stroke-[3]" />
-              
-              {/* Eyes for mean look */}
-              <div className="absolute top-[15%] left-[30%] w-2 h-2 bg-red-600 rounded-full"></div>
-              <div className="absolute top-[15%] right-[30%] w-2 h-2 bg-red-600 rounded-full"></div>
-              
-              {/* Sharp teeth */}
-              <div className="absolute top-[30%] left-[40%] right-[40%] flex justify-between">
-                <div className="w-1 h-2 bg-white transform rotate-[-15deg]"></div>
-                <div className="w-1 h-2 bg-white"></div>
-                <div className="w-1 h-2 bg-white transform rotate-[15deg]"></div>
-              </div>
+            {/* Custom worm shape */}
+            <div className="relative w-14 h-14 flex items-center justify-center">
+              {/* Worm body */}
+              <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+                {/* Main worm body */}
+                <path d="M10 28C10 20 15 14 28 14C41 14 46 20 46 28C46 36 41 42 28 42C15 42 10 36 10 28Z" fill="#F97316" />
+                
+                {/* Worm segments */}
+                <path d="M14 28C14 24 17 20 28 20C39 20 42 24 42 28C42 32 39 36 28 36C17 36 14 32 14 28Z" fill="#FF5A79" />
+                
+                {/* Worm face */}
+                <circle cx="38" cy="24" r="4" fill="white" /> {/* Left eye */}
+                <circle cx="38" cy="24" r="2" fill="black" /> {/* Left pupil */}
+                <circle cx="38" cy="32" r="4" fill="white" /> {/* Right eye */}
+                <circle cx="38" cy="32" r="2" fill="black" /> {/* Right pupil */}
+                
+                {/* Angry eyebrows */}
+                <path d="M34 22L40 20" stroke="black" strokeWidth="2" />
+                <path d="M34 34L40 36" stroke="black" strokeWidth="2" />
+                
+                {/* Mean mouth with sharp teeth */}
+                <path d="M42 28C42 28 44 26 44 28C44 30 42 28 42 28Z" fill="white" /> {/* Top tooth */}
+                <path d="M42 28C42 28 44 30 44 28C44 26 42 28 42 28Z" fill="white" /> {/* Bottom tooth */}
+              </svg>
             </div>
             
             {/* Challenge text directly on the worm */}
