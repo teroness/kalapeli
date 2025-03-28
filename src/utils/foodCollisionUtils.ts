@@ -18,8 +18,11 @@ export const checkFoodCollisions = (
   
   let foodEatenId = -1;
   
-  // Only check foods that are still on screen - already filtered in the component
+  // Check for food collisions
   for (const food of foods) {
+    // Skip food that's already marked as eaten
+    if (food.isEaten) continue;
+    
     const fishCenterX = fishPosition.x + (fishWidth / 2);
     const fishCenterY = fishPosition.y + (fishHeight / 2);
     const foodCenterX = food.position.x + 15;
@@ -44,7 +47,7 @@ export const checkFoodCollisions = (
     // Start eating animation immediately
     setIsEating(true);
     
-    // Create a new array WITHOUT the eaten food
+    // Immediately remove the eaten food from the array completely
     const updatedFoods = foods.filter(food => food.id !== foodEatenId);
     setFoods(updatedFoods);
     
