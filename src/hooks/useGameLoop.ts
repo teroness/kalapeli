@@ -1,7 +1,11 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 import { FoodObject, GameSize, HookObject, Position } from '@/types/gameTypes';
-import { checkHookCollisions, generateFood, generateHook, updateGameObjects } from '@/utils/gameUtils';
+import { checkHookCollisions, updateGameObjects } from '@/utils/gameUtils';
+import { checkFoodCollisions } from '@/utils/foodCollisionUtils';
+import { updateFishPosition } from '@/utils/fishMovementUtils';
+import { spawnGameObjects } from '@/utils/gameSpawningUtils';
+import { updateDifficulty } from '@/utils/gameDifficultyUtils';
 
 interface UseGameLoopProps {
   isPlaying: boolean;
@@ -57,62 +61,19 @@ const useGameLoop = ({
   const lastFoodTimeRef = useRef<number>(Date.now());
   const frameCountRef = useRef<number>(0);
 
-  const checkFoodCollisions = useCallback(() => {
-    const fishWidth = 60 * fishSize;
-    const fishHeight = 40 * fishSize;
-    
-    let foodEatenId = -1;
-    
-    // Check for food collisions
-    foods.forEach(food => {
-      if (food.isEaten) return;
-      
-      const fishCenterX = fishPosition.x + (fishWidth / 2);
-      const fishCenterY = fishPosition.y + (fishHeight / 2);
-      const foodCenterX = food.position.x + 15;
-      const foodCenterY = food.position.y + 15;
-      
-      const distance = Math.sqrt(
-        Math.pow(fishCenterX - foodCenterX, 2) + 
-        Math.pow(fishCenterY - foodCenterY, 2)
-      );
-      
-      // Simplified collision threshold
-      const collisionThreshold = 25;
-      
-      if (distance < collisionThreshold) {
-        console.log('FOOD EATEN!', food.id);
-        foodEatenId = food.id;
-      }
-    });
-    
-    if (foodEatenId !== -1) {
-      // Start eating animation immediately
-      setIsEating(true);
-      
-      // Remove the eaten food from the foods array immediately
-      const updatedFoods = foods.filter(food => food.id !== foodEatenId);
-      setFoods(updatedFoods);
-      
-      // Increase score and food collected count
-      setScore(score + 10);
-      setFoodCollected(foodCollected + 1);
-      
-      // Stop eating animation after a short time
-      setTimeout(() => {
-        setIsEating(false);
-      }, 200);
-      
-      // Check if fish should grow
-      if ((foodCollected + 1) % 5 === 0 && fishSize < 1.5) {
-        setIsGrowing(true);
-        setTimeout(() => setIsGrowing(false), 800);
-      }
-      
-      return true;
-    }
-    
-    return false;
+  const handleFoodCollisions = useCallback(() => {
+    return checkFoodCollisions(
+      fishPosition,
+      foods,
+      fishSize,
+      setIsEating,
+      setFoods,
+      setScore,
+      setFoodCollected,
+      setIsGrowing,
+      score,
+      foodCollected
+    );
   }, [fishPosition, fishSize, foods, foodCollected, setFoods, setScore, setFoodCollected, setIsEating, setIsGrowing, score]);
 
   useEffect(() => {
@@ -124,49 +85,35 @@ const useGameLoop = ({
       const shouldProcessFrame = frameCountRef.current % 2 === 0;
       
       if (shouldProcessFrame) {
-        const newPos = { ...fishPosition };
-        const moveStep = 5;
-        
-        if (keys.ArrowUp) {
-          newPos.y = Math.max(0, newPos.y - moveStep);
-        }
-        if (keys.ArrowDown) {
-          newPos.y = Math.min(gameSize.height - 40 * fishSize, newPos.y + moveStep);
-        }
-        if (keys.ArrowLeft) {
-          newPos.x = Math.max(0, newPos.x - moveStep);
-          setFishDirection('left');
-        }
-        if (keys.ArrowRight) {
-          newPos.x = Math.min(gameSize.width - 60 * fishSize, newPos.x + moveStep);
-          setFishDirection('right');
-        }
-        
-        setFishPosition(newPos);
+        // Update fish position based on keyboard controls
+        const newPosition = updateFishPosition(
+          fishPosition,
+          keys,
+          gameSize,
+          fishSize,
+          setFishDirection
+        );
+        setFishPosition(newPosition);
       }
 
       const now = Date.now();
       
-      const hookSpawnInterval = Math.max(5000 - difficulty * 100, 3000);
-      
-      if (now - lastHookTimeRef.current > hookSpawnInterval) {
-        const newHook = generateHook(gameSize, difficulty, hooks);
-        const updatedHooks = [...hooks, newHook];
-        setHooks(updatedHooks);
-        lastHookTimeRef.current = now;
-      }
-
-      const foodSpawnInterval = Math.max(1500 - difficulty * 50, 800);
-      if (now - lastFoodTimeRef.current > foodSpawnInterval) {
-        const newFood = generateFood(gameSize);
-        const updatedFoods = [...foods, newFood];
-        setFoods(updatedFoods);
-        lastFoodTimeRef.current = now;
-      }
+      // Handle spawning of hooks and food
+      spawnGameObjects(
+        now,
+        lastHookTimeRef,
+        lastFoodTimeRef,
+        gameSize,
+        difficulty,
+        hooks,
+        foods,
+        setHooks,
+        setFoods
+      );
 
       if (shouldProcessFrame) {
         // First check for food collisions
-        checkFoodCollisions();
+        handleFoodCollisions();
         
         // Then clean up and update positions
         const { updatedHooks, updatedFoods } = updateGameObjects(hooks, foods);
@@ -183,10 +130,8 @@ const useGameLoop = ({
           return;
         }
         
-        if (score > 0 && score % 500 === 0 && difficulty < 10) {
-          const newDifficulty = Math.min(difficulty + 1, 10);
-          setDifficulty(newDifficulty);
-        }
+        // Update difficulty based on score
+        updateDifficulty(score, difficulty, setDifficulty);
       }
       
       gameLoopRef.current = requestAnimationFrame(gameLoop);
@@ -205,7 +150,7 @@ const useGameLoop = ({
     gameOver, 
     keys, 
     gameSize, 
-    checkFoodCollisions, 
+    handleFoodCollisions, 
     score, 
     difficulty, 
     fishSize, 
