@@ -178,14 +178,12 @@ const Game: React.FC = () => {
   const checkHookCollisions = useCallback(() => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
-    const hookWidth = 40 * 0.7;
-    const hookHeight = 60 * 0.7;
     
     for (const hook of hooks) {
       if (
-        fishPosition.x + 10 < hook.position.x + hookWidth &&
+        fishPosition.x + 10 < hook.position.x + 40 &&
         fishPosition.x + fishWidth - 10 > hook.position.x &&
-        fishPosition.y + 5 < hook.position.y + hookHeight &&
+        fishPosition.y + 5 < hook.position.y + 60 &&
         fishPosition.y + fishHeight - 5 > hook.position.y
       ) {
         setIsPlaying(false);
@@ -204,45 +202,33 @@ const Game: React.FC = () => {
     const fishWidth = 60 * fishSize;
     const fishHeight = 40 * fishSize;
     
-    const fishMouthHitbox = fishDirection === 'right' ? {
-      x: fishPosition.x + (fishWidth * 0.6),
-      y: fishPosition.y + (fishHeight * 0.3),
-      width: fishWidth * 0.3,
-      height: fishHeight * 0.4
-    } : {
-      x: fishPosition.x + (fishWidth * 0.1),
-      y: fishPosition.y + (fishHeight * 0.3),
-      width: fishWidth * 0.3,
-      height: fishHeight * 0.4
-    };
+    const fishMouthPosition = fishDirection === 'right' 
+      ? { x: fishPosition.x + fishWidth * 0.7, y: fishPosition.y + fishHeight * 0.4 }
+      : { x: fishPosition.x + fishWidth * 0.2, y: fishPosition.y + fishHeight * 0.4 };
     
-    let foodEatenFlag = false;
+    const mouthHitboxSize = 15 * fishSize;
+    
+    let foodEaten = false;
     
     setFoods(prevFoods => {
       return prevFoods.map(food => {
         if (food.isEaten) return food;
         
-        const foodHitbox = {
-          x: food.position.x,
-          y: food.position.y,
-          width: 20,
-          height: 20
-        };
+        const distance = Math.sqrt(
+          Math.pow(fishMouthPosition.x - food.position.x, 2) + 
+          Math.pow(fishMouthPosition.y - food.position.y, 2)
+        );
         
-        if (
-          fishMouthHitbox.x < foodHitbox.x + foodHitbox.width &&
-          fishMouthHitbox.x + fishMouthHitbox.width > foodHitbox.x &&
-          fishMouthHitbox.y < foodHitbox.y + foodHitbox.height &&
-          fishMouthHitbox.y + fishMouthHitbox.height > foodHitbox.y
-        ) {
-          foodEatenFlag = true;
+        if (distance < mouthHitboxSize) {
+          foodEaten = true;
           return { ...food, isEaten: true };
         }
+        
         return food;
       });
     });
     
-    if (foodEatenFlag) {
+    if (foodEaten) {
       setIsEating(true);
       
       setScore(prevScore => prevScore + 10);
@@ -263,7 +249,7 @@ const Game: React.FC = () => {
       }, 300);
     }
     
-    return foodEatenFlag;
+    return foodEaten;
   }, [fishPosition, foodCollected, fishSize, fishDirection]);
 
   useEffect(() => {

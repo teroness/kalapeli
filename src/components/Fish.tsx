@@ -31,14 +31,14 @@ const Fish: React.FC<FishProps> = ({
         {/* Piranha body - using the pink color from the theme */}
         <path d="M10 20C10 15 15 5 35 5C50 5 58 12 58 20C58 28 50 35 35 35C15 35 10 25 10 20Z" fill="#FF5A79" />
         
-        {/* Piranha tail - using bright orange instead of navy */}
-        <path d="M10 20C10 20 0 10 0 5C0 10 0 30 0 35C5 30 10 20 10 20Z" fill="#FF9800" />
+        {/* Piranha tail - using bright orange instead of yellow */}
+        <path d="M10 20C10 20 0 10 0 5C0 10 0 30 0 35C5 30 10 20 10 20Z" fill="#FF3C62" />
         
         {/* Top fin */}
-        <path d="M25 5C25 5 30 0 35 2C30 6 25 5 25 5Z" fill="#FF9800" />
+        <path d="M25 5C25 5 30 0 35 2C30 6 25 5 25 5Z" fill="#FF3C62" />
         
         {/* Bottom fin */}
-        <path d="M25 35C25 35 30 40 35 38C30 34 25 35 25 35Z" fill="#FF9800" />
+        <path d="M25 35C25 35 30 40 35 38C30 34 25 35 25 35Z" fill="#FF3C62" />
         
         {/* Side fin - top (violetti) */}
         <path d="M20 12C20 12 15 8 18 5C22 8 20 12 20 12Z" fill="#7A2E8E" />
@@ -74,8 +74,8 @@ const Fish: React.FC<FishProps> = ({
         <circle cx="45" cy="17" r="3" fill="black" />
         <circle cx="43" cy="15" r="1.5" fill="white" />
         
-        {/* Cheek blush using orange from theme */}
-        <circle cx="35" cy="20" r="4" fill="#FF9800" opacity="0.7" />
+        {/* Cheek blush using the same pink as the body */}
+        <circle cx="35" cy="20" r="4" fill="#FF3C62" opacity="0.7" />
         
         {/* Improved mouth shape - with animation for eating */}
         {isEating ? (
