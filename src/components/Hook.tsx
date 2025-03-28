@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Tag } from 'lucide-react';
 
 interface HookProps {
   position: { x: number, y: number };
@@ -18,28 +19,28 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
       }}
     >
       {/* Fishing line */}
-      <div className="h-16 w-1 bg-gray-300 opacity-70"></div>
+      <div className="h-16 w-1 bg-gray-400"></div>
       
       {/* Hook with challenge price tag */}
       <div className="relative">
-        <svg width="40" height="30" viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Hook */}
-          <path d="M20 0V15C20 22 10 27 0 22" stroke="#888888" strokeWidth="3" fill="none" />
+        {/* Improved hook shape */}
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 0V15C20 22 9 30 2 24" stroke="#666666" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
         
-        {/* Price tag with challenge text */}
-        <div className="absolute -bottom-2 -left-20">
-          {/* Price tag with string */}
-          <div className="relative">
-            {/* String connecting to hook */}
-            <div className="absolute top-0 right-2 w-px h-7 bg-red-500 rotate-12"></div>
+        {/* Price tag with challenge text - now properly attached to hook */}
+        <div className="absolute -bottom-5 -left-16 transform -rotate-12">
+          {/* String connecting to hook */}
+          <div className="absolute top-0 right-1 w-1 h-4 bg-red-500 rotate-12"></div>
+          
+          {/* Price tag body - looks like the hook pierces through it */}
+          <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 shadow-md w-32 relative">
+            {/* The hole where hook goes through */}
+            <div className="absolute -top-1 right-1 w-2 h-2 rounded-full border border-red-300"></div>
             
-            {/* Price tag body */}
-            <div className="bg-white rounded-md border-2 border-red-500 px-2 py-1 mt-6 shadow-md w-36 animate-[sway_3s_ease-in-out_infinite]">
-              <p className="text-xs font-extrabold text-red-600 whitespace-nowrap text-center">
-                {challenge}
-              </p>
-            </div>
+            <p className="text-xs font-extrabold text-red-600 whitespace-nowrap text-center">
+              {challenge}
+            </p>
           </div>
         </div>
       </div>

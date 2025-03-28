@@ -5,15 +5,19 @@ interface FishFoodProps {
   id: number;
   position: { x: number; y: number };
   color: string;
+  isEaten?: boolean;
 }
 
-const FishFood: React.FC<FishFoodProps> = ({ position, color }) => {
+const FishFood: React.FC<FishFoodProps> = ({ position, color, isEaten = false }) => {
   return (
     <div 
-      className="absolute transition-all animate-pulse" 
+      className={`absolute transition-all ${isEaten ? 'animate-fade-out scale-0' : 'animate-pulse'}`} 
       style={{ 
         left: `${position.x}px`, 
         top: `${position.y}px`,
+        opacity: isEaten ? 0 : 1,
+        pointerEvents: isEaten ? 'none' : 'auto',
+        transitionDuration: '300ms',
       }}
     >
       <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

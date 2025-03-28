@@ -4,7 +4,6 @@ import Fish from '@/components/Fish';
 import Hook from '@/components/Hook';
 import FishFood from '@/components/FishFood';
 
-// Expanded and more outrageous health challenges in Finnish
 const HEALTH_CHALLENGES = [
   "YT-neuvottelut",
   "Burnout",
@@ -62,15 +61,13 @@ const HEALTH_CHALLENGES = [
   "Tietokone jumissa"
 ];
 
-// Fish food colors updated to match our theme
 const FOOD_COLORS = [
-  "#FF5A79", // Pink
-  "#7A2E8E", // Purple
-  "#0D2B5B", // Navy
-  "#FF9800", // Orange
+  "#FF5A79",
+  "#7A2E8E",
+  "#0D2B5B",
+  "#FF9800"
 ];
 
-// Water plants configuration - updated with more plants and varieties
 const WATER_PLANTS = [
   { x: 50, y: 400, type: 'seaweed', height: 120, color: '#33C3F0' },
   { x: 150, y: 450, type: 'coral', height: 80, color: '#F97316' },
@@ -85,7 +82,7 @@ const WATER_PLANTS = [
   { x: 780, y: 390, type: 'waterlily', width: 70, color: '#FF9800' },
   { x: 820, y: 410, type: 'seaweed', height: 95, color: '#33C3F0' },
   { x: 900, y: 400, type: 'coral', height: 90, color: '#FF5A79' },
-  { x: 980, y: 430, type: 'seaweed', height: 115, color: '#0EA5E9' },
+  { x: 980, y: 430, type: 'seaweed', height: 115, color: '#0EA5E9' }
 ];
 
 interface HookObject {
@@ -199,7 +196,7 @@ const Game: React.FC = () => {
     const foodWidth = 20 * 0.8;
     const foodHeight = 20 * 0.8;
     
-    let foodEaten = false;
+    let foodEatenFlag = false;
     
     setFoods(prevFoods => {
       return prevFoods.map(food => {
@@ -211,14 +208,14 @@ const Game: React.FC = () => {
           fishPosition.y + 10 < food.position.y + foodHeight &&
           fishPosition.y + fishHeight - 10 > food.position.y
         ) {
-          foodEaten = true;
+          foodEatenFlag = true;
           return { ...food, isEaten: true };
         }
         return food;
       });
     });
     
-    if (foodEaten) {
+    if (foodEatenFlag) {
       setIsEating(true);
       
       setScore(prevScore => prevScore + 10);
@@ -238,7 +235,8 @@ const Game: React.FC = () => {
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
       }, 300);
     }
-    return foodEaten;
+    
+    return foodEatenFlag;
   }, [fishPosition, foodCollected, fishSize]);
 
   useEffect(() => {
