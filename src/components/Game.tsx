@@ -220,7 +220,9 @@ const Game: React.FC = () => {
           Math.pow(fishCenterY - foodCenterY, 2)
         );
         
-        if (distance < (fishWidth / 2 + 15 + 20)) {
+        const collisionThreshold = (fishWidth / 2 + 15);
+        
+        if (distance < collisionThreshold) {
           console.log('FOOD EATEN!', food.id);
           foodEaten = true;
           return { ...food, isEaten: true };
