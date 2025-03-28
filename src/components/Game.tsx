@@ -70,14 +70,22 @@ const FOOD_COLORS = [
   "#FF9800", // Orange
 ];
 
-// Water plants configuration
+// Water plants configuration - updated with more plants and varieties
 const WATER_PLANTS = [
   { x: 50, y: 400, type: 'seaweed', height: 120, color: '#33C3F0' },
   { x: 150, y: 450, type: 'coral', height: 80, color: '#F97316' },
+  { x: 250, y: 420, type: 'seaweed', height: 90, color: '#0EA5E9' },
   { x: 300, y: 420, type: 'seaweed', height: 100, color: '#0EA5E9' },
+  { x: 380, y: 390, type: 'coral', height: 70, color: '#7A2E8E' },
+  { x: 450, y: 380, type: 'waterlily', width: 60, color: '#FF5A79' },
   { x: 500, y: 380, type: 'coral', height: 70, color: '#7A2E8E' },
+  { x: 580, y: 410, type: 'waterlily', width: 50, color: '#7A2E8E' },
+  { x: 650, y: 440, type: 'seaweed', height: 85, color: '#0D2B5B' },
   { x: 700, y: 430, type: 'seaweed', height: 110, color: '#1EAEDB' },
+  { x: 780, y: 390, type: 'waterlily', width: 70, color: '#FF9800' },
+  { x: 820, y: 410, type: 'seaweed', height: 95, color: '#33C3F0' },
   { x: 900, y: 400, type: 'coral', height: 90, color: '#FF5A79' },
+  { x: 980, y: 430, type: 'seaweed', height: 115, color: '#0EA5E9' },
 ];
 
 interface HookObject {
@@ -397,6 +405,37 @@ const Game: React.FC = () => {
                 strokeWidth="4" 
                 fill={plant.color} 
                 fillOpacity="0.3" 
+              />
+            </svg>
+          </div>
+        );
+      } else if (plant.type === 'waterlily') {
+        const width = plant.width || 60;
+        plants.push(
+          <div 
+            key={`plant-${plant.x}-${plant.y}`}
+            className="absolute bottom-0 animate-swim"
+            style={{ 
+              left: `${adjustedX}px`,
+              width: `${width}px`,
+              height: `${width * 0.5}px`,
+              zIndex: 1
+            }}
+          >
+            <svg viewBox="0 0 60 30" width={width} height={width * 0.5} xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="30" cy="15" rx="28" ry="14" fill={plant.color} fillOpacity="0.7" />
+              <ellipse cx="30" cy="15" rx="20" ry="10" fill="#FFFFFF" fillOpacity="0.3" />
+              <path 
+                d="M10 15 C13 12, 16 10, 30 10 C44 10, 47 12, 50 15" 
+                stroke={plant.color} 
+                strokeWidth="2" 
+                fill="none" 
+              />
+              <path 
+                d="M10 15 C13 18, 16 20, 30 20 C44 20, 47 18, 50 15" 
+                stroke={plant.color} 
+                strokeWidth="2" 
+                fill="none" 
               />
             </svg>
           </div>

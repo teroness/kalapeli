@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -101,13 +102,18 @@ export default {
 				'water-move': {
 					'0%': { backgroundPosition: '0% 0%' },
 					'100%': { backgroundPosition: '100% 0%' }
+				},
+				'wiggle': {
+					'0%, 100%': { transform: 'rotate(-3deg)' },
+					'50%': { transform: 'rotate(3deg)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'swim': 'swim 2s ease-in-out infinite',
-				'water-move': 'water-move 20s linear infinite'
+				'water-move': 'water-move 20s linear infinite',
+				'wiggle': 'wiggle 1.5s ease-in-out infinite'
 			},
 			textStrokeWidth: {
 				'sm': '1px',
