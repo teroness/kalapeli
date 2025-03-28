@@ -1,25 +1,24 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import Fish from '@/components/Fish';
-import Net from '@/components/Net';
+import Hook from '@/components/Hook';
 
-// Health challenges for the nets
+// Health challenges in Finnish
 const HEALTH_CHALLENGES = [
+  "YT-neuvottelut",
   "Burnout",
-  "Stress",
-  "Long Hours",
-  "Understaffing",
-  "Budget Cuts",
-  "Outdated Tech",
-  "Paperwork",
-  "Staff Shortage",
-  "Pandemic",
-  "Overcrowding"
+  "Korona",
+  "Palkkataso",
+  "Henkilöstöpula",
+  "Ylityöt",
+  "Työvuorolistat",
+  "Sijaisuudet",
+  "Resurssipula",
+  "Leikkaukset"
 ];
 
-interface NetObject {
+interface HookObject {
   id: number;
   position: { x: number; y: number };
   challenge: string;
@@ -29,7 +28,7 @@ interface NetObject {
 const Game: React.FC = () => {
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const gameLoopRef = useRef<number | null>(null);
-  const lastNetTimeRef = useRef<number>(Date.now());
+  const lastHookTimeRef = useRef<number>(Date.now());
   
   const [gameSize, setGameSize] = useState({ width: 0, height: 0 });
   const [isPlaying, setIsPlaying] = useState(false);
@@ -37,7 +36,7 @@ const Game: React.FC = () => {
   const [gameOver, setGameOver] = useState(false);
   const [fishPosition, setFishPosition] = useState({ x: 100, y: 200 });
   const [fishDirection, setFishDirection] = useState<'left' | 'right'>('right');
-  const [nets, setNets] = useState<NetObject[]>([]);
+  const [hooks, setHooks] = useState<HookObject[]>([]);
   const [keys, setKeys] = useState<{ [key: string]: boolean }>({});
   const [difficulty, setDifficulty] = useState(1);
   
@@ -87,24 +86,24 @@ const Game: React.FC = () => {
     };
   }, []);
 
-  // Check collisions between fish and nets
+  // Check collisions between fish and hooks
   const checkCollisions = useCallback(() => {
     const fishWidth = 60;
     const fishHeight = 40;
-    const netWidth = 100;
-    const netHeight = 100;
+    const hookWidth = 60;
+    const hookHeight = 80;
     
-    for (const net of nets) {
+    for (const hook of hooks) {
       // Simple rectangular collision detection
       if (
-        fishPosition.x < net.position.x + netWidth &&
-        fishPosition.x + fishWidth > net.position.x &&
-        fishPosition.y < net.position.y + netHeight &&
-        fishPosition.y + fishHeight > net.position.y
+        fishPosition.x < hook.position.x + hookWidth &&
+        fishPosition.x + fishWidth > hook.position.x &&
+        fishPosition.y < hook.position.y + hookHeight &&
+        fishPosition.y + fishHeight > hook.position.y
       ) {
         setIsPlaying(false);
         setGameOver(true);
-        toast(`Game over! You were caught in a net: ${net.challenge}`);
+        toast(`Peli päättyi! Jäit kiinni: ${hook.challenge}`);
         if (gameLoopRef.current) {
           cancelAnimationFrame(gameLoopRef.current);
           gameLoopRef.current = null;
@@ -113,7 +112,7 @@ const Game: React.FC = () => {
       }
     }
     return false;
-  }, [fishPosition, nets]);
+  }, [fishPosition, hooks]);
 
   // Game loop
   useEffect(() => {
@@ -143,32 +142,32 @@ const Game: React.FC = () => {
         return newPos;
       });
 
-      // Create new nets
+      // Create new hooks
       const now = Date.now();
-      const netSpawnInterval = Math.max(2000 - difficulty * 200, 800); // Decrease spawn time as difficulty increases
+      const hookSpawnInterval = Math.max(2000 - difficulty * 200, 800); // Decrease spawn time as difficulty increases
       
-      if (now - lastNetTimeRef.current > netSpawnInterval) {
+      if (now - lastHookTimeRef.current > hookSpawnInterval) {
         const randomChallenge = HEALTH_CHALLENGES[Math.floor(Math.random() * HEALTH_CHALLENGES.length)];
         const randomY = Math.random() * (gameSize.height - 100);
         
-        setNets(prevNets => [
-          ...prevNets,
+        setHooks(prevHooks => [
+          ...prevHooks,
           {
             id: now,
             position: { x: gameSize.width, y: randomY },
             challenge: randomChallenge,
-            speed: 1500 - difficulty * 100 // Nets move faster with higher difficulty
+            speed: 1500 - difficulty * 100 // Hooks move faster with higher difficulty
           }
         ]);
         
-        lastNetTimeRef.current = now;
+        lastHookTimeRef.current = now;
       }
 
-      // Move nets
-      setNets(prevNets => prevNets.map(net => ({
-        ...net,
-        position: { ...net.position, x: net.position.x - 5 }
-      })).filter(net => net.position.x > -100)); // Remove nets that are off-screen
+      // Move hooks
+      setHooks(prevHooks => prevHooks.map(hook => ({
+        ...hook,
+        position: { ...hook.position, x: hook.position.x - 5 }
+      })).filter(hook => hook.position.x > -100)); // Remove hooks that are off-screen
 
       // Check collisions
       if (!checkCollisions()) {
@@ -178,7 +177,7 @@ const Game: React.FC = () => {
         // Increase difficulty every 500 points
         if (score > 0 && score % 500 === 0) {
           setDifficulty(prevDifficulty => Math.min(prevDifficulty + 1, 10));
-          toast(`Difficulty increased to level ${Math.min(difficulty + 1, 10)}!`);
+          toast(`Vaikeustaso nousi tasolle ${Math.min(difficulty + 1, 10)}!`);
         }
         
         gameLoopRef.current = requestAnimationFrame(gameLoop);
@@ -200,14 +199,14 @@ const Game: React.FC = () => {
     setIsPlaying(true);
     setGameOver(false);
     setScore(0);
-    setNets([]);
+    setHooks([]);
     setDifficulty(1);
     setFishPosition({
       x: gameSize.width / 4,
       y: gameSize.height / 2
     });
-    lastNetTimeRef.current = Date.now();
-    toast("Game started! Avoid the nets with health challenges!");
+    lastHookTimeRef.current = Date.now();
+    toast("Peli alkoi! Väistä terveydenhuollon haasteita!");
   };
 
   // Render game
@@ -216,11 +215,11 @@ const Game: React.FC = () => {
       {/* Game UI - Score and Controls */}
       <div className="w-full max-w-4xl bg-white rounded-t-lg shadow-md p-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-gameColors-navy text-xl">Score:</span>
+          <span className="font-bold text-gameColors-navy text-xl">Pisteet:</span>
           <span className="text-xl text-gameColors-pink">{score}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-medium text-gameColors-navy">Level:</span>
+          <span className="font-medium text-gameColors-navy">Taso:</span>
           <span className="text-gameColors-purple font-bold">{difficulty}</span>
         </div>
         <Button 
@@ -229,7 +228,7 @@ const Game: React.FC = () => {
           className="bg-gameColors-pink hover:bg-gameColors-darkPink text-white"
           disabled={isPlaying}
         >
-          {gameOver ? "Play Again" : isPlaying ? "Playing..." : "Start Game"}
+          {gameOver ? "Pelaa uudelleen" : isPlaying ? "Pelissä..." : "Aloita peli"}
         </Button>
       </div>
       
@@ -240,13 +239,13 @@ const Game: React.FC = () => {
       >
         {!isPlaying && !gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
-            <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Piranha Dodge</h2>
+            <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Piranha-väistelypeli</h2>
             <p className="text-center mb-4 max-w-md">
-              Guide your piranha through the water and avoid nets containing healthcare challenges!
+              Ohjaa piraijaa vedessä ja väistä koukkuja, joissa on terveydenhuollon haasteita!
             </p>
             <div className="bg-white text-black p-4 rounded-lg mb-6">
-              <h3 className="font-bold mb-2 text-gameColors-navy">Controls:</h3>
-              <p>Use arrow keys to move the fish:</p>
+              <h3 className="font-bold mb-2 text-gameColors-navy">Ohjeet:</h3>
+              <p>Käytä nuolinäppäimiä liikuttaaksesi kalaa:</p>
               <div className="grid grid-cols-3 gap-1 my-2">
                 <div></div>
                 <div className="border border-gameColors-navy rounded p-1 text-center">▲</div>
@@ -261,21 +260,21 @@ const Game: React.FC = () => {
               variant="default" 
               className="bg-gameColors-pink hover:bg-gameColors-darkPink text-white"
             >
-              Start Game
+              Aloita peli
             </Button>
           </div>
         )}
         
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
-            <h2 className="text-3xl font-bold mb-4 text-gameColors-pink">Game Over!</h2>
-            <p className="text-2xl mb-6">Your score: <span className="text-gameColors-pink font-bold">{score}</span></p>
+            <h2 className="text-3xl font-bold mb-4 text-gameColors-pink">Peli päättyi!</h2>
+            <p className="text-2xl mb-6">Pisteesi: <span className="text-gameColors-pink font-bold">{score}</span></p>
             <Button 
               onClick={startGame} 
               variant="default" 
               className="bg-gameColors-pink hover:bg-gameColors-darkPink text-white"
             >
-              Play Again
+              Pelaa uudelleen
             </Button>
           </div>
         )}
@@ -283,13 +282,13 @@ const Game: React.FC = () => {
         {/* The fish */}
         {(isPlaying || gameOver) && <Fish position={fishPosition} direction={fishDirection} />}
         
-        {/* The nets */}
-        {(isPlaying || gameOver) && nets.map(net => (
-          <Net 
-            key={net.id}
-            position={net.position}
-            challenge={net.challenge}
-            speed={net.speed}
+        {/* The hooks */}
+        {(isPlaying || gameOver) && hooks.map(hook => (
+          <Hook 
+            key={hook.id}
+            position={hook.position}
+            challenge={hook.challenge}
+            speed={hook.speed}
           />
         ))}
         
@@ -332,8 +331,8 @@ const Game: React.FC = () => {
       
       {/* Instructions */}
       <div className="mt-4 text-sm text-center text-gray-600 max-w-2xl">
-        <p>Use the arrow keys to move the fish. Avoid the nets with healthcare challenges.</p>
-        <p className="mt-1">The game gets more difficult as your score increases. Good luck!</p>
+        <p>Käytä nuolinäppäimiä liikuttaaksesi kalaa. Väistä koukkuja, joissa on terveydenhuollon haasteita.</p>
+        <p className="mt-1">Peli vaikeutuu pisteiden kertyessä. Onnea matkaan!</p>
       </div>
     </div>
   );

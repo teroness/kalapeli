@@ -108,10 +108,10 @@
     @apply animate-water-move;
   }
 
-  .challenge-net {
+  .challenge-hook {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 80px;
     background-size: contain;
     background-repeat: no-repeat;
     z-index: 10;

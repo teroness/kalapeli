@@ -5,10 +5,10 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gameColors-navy to-gameColors-darkNavy p-4">
       <h1 className="text-4xl font-bold mb-6 text-white">
-        <span className="text-gameColors-pink">Piranha</span> Dodge Game
+        <span className="text-gameColors-pink">Piranha</span> Väistelypeli
       </h1>
       <p className="text-white mb-8 max-w-lg text-center">
-        Guide your piranha through the water, avoiding nets with healthcare challenges!
+        Ohjaa piraijaa vedessä, väistellen koukkuja joissa on terveydenhuollon haasteita!
       </p>
       
       <div className="w-full max-w-4xl">
@@ -16,7 +16,7 @@ const Index = () => {
       </div>
       
       <footer className="mt-8 text-sm text-gray-400 text-center">
-        <p>Swim safely and avoid the hazards of healthcare!</p>
+        <p>Ui turvallisesti ja väistä terveydenhuollon haasteita!</p>
       </footer>
     </div>
   );
