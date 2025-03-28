@@ -84,7 +84,7 @@ const Fish: React.FC<FishProps> = ({
         {isEating ? (
           // Huge wide-open mouth when eating - even more exaggerated for visibility
           <path 
-            d="M50 20C50 20 62 10 62 20C62 30 50 30 45 23C43 20 40 23 40 23C40 23 45 15 50 20Z" 
+            d="M50 20C50 20 64 8 64 20C64 32 50 32 45 24C42 20 38 24 38 24C38 24 45 14 50 20Z" 
             fill="#FF3C62" 
             strokeWidth="2" 
             stroke="#FF3C62"

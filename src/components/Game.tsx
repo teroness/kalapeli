@@ -202,10 +202,10 @@ const Game: React.FC = () => {
     const fishHeight = 40 * fishSize;
     
     const fishMouthPosition = fishDirection === 'right' 
-      ? { x: fishPosition.x + fishWidth * 0.85, y: fishPosition.y + fishHeight * 0.5 }
-      : { x: fishPosition.x + fishWidth * 0.15, y: fishPosition.y + fishHeight * 0.5 };
+      ? { x: fishPosition.x + fishWidth * 0.8, y: fishPosition.y + fishHeight * 0.5 }
+      : { x: fishPosition.x + fishWidth * 0.2, y: fishPosition.y + fishHeight * 0.5 };
     
-    const mouthHitboxSize = 40 * fishSize;
+    const mouthHitboxSize = 50 * fishSize;
     
     let foodEaten = false;
     
@@ -213,12 +213,17 @@ const Game: React.FC = () => {
       const updatedFoods = prevFoods.map(food => {
         if (food.isEaten) return food;
         
+        const foodCenter = {
+          x: food.position.x + 15,
+          y: food.position.y + 15
+        };
+        
         const distance = Math.sqrt(
-          Math.pow(fishMouthPosition.x - food.position.x - 12, 2) + 
-          Math.pow(fishMouthPosition.y - food.position.y - 12, 2)
+          Math.pow(fishMouthPosition.x - foodCenter.x, 2) + 
+          Math.pow(fishMouthPosition.y - foodCenter.y, 2)
         );
         
-        console.log(`Food ${food.id} - Distance: ${distance.toFixed(2)}, Hitbox: ${mouthHitboxSize}, Position: ${food.position.x},${food.position.y}, Mouth: ${fishMouthPosition.x},${fishMouthPosition.y}`);
+        console.log(`Food ${food.id} - Distance: ${distance.toFixed(2)}, Hitbox: ${mouthHitboxSize}, FoodPos: ${foodCenter.x},${foodCenter.y}, Mouth: ${fishMouthPosition.x},${fishMouthPosition.y}`);
         
         if (distance < mouthHitboxSize) {
           foodEaten = true;
@@ -234,7 +239,6 @@ const Game: React.FC = () => {
     
     if (foodEaten) {
       setIsEating(true);
-      
       setScore(prevScore => prevScore + 10);
       setFoodCollected(prev => prev + 1);
       
@@ -250,7 +254,7 @@ const Game: React.FC = () => {
       setTimeout(() => {
         setIsEating(false);
         setFoods(prevFoods => prevFoods.filter(food => !food.isEaten));
-      }, 800);
+      }, 1000);
     }
     
     return foodEaten;
