@@ -31,7 +31,7 @@ const Hook: React.FC<HookProps> = ({ position, challenge, speed }) => {
         </svg>
         
         {/* Price tag with challenge text */}
-        <div className="absolute top-4 left-[calc(50%-3px)] transform -translate-x-1/2"> {/* Moved 3px to the left with calc */}
+        <div className="absolute top-5 left-[calc(50%-5px)] transform -translate-x-1/2"> {/* Moved 5px to the left and increased top from 4 to 5 */}
           {/* The actual price tag */}
           <div className="relative flex flex-col items-center">
             {/* String connecting to hook */}
