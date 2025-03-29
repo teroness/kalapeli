@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import Pirhana from '@/components/Fish';
@@ -31,8 +32,11 @@ const Game: React.FC = () => {
   
   useEffect(() => {
     if (foodCollected > 0) {
-      const newSize = 1 + (foodCollected * 0.1);
-      setFishSize(Math.min(newSize, 2.0));
+      // Increase the growth rate per food item (from 0.1 to 0.2)
+      const newSize = 1 + (foodCollected * 0.2);
+      
+      // Allow fish to grow larger (from 2.0 to 3.0 max)
+      setFishSize(Math.min(newSize, 3.0));
       console.log("Fish grew to size:", newSize);
     }
   }, [foodCollected]);
