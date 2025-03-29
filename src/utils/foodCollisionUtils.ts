@@ -52,6 +52,7 @@ export const checkFoodCollisions = (
     setScore(score + 10);
     const newFoodCollected = foodCollected + 1;
     setFoodCollected(newFoodCollected);
+    console.log("Food collected:", newFoodCollected); // Debug log
     
     // Reset eating animation after a short time
     setTimeout(() => {

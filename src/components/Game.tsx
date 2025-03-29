@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import Pirhana from '@/components/Fish';
@@ -30,12 +29,11 @@ const Game: React.FC = () => {
   
   const keys = useKeyboardControls();
   
-  // Update fish size when food is collected - this is crucial
   useEffect(() => {
     if (foodCollected > 0) {
-      // Calculate fish size based on food collected with a maximum size limit
-      const newSize = Math.min(1 + (foodCollected * 0.05), 1.8);
-      setFishSize(newSize);
+      const newSize = 1 + (foodCollected * 0.1);
+      setFishSize(Math.min(newSize, 2.0));
+      console.log("Fish grew to size:", newSize);
     }
   }, [foodCollected]);
   
