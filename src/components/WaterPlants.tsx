@@ -5,9 +5,10 @@ import { WATER_PLANTS } from '@/constants/gameConstants';
 
 interface WaterPlantsProps {
   gameSize: GameSize;
+  fishX?: number;
 }
 
-const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
+const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize, fishX = 0 }) => {
   const [plants, setPlants] = useState<PlantObject[]>(WATER_PLANTS);
   
   // Move plants from right to left
@@ -28,6 +29,15 @@ const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
 
   const renderPlant = (plant: PlantObject, index: number) => {
     const adjustedX = (plant.x / 1000) * gameSize.width;
+    const distanceToFish = Math.abs(adjustedX - fishX);
+    
+    // Create a subtle sway effect based on distance to fish
+    const swayOffset = distanceToFish < 150 ? Math.sin(Date.now() / 1000 + index) * (10 - distanceToFish / 20) : 0;
+    
+    const swayStyle = {
+      transform: `translateX(${swayOffset}px)`,
+      transition: 'transform 0.3s ease-in-out',
+    };
     
     if (plant.type === 'seaweed') {
       return (
@@ -40,7 +50,8 @@ const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
             width: '30px',
             zIndex: 1,
             animation: `swim 4s ease-in-out infinite`,
-            animationDelay: plant.animationDelay
+            animationDelay: plant.animationDelay,
+            ...swayStyle
           }}
         >
           <svg viewBox="0 0 30 120" width="30" height={plant.height} xmlns="http://www.w3.org/2000/svg">
@@ -97,7 +108,8 @@ const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
             width: '40px',
             zIndex: 1,
             animation: `sway 5s ease-in-out infinite`,
-            animationDelay: plant.animationDelay
+            animationDelay: plant.animationDelay,
+            ...swayStyle
           }}
         >
           <svg viewBox="0 0 40 80" width="40" height={plant.height} xmlns="http://www.w3.org/2000/svg">
@@ -131,6 +143,8 @@ const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
       );
     } else if (plant.type === 'waterlily') {
       const width = plant.width || 60;
+      const swayRotation = distanceToFish < 100 ? Math.sin(Date.now() / 800 + index) * 3 : 0;
+      
       return (
         <div 
           key={`plant-${index}`}
@@ -141,7 +155,9 @@ const WaterPlants: React.FC<WaterPlantsProps> = ({ gameSize }) => {
             height: `${width * 0.5}px`,
             zIndex: 1,
             animation: `swim 6s ease-in-out infinite`,
-            animationDelay: plant.animationDelay
+            animationDelay: plant.animationDelay,
+            transform: `translateX(${swayOffset}px) rotate(${swayRotation}deg)`,
+            transition: 'transform 0.4s ease-in-out'
           }}
         >
           <svg viewBox="0 0 60 30" width={width} height={width * 0.5} xmlns="http://www.w3.org/2000/svg">
