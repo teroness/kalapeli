@@ -31,8 +31,7 @@ export const checkFoodCollisions = (
     );
     
     // Use a more consistent collision threshold scaled to fish size
-    // Make the collision detection slightly larger to make it easier to eat food
-    const collisionThreshold = 30 * fishSize;
+    const collisionThreshold = 25 * fishSize;
     
     if (distance < collisionThreshold) {
       foodEatenId = food.id;
@@ -53,16 +52,15 @@ export const checkFoodCollisions = (
     setScore(score + 10);
     const newFoodCollected = foodCollected + 1;
     setFoodCollected(newFoodCollected);
-    console.log("Food collected:", newFoodCollected); // Debug log
     
     // Reset eating animation after a short time
     setTimeout(() => {
       setIsEating(false);
     }, 300);
     
-    // Trigger growth animation - make it last longer for better visual feedback
+    // Trigger growth animation
     setIsGrowing(true);
-    setTimeout(() => setIsGrowing(false), 800);
+    setTimeout(() => setIsGrowing(false), 600);
     
     return true;
   }

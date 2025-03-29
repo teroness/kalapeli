@@ -30,14 +30,12 @@ const Game: React.FC = () => {
   
   const keys = useKeyboardControls();
   
+  // Update fish size when food is collected - this is crucial
   useEffect(() => {
     if (foodCollected > 0) {
-      // Increase the growth rate per food item (from 0.1 to 0.2)
-      const newSize = 1 + (foodCollected * 0.2);
-      
-      // Allow fish to grow larger (from 2.0 to 3.0 max)
-      setFishSize(Math.min(newSize, 3.0));
-      console.log("Fish grew to size:", newSize);
+      // Calculate fish size based on food collected with a maximum size limit
+      const newSize = Math.min(1 + (foodCollected * 0.05), 1.8);
+      setFishSize(newSize);
     }
   }, [foodCollected]);
   

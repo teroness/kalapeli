@@ -16,9 +16,6 @@ const Fish: React.FC<FishProps> = ({
   isEating = false,
   isGrowing = false
 }) => {
-  // Ensure size is applied correctly
-  const actualSize = size || 1; // Default to 1 if size is undefined or 0
-  
   return (
     <div 
       className={`absolute transition-transform duration-100 ${
@@ -27,9 +24,8 @@ const Fish: React.FC<FishProps> = ({
       style={{ 
         left: `${position.x}px`, 
         top: `${position.y}px`,
-        transform: `scaleX(${direction === 'right' ? 1 : -1}) scale(${actualSize})`,
-        zIndex: 10,
-        transition: isGrowing ? 'transform 0.6s ease' : 'transform 0.1s ease'
+        transform: `scaleX(${direction === 'right' ? 1 : -1}) scale(${size})`,
+        zIndex: 10
       }}>
       <svg width="60" height="40" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
         {/* Piranha body - using the pink color from the theme */}
