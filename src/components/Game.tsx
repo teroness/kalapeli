@@ -26,6 +26,8 @@ const Game: React.FC = () => {
   const [fishSize, setFishSize] = useState(1);
   const [isEating, setIsEating] = useState(false);
   const [isGrowing, setIsGrowing] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+const [muted, setMuted] = useState(false);
   
   const keys = useKeyboardControls();
   
@@ -49,6 +51,30 @@ const Game: React.FC = () => {
         });
       }
     };
+useEffect(() => {
+  const audio = new Audio('/Happy-Days(chosic.com).mp3');
+  audio.loop = true;
+  audio.volume = 0.4;
+  audioRef.current = audio;
+
+  if (!muted) {
+    audio.play().catch(() => {});
+  }
+
+  return () => {
+    audio.pause();
+  };
+}, []);
+
+useEffect(() => {
+  if (audioRef.current) {
+    if (muted) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => {});
+    }
+  }
+}, [muted]);
 
     updateGameSize();
     window.addEventListener('resize', updateGameSize);
@@ -102,14 +128,21 @@ const Game: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <GameHeader 
-        score={score}
-        difficulty={difficulty}
-        foodCollected={foodCollected}
-        isPlaying={isPlaying}
-        gameOver={gameOver}
-        onStartGame={startGame}
-      />
-      
+  score={score}
+  difficulty={difficulty}
+  foodCollected={foodCollected}
+  isPlaying={isPlaying}
+  gameOver={gameOver}
+  onStartGame={startGame}
+/>
+        
+      <Button 
+  onClick={() => setMuted(prev => !prev)} 
+  className="absolute top-4 right-4 z-50 bg-white px-3 py-1 rounded shadow text-sm"
+>
+  {muted ? '🔇 Äänet pois' : '🔊 Äänet päälle'}
+</Button>
+
       <div 
         ref={gameAreaRef}
         className="w-full max-w-4xl h-[500px] water-background relative overflow-hidden rounded-b-lg shadow-md"
