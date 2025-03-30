@@ -54,7 +54,7 @@ export const checkFoodCollisions = (
     setScore(score + 10);
     const newFoodCollected = foodCollected + 1;
     setFoodCollected(newFoodCollected);
-    setFishSize(prev => Math.min(prev + 0.1, 2));
+    setFishSize(prev => Math.min(prev + 0.1));
     
     // Trigger growth animation
     setIsGrowing(true);
