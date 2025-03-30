@@ -26,7 +26,9 @@ interface UseGameLoopProps {
   score: number;
   setScore: (score: number) => void;
   fishSize: number;
+  setFishSize: (size: number) => void
   foodCollected: number;
+ 
   setFoodCollected: (count: number) => void;
   setIsEating: (isEating: boolean) => void;
   setIsGrowing: (isGrowing: boolean) => void;
@@ -55,6 +57,7 @@ const useGameLoop = ({
   setFoodCollected,
   setIsEating,
   setIsGrowing
+  setFishSize,
 }: UseGameLoopProps) => {
   const gameLoopRef = useRef<number | null>(null);
   const lastHookTimeRef = useRef<number>(Date.now());
