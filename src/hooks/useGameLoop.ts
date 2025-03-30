@@ -74,6 +74,7 @@ const useGameLoop = ({
       setScore,
       setFoodCollected,
       setIsGrowing,
+      setFishSize
       score,
       foodCollected
     );
