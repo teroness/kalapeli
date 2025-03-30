@@ -56,7 +56,7 @@ const useGameLoop = ({
   foodCollected,
   setFoodCollected,
   setIsEating,
-  setIsGrowing
+  setIsGrowing,
   setFishSize,
 }: UseGameLoopProps) => {
   const gameLoopRef = useRef<number | null>(null);
@@ -74,7 +74,7 @@ const useGameLoop = ({
       setScore,
       setFoodCollected,
       setIsGrowing,
-      setFishSize
+      setFishSize,
       score,
       foodCollected
     );

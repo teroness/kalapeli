@@ -6,7 +6,7 @@ export const HEALTH_CHALLENGES = [
   "Palkkakuoppa",
   "Henkilöstöpula",
   "Ylityöt",
-  "Istekin käyttötuki"
+  "Istekin käyttötuki",
   "Tietokone kaatuu",
   "Resurssipula",
   "Leikkaukset",
