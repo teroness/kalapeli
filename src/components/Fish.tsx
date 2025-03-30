@@ -27,7 +27,12 @@ const Fish: React.FC<FishProps> = ({
         transform: `scaleX(${direction === 'right' ? 1 : -1}) scale(${size})`,
         zIndex: 10
       }}>
-      <svg width="60" height="40" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+      <svg
+  width={60 * size}
+  height={40 * size}
+  viewBox="0 0 60 40"
+  xmlns="http://www.w3.org/2000/svg"
+>
         {/* Piranha body - using the pink color from the theme */}
         <path d="M10 20C10 15 15 5 35 5C50 5 58 12 58 20C58 28 50 35 35 35C15 35 10 25 10 20Z" fill="#FF5A79" />
         
