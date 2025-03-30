@@ -10,6 +10,7 @@ export const checkFoodCollisions = (
   setScore: (score: number) => void,
   setFoodCollected: (count: number) => void,
   setIsGrowing: (isGrowing: boolean) => void,
+  setFishSize: (size: number) => void,
   score: number,
   foodCollected: number
 ): boolean => {
@@ -52,6 +53,7 @@ export const checkFoodCollisions = (
     setScore(score + 10);
     const newFoodCollected = foodCollected + 1;
     setFoodCollected(newFoodCollected);
+    setFishSize(prev => Math.min(prev + 0.1, 2));
     
     // Reset eating animation after a short time
     setTimeout(() => {
