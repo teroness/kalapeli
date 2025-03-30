@@ -44,6 +44,7 @@ export const checkFoodCollisions = (
   if (foodEatenId !== -1) {
     // Start eating animation immediately
     setIsEating(true);
+    setTimeout(() => setIsEating(false), 300);
     
     // Immediately remove the eaten food - this is crucial
     const updatedFoods = foods.filter(food => food.id !== foodEatenId);
@@ -55,14 +56,9 @@ export const checkFoodCollisions = (
     setFoodCollected(newFoodCollected);
     setFishSize(prev => Math.min(prev + 0.1, 2));
     
-    // Reset eating animation after a short time
-    setTimeout(() => {
-      setIsEating(false);
-    }, 300);
-    
     // Trigger growth animation
     setIsGrowing(true);
-    setTimeout(() => setIsGrowing(false), 600);
+    setTimeout(() => setIsGrowing(false), 400);
     
     return true;
   }
