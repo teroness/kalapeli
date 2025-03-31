@@ -9,9 +9,9 @@ interface WelcomeScreenProps {
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartGame }) => {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 text-white p-8 z-50">
-      <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Kalapeli</h2>
+      <h2 className="text-3xl font-bold mb-6 text-gameColors-pink">Ohjeet:</h2>
       <p className="text-center mb-4 max-w-md">
-        Sukella työelämän syviin vesiin yhdessä Pirhanan kanssa. Kerää ruokaa saadaksesi pisteitä ja väistä koukkuja!
+        Liikuta Pirhanaa nuolinäppäimillä. Kerää mahdollisimman paljon ruokaa, ja vältä koukkuja!
       </p>
     <div className="bg-white text-black p-4 rounded-lg mb-6">
   <div className="grid grid-cols-3 gap-1 my-2">
