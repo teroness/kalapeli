@@ -104,7 +104,7 @@ useEffect(() => {
   setFoodCollected,
   setIsEating,
   setIsGrowing,
-  setGameOverReason
+  setGameOverReason,
 });
 
   const startGame = () => {
