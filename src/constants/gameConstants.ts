@@ -35,7 +35,7 @@ export const HEALTH_CHALLENGES = [
   "Tietokatko",
   "Somekohu",
   "403 forbidden",
-  "Ylipitkä kahvitauko"
+  "Ylipitkä kahvitauko",
   "Karannut potilas",
   "404 Not Found"
 ];
