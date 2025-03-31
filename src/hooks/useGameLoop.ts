@@ -129,8 +129,11 @@ const useGameLoop = ({
           setFoods(updatedFoods);
         }
         
-        if (checkHookCollisions(fishPosition, hooks, fishSize)) {
-          setGameOver(true);
+        const collidedHook = checkHookCollisions(fishPosition, hooks, fishSize);
+if (collidedHook) {
+  setGameOver(true);
+  setGameOverReason(`${collidedHook.challenge} tappoi Pirhanan`);
+
           if (gameLoopRef.current) {
             cancelAnimationFrame(gameLoopRef.current);
             gameLoopRef.current = null;
