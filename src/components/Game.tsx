@@ -55,7 +55,7 @@ const [muted, setMuted] = useState(false);
 useEffect(() => {
   const audio = new Audio('/Happy-Days(chosic.com).mp3');
   audio.loop = true;
-  audio.volume = 0.4;
+  audio.volume = 0.5;
   audioRef.current = audio;
 
   if (!muted) {
