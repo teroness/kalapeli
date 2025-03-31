@@ -20,7 +20,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   gameOver,
   onStartGame,
   muted,
-  setMuted
+  setMuted,
 }) => {
   return (
     <div className="w-full max-w-4xl bg-white rounded-t-lg shadow-md p-4 flex justify-between items-center">
