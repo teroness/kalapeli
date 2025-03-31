@@ -108,8 +108,6 @@ useEffect(() => {
   setGameOverReason
 });
 
-  });
-
   const startGame = () => {
     setIsPlaying(true);
     setGameOver(false);
