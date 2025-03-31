@@ -140,13 +140,6 @@ const Game: React.FC = () => {
         setMuted={setMuted}
       />
 
-      <Button 
-        onClick={() => setMuted(prev => !prev)} 
-        className="absolute top-4 right-4 z-50 bg-white px-3 py-1 rounded shadow text-sm"
-      >
-        {muted ? '🔇 Äänet pois' : '🔊 Äänet päälle'}
-      </Button>
-
       <div 
         ref={gameAreaRef}
         className="relative w-full max-w-4xl h-[540px] bg-gradient-to-b from-sky-700 to-sky-900 overflow-hidden rounded-xl shadow-lg"
