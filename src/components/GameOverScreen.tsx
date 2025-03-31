@@ -17,7 +17,7 @@ const GameOverScreen: React.FC<GameOverScreenProps> = ({ score, foodCollected, o
       
       {reason && (
         <p className="text-lg italic text-center mb-4 text-gameColors-yellow">
-          Kuolinsyy: {reason}
+           {reason}
         </p>
       )}
 
