@@ -26,6 +26,7 @@ const Game: React.FC = () => {
   const [fishSize, setFishSize] = useState(1);
   const [isEating, setIsEating] = useState(false);
   const [isGrowing, setIsGrowing] = useState(false);
+  const [gameOverReason, setGameOverReason] = useState('');
   const audioRef = useRef<HTMLAudioElement | null>(null);
 const [muted, setMuted] = useState(false);
   
@@ -81,29 +82,32 @@ useEffect(() => {
     return () => window.removeEventListener('resize', updateGameSize);
   }, []);
   
-  const gameLoopState = useGameLoop({
-    isPlaying,
-    gameOver,
-    setGameOver,
-    gameSize,
-    fishPosition,
-    setFishPosition,
-    fishDirection,
-    setFishDirection,
-    hooks,
-    setHooks,
-    foods,
-    setFoods,
-    keys,
-    difficulty,
-    setDifficulty,
-    score,
-    setScore,
-    fishSize,
-    foodCollected,
-    setFoodCollected,
-    setIsEating,
-    setIsGrowing
+    const gameLoopState = useGameLoop({
+  isPlaying,
+  gameOver,
+  setGameOver,
+  gameSize,
+  fishPosition,
+  setFishPosition,
+  fishDirection,
+  setFishDirection,
+  hooks,
+  setHooks,
+  foods,
+  setFoods,
+  keys,
+  difficulty,
+  setDifficulty,
+  score,
+  setScore,
+  fishSize,
+  foodCollected,
+  setFoodCollected,
+  setIsEating,
+  setIsGrowing,
+  setGameOverReason
+});
+
   });
 
   const startGame = () => {
@@ -158,6 +162,7 @@ useEffect(() => {
             score={score} 
             foodCollected={foodCollected} 
             onRestart={startGame} 
+            reason={gameOverReason}
           />
         )}
         
