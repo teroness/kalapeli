@@ -133,7 +133,7 @@ const useGameLoop = ({
         const collidedHook = checkHookCollisions(fishPosition, hooks, fishSize);
 if (collidedHook) {
   setGameOver(true);
-  setGameOverReason(`${collidedHook.challenge} tappoi Pirhanan`);
+  setGameOverReason(`${collidedHook.challenge} koitui Pirhanan kohtaloksi`);
 
           if (gameLoopRef.current) {
             cancelAnimationFrame(gameLoopRef.current);
