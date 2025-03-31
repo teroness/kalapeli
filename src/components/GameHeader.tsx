@@ -35,14 +35,6 @@ const GameHeader: React.FC<GameHeaderProps> = ({
           <span className="text-gameColors-orange font-bold">{foodCollected}</span>
         </div>
       </div>
-      <Button 
-        onClick={onStartGame} 
-        variant="default" 
-        className="bg-gameColors-pink hover:bg-gameColors-darkPink text-white"
-        disabled={isPlaying}
-      >
-        {gameOver ? "Pelaa uudelleen" : isPlaying ? "Pelissä..." : "Aloita peli"}
-      </Button>
     </div>
   );
 };
