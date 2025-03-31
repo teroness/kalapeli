@@ -146,7 +146,7 @@ useEffect(() => {
 
       <div 
         ref={gameAreaRef}
-        className="w-full max-w-4xl h-[500px] water-background relative overflow-hidden rounded-b-lg shadow-md"
+        className="absolute top-4 right-4 z-50 bg-gameColors-pink hover:bg-gameColors-darkPink text-white"
       >
         <WaterPlants gameSize={gameSize} fishX={fishPosition.x} />
         
