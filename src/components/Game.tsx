@@ -147,7 +147,7 @@ const Game: React.FC = () => {
 
       <div 
         ref={gameAreaRef}
-        className="relative w-full max-w-4xl h-[600px] bg-gradient-to-b from-sky-700 to-sky-900 overflow-hidden rounded-xl shadow-lg"
+        className="relative w-full max-w-4xl h-[540px] bg-gradient-to-b from-sky-700 to-sky-900 overflow-hidden rounded-xl shadow-lg"
       >
         <WaterPlants gameSize={gameSize} fishX={fishPosition.x} />
 
