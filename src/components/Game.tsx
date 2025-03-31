@@ -28,17 +28,17 @@ const Game: React.FC = () => {
   const [isGrowing, setIsGrowing] = useState(false);
   const [gameOverReason, setGameOverReason] = useState('');
   const audioRef = useRef<HTMLAudioElement | null>(null);
-const [muted, setMuted] = useState(false);
-  
+  const [muted, setMuted] = useState(false);
+
   const keys = useKeyboardControls();
-  
+
   useEffect(() => {
     if (foodCollected > 0) {
       const newSize = 1 + (foodCollected * 0.05);
       setFishSize(newSize);
     }
   }, [foodCollected]);
-  
+
   useEffect(() => {
     const updateGameSize = () => {
       if (gameAreaRef.current) {
@@ -52,60 +52,61 @@ const [muted, setMuted] = useState(false);
         });
       }
     };
-     updateGameSize();
+    updateGameSize();
     window.addEventListener('resize', updateGameSize);
     return () => window.removeEventListener('resize', updateGameSize);
   }, []);
-useEffect(() => {
-  const audio = new Audio('/Happy-Days(chosic.com).mp3');
-  audio.loop = true;
-  audio.volume = 0.5;
-  audioRef.current = audio;
 
-  if (!muted) {
-    audio.play().catch(() => {});
-  }
+  useEffect(() => {
+    const audio = new Audio('/Happy-Days(chosic.com).mp3');
+    audio.loop = true;
+    audio.volume = 0.5;
+    audioRef.current = audio;
 
-  return () => {
-    audio.pause();
-  };
-}, []);
-
-useEffect(() => {
-  if (audioRef.current) {
-    if (muted) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(() => {});
+    if (!muted) {
+      audio.play().catch(() => {});
     }
-  }
-}, [muted]);
 
-    const gameLoopState = useGameLoop({
-  isPlaying,
-  gameOver,
-  setGameOver,
-  gameSize,
-  fishPosition,
-  setFishPosition,
-  fishDirection,
-  setFishDirection,
-  hooks,
-  setHooks,
-  foods,
-  setFoods,
-  keys,
-  difficulty,
-  setDifficulty,
-  score,
-  setScore,
-  fishSize,
-  foodCollected,
-  setFoodCollected,
-  setIsEating,
-  setIsGrowing,
-  setGameOverReason,
-});
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (muted) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(() => {});
+      }
+    }
+  }, [muted]);
+
+  const gameLoopState = useGameLoop({
+    isPlaying,
+    gameOver,
+    setGameOver,
+    gameSize,
+    fishPosition,
+    setFishPosition,
+    fishDirection,
+    setFishDirection,
+    hooks,
+    setHooks,
+    foods,
+    setFoods,
+    keys,
+    difficulty,
+    setDifficulty,
+    score,
+    setScore,
+    fishSize,
+    foodCollected,
+    setFoodCollected,
+    setIsEating,
+    setIsGrowing,
+    setGameOverReason,
+  });
 
   const startGame = () => {
     setIsPlaying(true);
@@ -129,31 +130,31 @@ useEffect(() => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <GameHeader 
-  score={score}
-  difficulty={difficulty}
-  foodCollected={foodCollected}
-  isPlaying={isPlaying}
-  gameOver={gameOver}
-  onStartGame={startGame}
-/>
-        
+        score={score}
+        difficulty={difficulty}
+        foodCollected={foodCollected}
+        isPlaying={isPlaying}
+        gameOver={gameOver}
+        onStartGame={startGame}
+      />
+
       <Button 
-  onClick={() => setMuted(prev => !prev)} 
-  className="absolute top-4 right-4 z-50 bg-white px-3 py-1 rounded shadow text-sm"
->
-  {muted ? '🔇 Äänet pois' : '🔊 Äänet päälle'}
-</Button>
+        onClick={() => setMuted(prev => !prev)} 
+        className="absolute top-4 right-4 z-50 bg-white px-3 py-1 rounded shadow text-sm"
+      >
+        {muted ? '🔇 Äänet pois' : '🔊 Äänet päälle'}
+      </Button>
 
       <div 
         ref={gameAreaRef}
-        className="absolute top-4 right-4 z-50 bg-gameColors-pink hover:bg-gameColors-darkPink text-white"
+        className="relative w-full max-w-4xl h-[600px] bg-gradient-to-b from-sky-700 to-sky-900 overflow-hidden rounded-xl shadow-lg"
       >
         <WaterPlants gameSize={gameSize} fishX={fishPosition.x} />
-        
+
         {!isPlaying && !gameOver && (
           <WelcomeScreen onStartGame={startGame} />
         )}
-        
+
         {gameOver && (
           <GameOverScreen 
             score={score} 
@@ -162,7 +163,7 @@ useEffect(() => {
             reason={gameOverReason}
           />
         )}
-        
+
         {(isPlaying || gameOver) && (
           <>
             <Pirhana 
@@ -172,7 +173,7 @@ useEffect(() => {
               isEating={isEating}
               isGrowing={isGrowing}
             />
-            
+
             {hooks.map(hook => (
               <Hook 
                 key={hook.id}
@@ -181,7 +182,7 @@ useEffect(() => {
                 speed={hook.speed}
               />
             ))}
-            
+
             {foods.map(food => (
               <FishFood
                 key={food.id}
@@ -199,3 +200,4 @@ useEffect(() => {
 };
 
 export default Game;
+
