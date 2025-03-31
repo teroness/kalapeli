@@ -1,8 +1,9 @@
 
 export const HEALTH_CHALLENGES = [
-  "YT-neuvottelut",
-  "Burnout",
+  "Vuorotyö",
+  "ICT-haasteet",
   "Korona",
+  "Ruuhkavuodet",
   "Palkkakuoppa",
   "Henkilöstöpula",
   "Ylityöt",
@@ -19,7 +20,8 @@ export const HEALTH_CHALLENGES = [
   "Muutosvastarinta",
   "Tulostinongelma",
   "Lomapula",
-  "Vuorotyö",
+  "Teamsin päivitys",
+  "YT-neuvottelut",
   "Yllätyskyykky",
   "Pätkivä netti",
   "Huoltokatko",
@@ -27,12 +29,13 @@ export const HEALTH_CHALLENGES = [
   "Muutosvastarinta",
   "Työbestis lomalla",
   "Kahvin puute",
-  "ICT-haasteet",
+  "Burnout",
   "Potilasvalitus",
   "Somekohu",
   "Tietokatko",
   "Somekohu",
   "403 forbidden",
+  "Ylipitkä kahvitauko"
   "Karannut potilas",
   "404 Not Found"
 ];
