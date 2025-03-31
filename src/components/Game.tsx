@@ -136,6 +136,8 @@ const Game: React.FC = () => {
         isPlaying={isPlaying}
         gameOver={gameOver}
         onStartGame={startGame}
+        muted={muted}
+        setMuted={setMuted}
       />
 
       <Button 
