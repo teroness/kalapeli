@@ -52,6 +52,10 @@ const [muted, setMuted] = useState(false);
         });
       }
     };
+     updateGameSize();
+    window.addEventListener('resize', updateGameSize);
+    return () => window.removeEventListener('resize', updateGameSize);
+  }, []);
 useEffect(() => {
   const audio = new Audio('/Happy-Days(chosic.com).mp3');
   audio.loop = true;
@@ -77,11 +81,6 @@ useEffect(() => {
   }
 }, [muted]);
 
-    updateGameSize();
-    window.addEventListener('resize', updateGameSize);
-    return () => window.removeEventListener('resize', updateGameSize);
-  }, []);
-  
     const gameLoopState = useGameLoop({
   isPlaying,
   gameOver,
