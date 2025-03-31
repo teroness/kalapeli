@@ -35,13 +35,13 @@ export const generateFood = (gameSize: GameSize): FoodObject => {
 };
 
 export const checkHookCollisions = (
-  fishPosition: Position, 
-  hooks: HookObject[], 
+  fishPosition: Position,
+  hooks: HookObject[],
   fishSize: number
-): boolean => {
+): HookObject | null => {
   const fishWidth = 60 * fishSize;
   const fishHeight = 40 * fishSize;
-  
+
   for (const hook of hooks) {
     if (
       fishPosition.x + 10 < hook.position.x + 40 &&
@@ -49,10 +49,10 @@ export const checkHookCollisions = (
       fishPosition.y + 5 < hook.position.y + 60 &&
       fishPosition.y + fishHeight - 5 > hook.position.y
     ) {
-      return true;
+      return hook; // Return the actual colliding hook
     }
   }
-  return false;
+  return null;
 };
 
 export const updateGameObjects = (
