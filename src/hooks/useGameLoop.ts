@@ -59,6 +59,7 @@ const useGameLoop = ({
   setIsEating,
   setIsGrowing,
   setFishSize,
+  setGameOverReason,
 }: UseGameLoopProps) => {
   const gameLoopRef = useRef<number | null>(null);
   const lastHookTimeRef = useRef<number>(Date.now());
