@@ -175,7 +175,8 @@ if (collidedHook) {
     setFishPosition,
     setFoods,
     setGameOver,
-    setHooks
+    setHooks,
+    setGameOverReason,
   ]);
 
   return {
