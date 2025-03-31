@@ -34,7 +34,7 @@ const [muted, setMuted] = useState(false);
   
   useEffect(() => {
     if (foodCollected > 0) {
-      const newSize = Math.min(1 + (foodCollected * 0.05), 1.8);
+      const newSize = Math.min(1 + (foodCollected * 0.05);
       setFishSize(newSize);
     }
   }, [foodCollected]);
