@@ -32,6 +32,7 @@ interface UseGameLoopProps {
   setFoodCollected: (count: number) => void;
   setIsEating: (isEating: boolean) => void;
   setIsGrowing: (isGrowing: boolean) => void;
+  setGameOverReason: (reason: string) => void;
 }
 
 const useGameLoop = ({
